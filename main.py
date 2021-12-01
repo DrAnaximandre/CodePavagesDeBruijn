@@ -38,19 +38,22 @@ def outputNextTiling(params):
     plt.axis('equal')
     plt.axis('off')
     plt.title(title(params), fontsize = 8, y = 0, pad = -20.)
-    dmax = params.DMAX
-    lim = dmax * 0.9
-    dr = lim 
+
+    # les limites du dessin
+    lim = params.DMAX * 0.93
     xmin, xmax, ymin, ymax = -lim, lim, -lim, lim
     ax.set_xlim([xmin,xmax])
     ax.set_ylim([ymin,ymax])
-    left, bottom, width, height = -dr, -dr, 2*dr, 2*dr
-    p = plt.Rectangle((left, bottom), width, height, fill=False, linewidth = 0.2)
-    ax.add_patch(p)
-    
+
+    # la bordure carrée
+    if params.FRAME and params.SQUARE :
+        left, bottom, width, height = -lim*1.005, -lim, 2.01*lim, 2*lim
+        p = plt.Rectangle((left, bottom), width, height, fill=False, linewidth = 0.2)
+        ax.add_patch(p)
+                    
     tiling(params)
     
-        # save d'abord et show apres !
+    # save d'abord et show apres !
     if params.SAVE :
         plt.savefig(fn + ".pdf" , bbox_inches="tight")
     if params.SHOW :
@@ -81,11 +84,12 @@ def goLivret() :
     p.SAVE, p.SHOW = True, False
     p.N = 5
     p.RECTANGLE = True
-    p.R = 61
+    p.R = 62
     p.setGAMMA()
    
     while True :
 
+        #for (d, nbl) in [(4,3), (8,6), (15, 8), (30, 16), (60, 33), (100, 55)] :
         for (d, nbl) in [(4,3), (8,6), (15, 8), (30, 16), (60, 33)] :
             p.NBL = nbl
             p.updateDMAX(d)

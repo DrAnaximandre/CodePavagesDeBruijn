@@ -130,11 +130,12 @@ def display_rhombus(r, s, kr, ks, x, y, ind, params):
             l12_23()
             l30_01()
 
-        elif params.R == 3:  # pseudo-diagonals
+        elif params.R == 3:  # pseudo-diagonals (join middle of rombi sides)
             line(x12, y12, x30, y30, params)
             line(x23, y23, x01, y01, params)
 
         elif params.R == 4:  # specific for N=5 but works for any N
+                             # as R=1 or R=2 according to the rhombi shape
             sh = shape_rhombus(r, s, params)
             if sh == 2:
                 l01_12()

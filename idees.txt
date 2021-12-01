@@ -1,0 +1,27 @@
+
+- dilatations / rétractions des coordonnées des sommets des losanges
+  selon par exemple de la distance au centre
+
+- choix des segments qui joignent les milieux des cotes des losanges :
+    . aléatoire
+    . selon les indices (altitude) des sommets voisins (cf article de DeBruijn)
+         par exemple choisir des segments à altitude constante
+
+- idee du graphe biparti (utiliser les indices d'altitude)
+
+- travailler les couleurs pour les pavages autres que les losanges
+  (nécessite de reconstituer les polygones résultants)
+
+- d'autres réseaux
+    . segments qui joignent les 1/3 et 2/3 des côtés des losanges,
+      ou 1/3, 1/2, 3/4 ...
+
+- entrelas (faisable avec R=61 ou 62)
+
+- autres façons de joindre les sommets, les milieux des sommets,
+    faire une recherche plus systématique
+
+- joindre les projets "Gril'Art' et 'Pavages'
+
+- lisser les courbes brisées
+
