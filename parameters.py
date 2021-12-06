@@ -56,6 +56,9 @@ class Parameters(object):
         #   is greater than DMAX, then the rhombus will not be displayed.
         self.SQUARE = True
 
+        #============== draws a frame at the limits of drawing
+        self.FRAME = True
+
         ##################### DRAWINGS
 
         # ---- Controls for drawing rombi
@@ -63,17 +66,19 @@ class Parameters(object):
         self.DIAGONAL = False # draws a diagonal ?
         self.RECTANGLE = True # draws (part of) rectangle inside the rhombus ?
         #self.R = 0 #  rectangles and only rectangles
-        #self.R = 1   # only opposite sides of rectangles
-        #self.R = 2 # Pentaville
-        #self.R = 3 # pseudo-diagonals
-        #self.R = 4
-        self.R = 5
+        #self.R = 1 # only opposite sides of rectangles
+        #self.R = 2 # "Pentaville" : other sides of rectangles
+        #self.R = 3 # pseudo-diagonals (join middle of rhombi sides)
+        #self.R = 4 #  # as R=1 or R=2 according to the rhombi shape
+        self.R = 5 # same as R=4 but inverse shapes
+        #self.R = 61  # mix rectangle side and pseudo-diags, according to rhombi shape
+        #self.R = 62  # like 61, the other way
 
         # ---- Directory where to write the tilings
-        self.TILINGDIR = "../Pavages/titi"
+        self.TILINGDIR = "../Pavages"
+
 
         #=============== COLORS
-
 
         self.BACKGROUND = WHITE
         #self.BACKGROUND = BLACK
@@ -108,7 +113,7 @@ class Parameters(object):
 
         # Tilings could be not exactly symetric
         #self.GAMMA = [self.SHIFT - 0.00085 * j for j in range(self.N)]
-        self.GAMMA = [self.SHIFT - 0.05 * j for j in range(self.N)]
+        #self.GAMMA = [self.SHIFT - 0.05 * j for j in range(self.N)]
 
         # More or less enforces the deBruijn 'regular' conditions for the tiling
         #   (see the paper, and the 'mathpage' site).
@@ -126,6 +131,9 @@ class Parameters(object):
         # for livret #3 with R=2 (ancienne valeur, elle a pu changer) pour N=5
         #self.GAMMA = [1.890, 1.885, 1.880, 1.875, 1.870]
 
+        # pour livret #4 avec R = 62 et N = 5
+        self.GAMMA = [-0.260, -0.155, -0.050, 0.055, 0.160]
+                      
     def nextGAMMA(self):
         self.SHIFT -= self.DELTASHIFT
         print(self.SHIFT)
