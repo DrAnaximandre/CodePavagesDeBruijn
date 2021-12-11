@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-
+from time import localtime, strftime
 
 ################ Main grid generation parameters
 
@@ -158,4 +158,17 @@ class Parameters(object):
             s += (",%+.3f" % g[i])
         return s+']$'
 
+    def filename(self):
+        stts = str(strftime("%Y-%m-%d_%H-%M-%S", localtime()))
+        name = self.TILINGDIR + "/deBruijn_" + \
+               str(self.N) + '_' + stts + "_" + self.stringGAMMA()
+        return name
+
+    def title(self):
+        sG = self.stringGAMMAtex() + ' $d_{max}$=' + str(self.DMAX) + ' #L=' + str(self.NBL)
+        if self.RECTANGLE:
+            sG += ' R=' + str(self.R)
+        if self.DIAGONAL:
+            sG += ' D'
+        return sG
 

@@ -22,7 +22,7 @@
 import matplotlib.pyplot as plt
 
 from parameters import Parameters
-from outputs import outputNextTiling
+from tiling import outputNextTiling
 
 ######################################
 

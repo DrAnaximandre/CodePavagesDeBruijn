@@ -3,9 +3,9 @@ import numpy as np
 import math
 
 from parameters import Parameters
-from outputs import display_rhombus, filename, title
+from outputs import display_rhombus
 
-def get_cos_sin(params):
+def get_cos_sin(params: Parameters):
     ANGLE = 2 * math.pi / params.N
     COS = np.array([np.cos(j * ANGLE) for j in range(params.N)])
     SIN = np.array([np.sin(j * ANGLE) for j in range(params.N)])
@@ -19,7 +19,7 @@ def inter(a1, b1, c1, a2, b2, c2):
     return (x, y)
 
 # de Bruijn (4.4)
-def interGrid(r, s, kr, ks, COS, SIN, params):
+def interGrid(r, s, kr, ks, COS, SIN, params: Parameters):
     """ Intersection of 2 lines of the pentagrid 
         0 <= r < s < N  and  r,s,kr,ks integers """
     a, b, c = COS[r], SIN[r], params.GAMMA[r] - kr
@@ -27,7 +27,7 @@ def interGrid(r, s, kr, ks, COS, SIN, params):
     return inter(a, b, c, a1, b1, c1)
 
 # de Bruijn (5.1)
-def f(k, COS, SIN, params):
+def f(k, COS, SIN, params: Parameters):
     """ Point associated to [ k_0, ... k_(N-1) ] """
     x, y = 0, 0
     for j in range(params.N):
@@ -35,7 +35,7 @@ def f(k, COS, SIN, params):
         y += k[j] * SIN[j]
     return (x, y)
 
-def tiling(params):
+def tiling(params: Parameters):
 
     COS, SIN = get_cos_sin(params)
     """ Computes (and possibly draws) all rombi determined by N, GAMMA and NBL """
@@ -86,24 +86,35 @@ def tiling(params):
 
 ######################################
 
-def outputNextTiling(params):
-
-    fn = filename()
-    print(fn)
+def outputNextTiling(params: Parameters):
+    fn = params.filename()
 
     fig, ax = plt.subplots()
     plt.axis('equal')
     plt.axis('off')
-    plt.title(title(), fontsize = 8, y = 0, pad = -20.)
-    ax.set_xlim([-params.DMAX, params.DMAX])
-    ax.set_ylim([-params.DMAX-1, params.DMAX+1])
-    tiling()
-    
-    # save first, show after !
-    if SAVE :
-        plt.savefig(fn + ".pdf" , bbox_inches="tight")
-    if SHOW :
+    plt.title(params.title(), fontsize=8, y=0, pad=-20.)
+
+    # les limites du dessin
+    lim = params.DMAX * 0.93
+    xmin, xmax, ymin, ymax = -lim, lim, -lim, lim
+    ax.set_xlim([xmin, xmax])
+    ax.set_ylim([ymin, ymax])
+
+    # la bordure carrée
+    if params.FRAME and params.SQUARE:
+        left, bottom, width, height = -lim * 1.005, -lim, 2.01 * lim, 2 * lim
+        p = plt.Rectangle((left, bottom), width, height, fill=False, linewidth=0.2)
+        ax.add_patch(p)
+
+    tiling(params)
+
+    # save d'abord et show apres !
+    if params.SAVE:
+        plt.savefig(fn + ".pdf", bbox_inches="tight")
+    if params.SHOW:
         plt.show()
 
     plt.close()
+
+
 

@@ -1,65 +1,13 @@
-from time import localtime, strftime
+
 from colors import shape_rhombus, kolor
 import math
 
 import matplotlib.pyplot as plt
-import matplotlib as mpl
-#import matplotlib.colors as clrs
+
 import numpy as np
 from matplotlib.patches import Polygon
-import matplotlib.style as mplstyle
-
-from parameters import Parameters
-
-###
-def outputNextTiling(params):
-    fn = filename(params)
-    print(fn)
-
-    fig, ax = plt.subplots()
-    plt.axis('equal')
-    plt.axis('off')
-    plt.title(title(params), fontsize=8, y=0, pad=-20.)
-
-    # les limites du dessin
-    lim = params.DMAX * 0.93
-    xmin, xmax, ymin, ymax = -lim, lim, -lim, lim
-    ax.set_xlim([xmin, xmax])
-    ax.set_ylim([ymin, ymax])
-
-    # la bordure carrée
-    if params.FRAME and params.SQUARE:
-        left, bottom, width, height = -lim * 1.005, -lim, 2.01 * lim, 2 * lim
-        p = plt.Rectangle((left, bottom), width, height, fill=False, linewidth=0.2)
-        ax.add_patch(p)
-
-    tiling(params)
-
-    # save d'abord et show apres !
-    if params.SAVE:
-        plt.savefig(fn + ".pdf", bbox_inches="tight")
-    if params.SHOW:
-        plt.show()
-
-    plt.close()
 
 
-################################################## file stuff
-
-def filename(params):
-    stts = str(strftime("%Y-%m-%d_%H-%M-%S", localtime()))
-    name = params.TILINGDIR + "/deBruijn_" + \
-        str(params.N)  + '_' + stts + "_" + params.stringGAMMA()
-    return name
-
-def title(params):
-    sG = params.stringGAMMAtex() + ' $d_{max}$=' + str(params.DMAX) + ' #L=' + str(params.NBL)
-    if params.RECTANGLE :
-        sG += ' R=' + str(params.R)
-    if params.DIAGONAL :
-        sG += ' D'
-    return sG
- 
 
 ################################################## draws the rhombus with matplotlib
 
@@ -108,7 +56,6 @@ def display_rhombus(r, s, kr, ks, x, y, ind, params):
 
     def l13():
         line(x[1], y[1], x[3], y[3], params)
-
 
     # draws the rombii sides
     if params.SIDES:
