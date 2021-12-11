@@ -110,7 +110,7 @@ def outputNextTiling(params: Parameters):
 
     # save d'abord et show apres !
     if params.SAVE:
-        plt.savefig(fn + ".pdf", bbox_inches="tight")
+        plt.savefig(fn + ".png", bbox_inches="tight")
     if params.SHOW:
         plt.show()
 
