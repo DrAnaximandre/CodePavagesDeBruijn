@@ -1,4 +1,3 @@
-import math
 import matplotlib.pyplot as plt
 
 
@@ -18,9 +17,14 @@ plt.rcParams['figure.figsize'] = 8., 8.    # pour petit ecran
 class Parameters(object):
 
     def __init__(self,
-                 N=5,
-                 DMAX=8,
-                 NBL=6):
+                 N: int = 5,
+                 DMAX: int = 8,
+                 NBL: int = 6,
+                 R: int = 62,
+                 SAVE: bool = False,
+                 SHOW: bool = True,
+                 RECTANGLE: bool = True,
+                 TILINGDIR: str = "../Pavages"):
         
         # Must be 4 or higher
         # Set N = 5 for pentagrids. It works also for 7, 9, 11 ....
@@ -36,15 +40,15 @@ class Parameters(object):
                  
         self.INITIALSHIFT = 0.03  # should not be integer
         self.DELTASHIFT = 0.1
-        
+
         self.SHIFT = self.INITIALSHIFT
         self.GAMMA = [self.SHIFT] * self.N
                    
         self.SCALE_LINEWIDTH = 15.
         self.LINEWIDTH = self.SCALE_LINEWIDTH / self.DMAX
 
-        self.SAVE = False # save to a pdf file ?
-        self.SHOW = True  # show the tiling on the screen ?
+        self.SAVE = SAVE # save to a pdf file ?
+        self.SHOW = SHOW  # show the tiling on the screen ?
 
         #=============== overall display shape
         # Let C be the center of a rhombus.
@@ -64,18 +68,19 @@ class Parameters(object):
         # ---- Controls for drawing rombi
         self.SIDES = False  # draws the sides (contours) ?
         self.DIAGONAL = False # draws a diagonal ?
-        self.RECTANGLE = True # draws (part of) rectangle inside the rhombus ?
+        self.RECTANGLE = RECTANGLE # draws (part of) rectangle inside the rhombus ?
+        self.R = R
         #self.R = 0 #  rectangles and only rectangles
         #self.R = 1 # only opposite sides of rectangles
         #self.R = 2 # "Pentaville" : other sides of rectangles
         #self.R = 3 # pseudo-diagonals (join middle of rhombi sides)
         #self.R = 4 #  # as R=1 or R=2 according to the rhombi shape
-        self.R = 5 # same as R=4 but inverse shapes
+        #self.R = 5 # same as R=4 but inverse shapes
         #self.R = 61  # mix rectangle side and pseudo-diags, according to rhombi shape
         #self.R = 62  # like 61, the other way
 
         # ---- Directory where to write the tilings
-        self.TILINGDIR = "../Pavages"
+        self.TILINGDIR = TILINGDIR
 
 
         #=============== COLORS

@@ -1,6 +1,6 @@
 from time import localtime, strftime
 from colors import shape_rhombus, kolor
-from parameters import *
+import math
 
 import matplotlib.pyplot as plt
 import matplotlib as mpl
@@ -10,6 +10,38 @@ from matplotlib.patches import Polygon
 import matplotlib.style as mplstyle
 
 from parameters import Parameters
+
+###
+def outputNextTiling(params):
+    fn = filename(params)
+    print(fn)
+
+    fig, ax = plt.subplots()
+    plt.axis('equal')
+    plt.axis('off')
+    plt.title(title(params), fontsize=8, y=0, pad=-20.)
+
+    # les limites du dessin
+    lim = params.DMAX * 0.93
+    xmin, xmax, ymin, ymax = -lim, lim, -lim, lim
+    ax.set_xlim([xmin, xmax])
+    ax.set_ylim([ymin, ymax])
+
+    # la bordure carrée
+    if params.FRAME and params.SQUARE:
+        left, bottom, width, height = -lim * 1.005, -lim, 2.01 * lim, 2 * lim
+        p = plt.Rectangle((left, bottom), width, height, fill=False, linewidth=0.2)
+        ax.add_patch(p)
+
+    tiling(params)
+
+    # save d'abord et show apres !
+    if params.SAVE:
+        plt.savefig(fn + ".pdf", bbox_inches="tight")
+    if params.SHOW:
+        plt.show()
+
+    plt.close()
 
 
 ################################################## file stuff

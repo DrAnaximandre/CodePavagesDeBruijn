@@ -19,72 +19,22 @@
 #  Comments and suggestions are welcome. Mail to :  mike.lembitre@gmail.com
 #
 ##########################################################################
-
 import matplotlib.pyplot as plt
-import numpy as np
 
-from parameters import Parameters 
-from tiling import tiling
-from outputs import filename, title
+from parameters import Parameters
+from outputs import outputNextTiling
 
 ######################################
 
-def outputNextTiling(params):
-
-    fn = filename(params)
-    print(fn)
-
-    fig, ax = plt.subplots()
-    plt.axis('equal')
-    plt.axis('off')
-    plt.title(title(params), fontsize = 8, y = 0, pad = -20.)
-
-    # les limites du dessin
-    lim = params.DMAX * 0.93
-    xmin, xmax, ymin, ymax = -lim, lim, -lim, lim
-    ax.set_xlim([xmin,xmax])
-    ax.set_ylim([ymin,ymax])
-
-    # la bordure carrée
-    if params.FRAME and params.SQUARE :
-        left, bottom, width, height = -lim*1.005, -lim, 2.01*lim, 2*lim
-        p = plt.Rectangle((left, bottom), width, height, fill=False, linewidth = 0.2)
-        ax.add_patch(p)
-                    
-    tiling(params)
-    
-    # save d'abord et show apres !
-    if params.SAVE :
-        plt.savefig(fn + ".pdf" , bbox_inches="tight")
-    if params.SHOW :
-        plt.show()
-
-    plt.close()
-
-
-
-def go1() :
-    p = Parameters()
-    p.TILINGDIR = "../Pavages/toto"
-    p.N = 5
-    p.SAVE, p.SHOW = False, True
-    p.RECTANGLE == True
-    p.R == 0
-    p.FILL == 0
-    p.setGAMMA()
-    print("p.GAMMA=" + str(p.GAMMA) + " p.N=" + str(p.N))
-
-    while True :    
-        outputNextTiling(p)
-        p.nextGAMMA()
-
 def goLivret() :
-    p = Parameters()
-    p.TILINGDIR = "../Pavages/toto"
-    p.SAVE, p.SHOW = True, False
-    p.N = 5
-    p.RECTANGLE = True
-    p.R = 62
+    p = Parameters(
+        N=5,
+        R=62,
+        SAVE=True,
+        SHOW=False,
+        RECTANGLE=True,
+        TILINGDIR="./toto"
+    )
     p.setGAMMA()
    
     while True :
@@ -100,6 +50,6 @@ def goLivret() :
 
 plt.ioff()
 
- 
+
 #go1()
 goLivret()
