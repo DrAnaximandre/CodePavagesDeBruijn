@@ -81,6 +81,29 @@ def kolor(r, s, kr, ks, d, params):
         elif params.COLORING == 9:
             c = C[f % len(C)]
             return c
+        elif params.COLORING == 10:
+            h = 180 + np.sin(params.NBL / params.nblmax) / 180
+
+            if s > 0:
+                sat = 40 + np.cos((r * 20 + kr * 30 - ks * 5) * 2) * 30
+
+            v = 50 + np.cos((s * 20 + kr * 20)) * 50
+            v = 0 if v < 10 else v
+            return rgb((h, sat, v))
+
+        elif params.COLORING == 11:
+            """ Joli rond coloré"""
+            h = 300 * d / params.DMAX
+            # += 10*np.cos((s * 20 + kr*10 + ks*15-d)) + np.sin(2*(s * 20 + kr*10 + ks*15-d)) * 10
+            sat = 50
+            if d > params.DMAX * 0.8:
+                sat = 80
+            if d < params.DMAX * 0.2:
+                sat = 100
+
+            v = 50 + np.cos((s * 20 + kr * 10 + ks * 15 - d)) * 25 + np.sin(2 * (s * 20 + kr * 10 + ks * 15 - d)) * 25
+            return rgb((h, sat, v))
+
 
         else:
             print("COLORING=" + str(params.COLORING) + " is not defined !")
