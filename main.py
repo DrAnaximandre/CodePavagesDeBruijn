@@ -23,11 +23,21 @@ import matplotlib.pyplot as plt
 
 from parameters import Parameters
 from tiling import outputNextTiling
+from gamma import MappedGammaParameter
 
 ######################################
 
 def goLivret() :
+
+    gamma = MappedGammaParameter(
+        N=5,  # Size
+        shift=[-0.260, -0.155, -0.050, 0.055, 0.160],
+        deltashift=[0 for _ in range(5)],
+        a=0,
+        functiontomap=lambda x: x
+    )
     p = Parameters(
+        GAMMA=gamma,
         N=5,
         R=62,
         SAVE=True,
@@ -35,8 +45,8 @@ def goLivret() :
         RECTANGLE=True,
         TILINGDIR="./toto"
     )
-    p.setGAMMA()
-   
+
+
     while True :
 
         #for (d, nbl) in [(4,3), (8,6), (15, 8), (30, 16), (60, 33), (100, 55)] :

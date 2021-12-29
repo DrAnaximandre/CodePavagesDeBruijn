@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 from time import localtime, strftime
+from gamma import MappedGammaParameter
 
 ################ Main grid generation parameters
 
@@ -17,6 +18,7 @@ plt.rcParams['figure.figsize'] = 8., 8.    # pour petit ecran
 class Parameters(object):
 
     def __init__(self,
+                 GAMMA: MappedGammaParameter,
                  N: int = 5,
                  DMAX: int = 8,
                  NBL: int = 6,
@@ -25,6 +27,8 @@ class Parameters(object):
                  SHOW: bool = True,
                  RECTANGLE: bool = True,
                  TILINGDIR: str = "../Pavages"):
+
+
         
         # Must be 4 or higher
         # Set N = 5 for pentagrids. It works also for 7, 9, 11 ....
@@ -37,12 +41,11 @@ class Parameters(object):
 
         # Half the number of lines in the pentagrid for a fixed angle.
         self.NBL = NBL
+
+        self.GAMMA = GAMMA
                  
         self.INITIALSHIFT = 0.03  # should not be integer
         self.DELTASHIFT = 0.1
-
-        self.SHIFT = self.INITIALSHIFT
-        self.GAMMA = [self.SHIFT] * self.N
                    
         self.SCALE_LINEWIDTH = 15.
         self.LINEWIDTH = self.SCALE_LINEWIDTH / self.DMAX
@@ -147,12 +150,12 @@ class Parameters(object):
 
     def stringGAMMA(self):
         s = "GAMMA="
-        for x in self.GAMMA:
+        for x in self.GAMMA.setGamma():
             s += ("%+.3f" % x)
         return s
 
     def stringGAMMAtex(self) :
-        g = self.GAMMA
+        g = self.GAMMA.shift
         s = "$\gamma=[" + ("%+.3f" % g[0]) 
         for i in range(1,self.N) :
             s += (",%+.3f" % g[i])
