@@ -1,27 +1,31 @@
 
-- dilatations / rétractions des coordonnées des sommets des losanges
+- dilatations / rï¿½tractions des coordonnï¿½es des sommets des losanges
   selon par exemple de la distance au centre
 
 - choix des segments qui joignent les milieux des cotes des losanges :
-    . aléatoire
+    . alï¿½atoire
     . selon les indices (altitude) des sommets voisins (cf article de DeBruijn)
-         par exemple choisir des segments à altitude constante
+         par exemple choisir des segments ï¿½ altitude constante
 
 - idee du graphe biparti (utiliser les indices d'altitude)
 
 - travailler les couleurs pour les pavages autres que les losanges
-  (nécessite de reconstituer les polygones résultants)
+  (nï¿½cessite de reconstituer les polygones rï¿½sultants)
 
-- d'autres réseaux
-    . segments qui joignent les 1/3 et 2/3 des côtés des losanges,
+- d'autres rï¿½seaux
+    . segments qui joignent les 1/3 et 2/3 des cï¿½tï¿½s des losanges,
       ou 1/3, 1/2, 3/4 ...
 
 - entrelas (faisable avec R=61 ou 62)
 
-- autres façons de joindre les sommets, les milieux des sommets,
-    faire une recherche plus systématique
+- autres faï¿½ons de joindre les sommets, les milieux des sommets,
+    faire une recherche plus systï¿½matique
 
 - joindre les projets "Gril'Art' et 'Pavages'
 
-- lisser les courbes brisées
+- lisser les courbes brisï¿½es
 
+Implementation:
+---
+- ajouter une vÃ©rification dans gamma.py que shift est bien un np.ndarray
+- refaire ce fichier en .md
