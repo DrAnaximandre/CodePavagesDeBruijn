@@ -83,10 +83,10 @@ def kolor(r, s, kr, ks, d, params):
             c = C[f % len(C)]
             return c
         elif params.COLORING == 10:
-            h = np.random.uniform(170,190)
-
+            #  nuance of blue
+            h = np.random.uniform(170, 190)
             if s > 0:
-                sat = 40 + np.cos((r * 20 + kr * 30 - ks * 5) * 2) * 30
+                sat = 60 + np.cos((r * 20 + kr * 10 - ks * 5+s) * 2) * 40
 
             v = 50 + np.cos((s * 20 + kr * 20)) * 50
             v = 0 if v < 10 else v
