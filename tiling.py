@@ -95,22 +95,22 @@ def outputNextTiling(params: Parameters):
     plt.title(params.title(), fontsize=8, y=0, pad=-20.)
 
     # les limites du dessin
-    lim = params.DMAX * 0.93
+    lim = params.DMAX * 1.2
     xmin, xmax, ymin, ymax = -lim, lim, -lim, lim
     ax.set_xlim([xmin, xmax])
     ax.set_ylim([ymin, ymax])
 
     # la bordure carrée
-    if params.FRAME and params.SQUARE:
-        left, bottom, width, height = -lim * 1.005, -lim, 2.01 * lim, 2 * lim
-        p = plt.Rectangle((left, bottom), width, height, fill=False, linewidth=0.2)
-        ax.add_patch(p)
+    #if params.FRAME and params.SQUARE:
+    #    left, bottom, width, height = -lim * 1.005, -lim, 2.01 * lim, 2 * lim
+    #    p = plt.Rectangle((left, bottom), width, height, fill=False, linewidth=1.0)
+    #    ax.add_patch(p)
 
     tiling(params)
 
     # save d'abord et show apres !
     if params.SAVE:
-        plt.savefig(fn + ".png", bbox_inches="tight")
+        plt.savefig(fn + ".png") #, bbox_inches="tight")
     if params.SHOW:
         plt.show()
 
