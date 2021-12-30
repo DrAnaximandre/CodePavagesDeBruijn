@@ -19,7 +19,6 @@
 #  Comments and suggestions are welcome. Mail to :  mike.lembitre@gmail.com
 #
 ##########################################################################
-import matplotlib.pyplot as plt
 
 from parameters import Parameters
 from tiling import outputNextTiling
