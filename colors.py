@@ -1,5 +1,6 @@
 import math
 import matplotlib.colors as clrs
+import numpy as np
 
 from parameters import Parameters, WHITE
 
@@ -82,7 +83,7 @@ def kolor(r, s, kr, ks, d, params):
             c = C[f % len(C)]
             return c
         elif params.COLORING == 10:
-            h = 180 + np.sin(params.NBL / params.nblmax) / 180
+            h = np.random.uniform(170,190)
 
             if s > 0:
                 sat = 40 + np.cos((r * 20 + kr * 30 - ks * 5) * 2) * 30
