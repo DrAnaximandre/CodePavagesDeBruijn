@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from time import localtime, strftime
 from gamma import MappedGammaParameter
-
+from matplotlib import style
 ################ Main grid generation parameters
 
 WHITE = 'w'
@@ -26,6 +26,9 @@ class Parameters(object):
                  SAVE: bool = False,
                  SHOW: bool = True,
                  RECTANGLE: bool = True,
+                 BACKGROUND: str = 'k',
+                 STROKECOLOR: str = "r",
+                 COLORING: int = 10,
                  TILINGDIR: str = "../Pavages"):
 
 
@@ -47,7 +50,7 @@ class Parameters(object):
         self.INITIALSHIFT = 0.03  # should not be integer
         self.DELTASHIFT = 0.1
                    
-        self.SCALE_LINEWIDTH = 15.
+        self.SCALE_LINEWIDTH = 8.
         self.LINEWIDTH = self.SCALE_LINEWIDTH / self.DMAX
 
         self.SAVE = SAVE # save to a pdf file ?
@@ -69,8 +72,8 @@ class Parameters(object):
         ##################### DRAWINGS
 
         # ---- Controls for drawing rombi
-        self.SIDES = False  # draws the sides (contours) ?
-        self.DIAGONAL = False # draws a diagonal ?
+        self.SIDES = True  # draws the sides (contours) ?
+        self.DIAGONAL = True # draws a diagonal ?
         self.RECTANGLE = RECTANGLE # draws (part of) rectangle inside the rhombus ?
         self.R = R
         #self.R = 0 #  rectangles and only rectangles
@@ -88,23 +91,22 @@ class Parameters(object):
 
         #=============== COLORS
 
-        self.BACKGROUND = WHITE
-        #self.BACKGROUND = BLACK
+        self.BACKGROUND = BACKGROUND
 
         # -------- Different color styles,  see the 'colors' module.
         # -- for filling
         # if False, no filling for shapes
-        self.FILL = False
-        self.COLORING = 0   # different coloring styles (if FILL==True), see the colors module
+        self.FILL = True
+        self.COLORING = COLORING   # different coloring styles (if FILL==True), see the colors module
         # -- for contours
-        self.STROKECOLOR = BLACK 
-        #self.STROKECOLOR = WHITE
+        self.STROKECOLOR = STROKECOLOR
+
 
         if self.BACKGROUND == self.STROKECOLOR :
             print("WARNING : BACKGROUND == STROKECOLOR !!!")
 
         if self.BACKGROUND == BLACK :
-            mplstyle.use('dark_background')
+            style.use('dark_background')
 
 
 
@@ -155,7 +157,7 @@ class Parameters(object):
         return s
 
     def stringGAMMAtex(self) :
-        g = self.GAMMA.shift
+        g = self.GAMMA.setGamma()
         s = "$\gamma=[" + ("%+.3f" % g[0]) 
         for i in range(1,self.N) :
             s += (",%+.3f" % g[i])
