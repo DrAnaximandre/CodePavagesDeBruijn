@@ -18,15 +18,17 @@ def goLivret():
         N=5,
         R=62,
         SAVE=True,
+        SAVE_FORMAT = 'pdf',
         SHOW=False,
         RECTANGLE=True,
-        TILINGDIR="./toto"
+        TILINGDIR="../Pavages/toto"
     )
 
     while True:
 
         # for (d, nbl) in [(4,3), (8,6), (15, 8), (30, 16), (60, 33), (100, 55)] :
-        for (d, nbl) in [(4, 3), (8, 6), (15, 8), (30, 16), (60, 33)]:
+        #for (d, nbl) in [(4, 3), (8, 6), (15, 8), (30, 16), (60, 33)]:
+        for (d, nbl) in [(4, 3), (8, 6), (15, 8)]:
             p.NBL = nbl
             p.updateDMAX(d)
             outputNextTiling(p)

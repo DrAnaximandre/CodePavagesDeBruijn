@@ -25,6 +25,7 @@ class Parameters(object):
                  R: int = 62,
                  SAVE: bool = False,
                  SHOW: bool = True,
+                 SAVE_FORMAT: str = 'png',
                  RECTANGLE: bool = True,
                  BACKGROUND: str = 'k',
                  STROKECOLOR: str = "r",
@@ -53,7 +54,8 @@ class Parameters(object):
         self.SCALE_LINEWIDTH = 8.
         self.LINEWIDTH = self.SCALE_LINEWIDTH / self.DMAX
 
-        self.SAVE = SAVE # save to a pdf file ?
+        self.SAVE = SAVE # save to a file ?
+        self.SAVE_FORMAT = SAVE_FORMAT # file format for saving, for example pdf, jpeg, png ...
         self.SHOW = SHOW  # show the tiling on the screen ?
 
         #=============== overall display shape
