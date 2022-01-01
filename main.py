@@ -20,7 +20,8 @@
 #
 ##########################################################################
 
-from go import goPolo, goLivret
+from go import goPolo, goLivret, goSimple
 
+goSimple(5,  [-0.260, -0.155, -0.050, 0.055, 0.160])
 #goPolo()
-goLivret() # does not display but runs forever
+#goLivret() # does not display but runs forever

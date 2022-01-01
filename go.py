@@ -3,19 +3,38 @@ from tiling import outputNextTiling
 from gamma import MappedGammaParameter
 import numpy as np
 
+####################################
+def goSimple(N, gammaValue):
+    p = Parameters(
+        N = N,
+        GAMMA= MappedGammaParameter(
+            N=N,
+            gammaValue = gammaValue,
+            shift = 0,
+            deltashift = 0,
+            a=0,
+            functiontomap=lambda x: x
+        )
+    )
+
+    outputNextTiling(p)
+
+    
 
 ######################################
 def goLivret():
+    N = 5
     gamma = MappedGammaParameter(
-        N=5,  # Size
-        shift=[-0.260, -0.155, -0.050, 0.055, 0.160],
-        deltashift=[0 for _ in range(5)],
+        N=N,  # Size
+        gammaValue = np.array([-0.260, -0.155, -0.050, 0.055, 0.160]),
+        shift = 0,
+        deltashift = 0,
         a=0,
         functiontomap=lambda x: x
     )
     p = Parameters(
         GAMMA=gamma,
-        N=5,
+        N=gamma.N,
         R=62,
         SAVE=True,
         SAVE_FORMAT = 'pdf',
@@ -23,6 +42,7 @@ def goLivret():
         RECTANGLE=True,
         TILINGDIR="../Pavages/toto"
     )
+
 
     while True:
 
@@ -33,14 +53,15 @@ def goLivret():
             p.updateDMAX(d)
             outputNextTiling(p)
 
-        p.nextGAMMA()
+        p.GAMMA.nextGamma()
 
 
 ######################################
 def goPolo():
     gamma = MappedGammaParameter(
         N=8,  # Size
-        shift=np.array([10.5, 2, -15.2, 4, -5, 6, 2, 0.05]),
+        gammaValue=np.array([10.5, 2, -15.2, 4, -5, 6, 2, 0.05]),
+        shift = 0,
         deltashift=[0 for _ in range(8)],
         a=0,
         functiontomap=lambda x: 20*np.sin(2*x)
@@ -53,9 +74,9 @@ def goPolo():
         SHOW=True,
         RECTANGLE=False,
         COLORING = 11,
-        BACKGROUND = "k",
-        STROKECOLOR= "k",
-        TILINGDIR="./toto"
+        BACKGROUND = 'k',
+        STROKECOLOR= 'k',
+        TILINGDIR="../Pavages/poloTilings"
     )
 
     for (d, nbl) in [(10,5), (15,12)]:

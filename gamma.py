@@ -6,11 +6,10 @@ from typing import Callable
 class MappedGammaParameter:
 
     N: int # Size
+    gammaValue : np.ndarray  # initial / current gamma value
+    shift : float 
+    deltashift: float
     a: float
-
-    shift: np.ndarray
-    deltashift: np.ndarray
-
     functiontomap: Callable
 
     # Gives a tiling with perfect central symetry,
@@ -40,9 +39,25 @@ class MappedGammaParameter:
     # pour livret #4 avec R = 62 et N = 5
     #self.GAMMA = [-0.260, -0.155, -0.050, 0.055, 0.160]
 
+    def getGammaValue(self):
+        return self.gammaValue
 
     def setGamma(self):
-        return self.functiontomap(self.shift) - np.array([self.a * j for j in range(self.N)])
+        self.gammaValue = self.functiontomap(self.shift) - np.array([self.a * j for j in range(self.N)])
 
-    def nextgamma(self):
+    def nextGamma(self):
         self.shift -= self.deltashift
+        self.setGamma()
+        
+    def stringGAMMA(self):
+        s = "GAMMA="
+        for x in self.gammaValue:
+            s += ("%+.3f" % x)
+        return s
+
+    def stringGAMMAtex(self) :
+        g = self.gammaValue
+        s = "$\gamma=[" + ("%+.3f" % g[0]) 
+        for i in range(1,self.N) :
+            s += (",%+.3f" % g[i])
+        return s+']$'

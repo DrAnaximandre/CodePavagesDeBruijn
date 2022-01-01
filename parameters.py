@@ -22,13 +22,13 @@ class Parameters(object):
                  N: int = 5,
                  DMAX: int = 8,
                  NBL: int = 6,
-                 R: int = 62,
+                 R: int = 0,
                  SAVE: bool = False,
                  SHOW: bool = True,
                  SAVE_FORMAT: str = 'png',
-                 RECTANGLE: bool = True,
-                 BACKGROUND: str = 'k',
-                 STROKECOLOR: str = "r",
+                 RECTANGLE: bool = False,
+                 BACKGROUND: str = 'w',
+                 STROKECOLOR: str = 'k',
                  COLORING: int = 10,
                  TILINGDIR: str = "../Pavages"):
 
@@ -118,7 +118,7 @@ class Parameters(object):
 
     ######  GAMMA initialization and behaviour with time.
 
-    def setGAMMA(self):
+    #def setGAMMA(self):
         # Gives a tiling with perfect central symetry, 
         #  but 'singular' in the deBruijn sense.
         #self.GAMMA = [self.SHIFT] * self.N
@@ -144,35 +144,22 @@ class Parameters(object):
         #self.GAMMA = [1.890, 1.885, 1.880, 1.875, 1.870]
 
         # pour livret #4 avec R = 62 et N = 5
-        self.GAMMA = [-0.260, -0.155, -0.050, 0.055, 0.160]
+        #self.GAMMA = [-0.260, -0.155, -0.050, 0.055, 0.160]
                       
-    def nextGAMMA(self):
-        self.SHIFT -= self.DELTASHIFT
-        print(self.SHIFT)
-        self.setGAMMA()
+#    def nextGAMMA(self):
+#        self.SHIFT -= self.DELTASHIFT
+#        print(self.SHIFT)
+#        self.setGAMMA()
      
-
-    def stringGAMMA(self):
-        s = "GAMMA="
-        for x in self.GAMMA.setGamma():
-            s += ("%+.3f" % x)
-        return s
-
-    def stringGAMMAtex(self) :
-        g = self.GAMMA.setGamma()
-        s = "$\gamma=[" + ("%+.3f" % g[0]) 
-        for i in range(1,self.N) :
-            s += (",%+.3f" % g[i])
-        return s+']$'
 
     def filename(self):
         stts = str(strftime("%Y-%m-%d_%H-%M-%S", localtime()))
         name = self.TILINGDIR + "/deBruijn_" + \
-               str(self.N) + '_' + stts + "_" + self.stringGAMMA()
+               str(self.N) + '_' + stts + "_" + self.GAMMA.stringGAMMA()
         return name
 
     def title(self):
-        sG = self.stringGAMMAtex() + ' $d_{max}$=' + str(self.DMAX) + ' #L=' + str(self.NBL)
+        sG = self.GAMMA.stringGAMMAtex() + ' $d_{max}$=' + str(self.DMAX) + ' #L=' + str(self.NBL)
         if self.RECTANGLE:
             sG += ' R=' + str(self.R)
         if self.DIAGONAL:
