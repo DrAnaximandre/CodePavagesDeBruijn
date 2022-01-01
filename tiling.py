@@ -22,8 +22,8 @@ def inter(a1, b1, c1, a2, b2, c2):
 def interGrid(r, s, kr, ks, COS, SIN, params: Parameters):
     """ Intersection of 2 lines of the pentagrid 
         0 <= r < s < N  and  r,s,kr,ks integers """
-    a, b, c = COS[r], SIN[r], params.GAMMA.getGammaValue()[r] - kr
-    a1, b1, c1 = COS[s], SIN[s], params.GAMMA.getGammaValue()[s] - ks
+    a, b, c = COS[r], SIN[r], params.GAMMA.getValue()[r] - kr
+    a1, b1, c1 = COS[s], SIN[s], params.GAMMA.getValue()[s] - ks
     return inter(a, b, c, a1, b1, c1)
 
 # de Bruijn (5.1)
@@ -55,7 +55,7 @@ def tiling(params: Parameters):
                     (xp, yp) = interGrid(r, s, kr, ks, COS, SIN, params)
 
                     # (4.3)
-                    Kvect = np.array([math.ceil(xp * COS[j] + yp * SIN[j] + params.GAMMA.getGammaValue()[j])
+                    Kvect = np.array([math.ceil(xp * COS[j] + yp * SIN[j] + params.GAMMA.getValue()[j])
                                       for j in range(params.N)])
                     
                     # (4.5)
@@ -86,7 +86,7 @@ def tiling(params: Parameters):
 
 ######################################
 
-def outputNextTiling(params: Parameters):
+def outputTiling(params: Parameters):
     fn = params.filename()
 
     fig, ax = plt.subplots()

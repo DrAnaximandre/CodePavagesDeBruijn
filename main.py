@@ -20,8 +20,11 @@
 #
 ##########################################################################
 
-from go import goPolo, goLivret, goSimple
+from go import goSimple, goPolo, goLivret, goLivretVar
 
 #goSimple(5,  [-0.260, -0.155, -0.050, 0.055, 0.160])
 #goPolo()
-goLivret() # does not display but runs forever
+#goLivret() # does not display but saves pdf
+goLivretVar() # does not display but saves pdf, and does not quit
+
+

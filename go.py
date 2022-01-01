@@ -1,5 +1,5 @@
 from parameters import Parameters
-from tiling import outputNextTiling
+from tiling import outputTiling
 from gamma import MappedGammaParameter
 import numpy as np
 
@@ -17,11 +17,11 @@ def goSimple(N, gammaValue):
         )
     )
 
-    outputNextTiling(p)
+    outputTiling(p)
 
     
 
-######################################
+###################################### avec un GAMMA fixe
 def goLivret():
     N = 5
     gamma = MappedGammaParameter(
@@ -45,14 +45,50 @@ def goLivret():
         TILINGDIR="../Pavages/toto"
     )
 
-
-
-        # for (d, nbl) in [(4,3), (8,6), (15, 8), (30, 16), (60, 33), (100, 55)] :
-        #for (d, nbl) in [(4, 3), (8, 6), (15, 8), (30, 16), (60, 33)]:
+    # for (d, nbl) in [(4,3), (8,6), (15, 8), (30, 16), (60, 33), (100, 55)] :
+    #for (d, nbl) in [(4, 3), (8, 6), (15, 8), (30, 16), (60, 33)]:
     for (d, nbl) in [(4, 3), (8, 6), (15, 8)]:
         p.NBL = nbl
         p.updateDMAX(d)
-        outputNextTiling(p)
+        outputTiling(p)
+
+            
+###################################### avec un GAMMA variable
+def goLivretVar():
+    N = 5
+    initialshift = 0.03
+    gamma = MappedGammaParameter(
+        N=N,  # Size
+        shift = initialshift,
+        deltashift = 0.1,
+        gammaValue = [initialshift]*N,
+        a=0,
+        functiontomap=lambda x: x
+    )
+    p = Parameters(
+        GAMMA=gamma,
+        N=gamma.N,
+        DIAGONAL = False,
+        SIDES = False,
+        RECTANGLE = True,
+        R=62,
+        SAVE=True,
+        SAVE_FORMAT = 'pdf',
+        SHOW=False,
+        TILINGDIR="../Pavages/toto"
+    )
+
+    while True:
+        # for (d, nbl) in [(4,3), (8,6), (15, 8), (30, 16), (60, 33), (100, 55)] :
+        #for (d, nbl) in [(4, 3), (8, 6), (15, 8), (30, 16), (60, 33)]:
+        for (d, nbl) in [(4, 3), (8, 6), (15, 8)]:
+            p.NBL = nbl
+            p.updateDMAX(d)
+            outputTiling(p)
+
+        gamma.setNextValue()
+
+        
 
 
 
@@ -84,4 +120,4 @@ def goPolo():
     for (d, nbl) in [(10,5), (15,12)]:
         p.NBL = nbl
         p.updateDMAX(d)
-        outputNextTiling(p)
+        outputTiling(p)

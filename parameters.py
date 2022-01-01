@@ -157,11 +157,11 @@ class Parameters(object):
     def filename(self):
         stts = str(strftime("%Y-%m-%d_%H-%M-%S", localtime()))
         name = self.TILINGDIR + "/deBruijn_" + \
-               str(self.N) + '_' + stts + "_" + self.GAMMA.stringGAMMA()
+               str(self.N) + '_' + stts + "_" + self.GAMMA.string()
         return name
 
     def title(self):
-        sG = self.GAMMA.stringGAMMAtex() + ' $d_{max}$=' + str(self.DMAX) + ' #L=' + str(self.NBL)
+        sG = self.GAMMA.stringTex() + ' $d_{max}$=' + str(self.DMAX) + ' #L=' + str(self.NBL)
         if self.RECTANGLE:
             sG += ' R=' + str(self.R)
         if self.DIAGONAL:
