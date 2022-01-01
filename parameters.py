@@ -26,10 +26,12 @@ class Parameters(object):
                  SAVE: bool = False,
                  SHOW: bool = True,
                  SAVE_FORMAT: str = 'png',
+                 SIDES: bool = True,
                  RECTANGLE: bool = False,
+                 DIAGONAL: bool = False,
                  BACKGROUND: str = 'w',
                  STROKECOLOR: str = 'k',
-                 COLORING: int = 10,
+                 COLORING: int = 0,
                  TILINGDIR: str = "../Pavages"):
 
 
@@ -48,8 +50,8 @@ class Parameters(object):
 
         self.GAMMA = GAMMA
                  
-        self.INITIALSHIFT = 0.03  # should not be integer
-        self.DELTASHIFT = 0.1
+        #self.INITIALSHIFT = 0.03  # should not be integer
+        #self.DELTASHIFT = 0.1
                    
         self.SCALE_LINEWIDTH = 8.
         self.LINEWIDTH = self.SCALE_LINEWIDTH / self.DMAX
@@ -68,14 +70,14 @@ class Parameters(object):
         #   is greater than DMAX, then the rhombus will not be displayed.
         self.SQUARE = True
 
-        #============== draws a frame at the limits of drawing
+        #============== draws a frame at the limits of drawings
         self.FRAME = True
 
         ##################### DRAWINGS
 
         # ---- Controls for drawing rombi
-        self.SIDES = True  # draws the sides (contours) ?
-        self.DIAGONAL = True # draws a diagonal ?
+        self.SIDES = SIDES  # draws the sides (contours) ?
+        self.DIAGONAL = DIAGONAL # draws a diagonal ?
         self.RECTANGLE = RECTANGLE # draws (part of) rectangle inside the rhombus ?
         self.R = R
         #self.R = 0 #  rectangles and only rectangles

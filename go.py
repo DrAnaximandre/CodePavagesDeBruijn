@@ -35,25 +35,26 @@ def goLivret():
     p = Parameters(
         GAMMA=gamma,
         N=gamma.N,
+        DIAGONAL = False,
+        SIDES = False,
+        RECTANGLE = True,
         R=62,
         SAVE=True,
         SAVE_FORMAT = 'pdf',
         SHOW=False,
-        RECTANGLE=True,
         TILINGDIR="../Pavages/toto"
     )
 
 
-    while True:
 
         # for (d, nbl) in [(4,3), (8,6), (15, 8), (30, 16), (60, 33), (100, 55)] :
         #for (d, nbl) in [(4, 3), (8, 6), (15, 8), (30, 16), (60, 33)]:
-        for (d, nbl) in [(4, 3), (8, 6), (15, 8)]:
-            p.NBL = nbl
-            p.updateDMAX(d)
-            outputNextTiling(p)
+    for (d, nbl) in [(4, 3), (8, 6), (15, 8)]:
+        p.NBL = nbl
+        p.updateDMAX(d)
+        outputNextTiling(p)
 
-        p.GAMMA.nextGamma()
+
 
 
 ######################################
@@ -73,6 +74,7 @@ def goPolo():
         SAVE=True,
         SHOW=True,
         RECTANGLE=False,
+        DIAGONAL=True,
         COLORING = 11,
         BACKGROUND = 'k',
         STROKECOLOR= 'k',
