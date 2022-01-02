@@ -7,7 +7,7 @@ class MappedGammaParameter(object) :
  
     def __init__(self,
                  N: int = 5, # Size
-                 gammaValue : np.ndarray = [-0.260, -0.155, -0.050, 0.055, 0.160],  # initial / current gamma value
+                 gammaValue : np.ndarray = [-0.260, -0.155, -0.050, 0.055, 0.160],  # initial gamma value
                  shift : float = 0,
                  deltashift: float = 0,
                  a: float = 0,
@@ -20,6 +20,32 @@ class MappedGammaParameter(object) :
         self.a = a
         self.functiontomap = functiontomap
         
+
+    def getValue(self):
+        return self.gammaValue
+
+    #def setGamma(self):
+    #    self.gammaValue = self.functiontomap(self.shift) - np.array([self.a * j for j in range(self.N)])
+
+    def setNextValue(self):
+        self.shift -= self.deltashift
+        self.gammaValue = [self.shift]*self.N   # c'est là qu'il faut faire jouer functiontomap
+        
+    def string(self):
+        s = "GAMMA="
+        for x in self.gammaValue:
+            s += ("%+.3f" % x)
+        return s
+
+    def stringTex(self) :
+        g = self.gammaValue
+        s = "$\gamma=[" + ("%+.3f" % g[0]) 
+        for i in range(1,self.N) :
+            s += (",%+.3f" % g[i])
+        return s+']$'
+
+
+#################### choix possibles pour gammaValue (ancien code à reformuler dans le nouveau)
 
     # Gives a tiling with perfect central symetry,
     #  but 'singular' in the deBruijn sense.
@@ -47,28 +73,3 @@ class MappedGammaParameter(object) :
 
     # pour livret #4 avec R = 62 et N = 5
     #self.GAMMA = [-0.260, -0.155, -0.050, 0.055, 0.160]
-
-    def getValue(self):
-        return self.gammaValue
-
-    #def setGamma(self):
-    #    self.gammaValue = self.functiontomap(self.shift) - np.array([self.a * j for j in range(self.N)])
-
-    def setNextValue(self):
-        print(self.shift)
-        self.shift -= self.deltashift
-        self.gammaValue = [self.shift]*self.N
-        #self.setGamma()
-        
-    def string(self):
-        s = "GAMMA="
-        for x in self.gammaValue:
-            s += ("%+.3f" % x)
-        return s
-
-    def stringTex(self) :
-        g = self.gammaValue
-        s = "$\gamma=[" + ("%+.3f" % g[0]) 
-        for i in range(1,self.N) :
-            s += (",%+.3f" % g[i])
-        return s+']$'

@@ -83,7 +83,7 @@ def goPolo():
         N=8,  # Size
         gammaValue=np.array([10.5, 2, -15.2, 4, -5, 6, 2, 0.05]),
         shift = 0,
-        deltashift=[0 for _ in range(8)],
+        deltashift=[0 for _ in range(8)],  # A REPRENDRE
         a=0,
         functiontomap=lambda x: 20*np.sin(2*x)
     )
