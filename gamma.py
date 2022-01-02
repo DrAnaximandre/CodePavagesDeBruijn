@@ -3,14 +3,23 @@ from dataclasses import dataclass
 from typing import Callable
 
 @dataclass
-class MappedGammaParameter:
+class MappedGammaParameter(object) :
+ 
+    def __init__(self,
+                 N: int = 5, # Size
+                 gammaValue : np.ndarray = [-0.260, -0.155, -0.050, 0.055, 0.160],  # initial / current gamma value
+                 shift : float = 0,
+                 deltashift: float = 0,
+                 a: float = 0,
+                 functiontomap: Callable = lambda x: x):
 
-    N: int # Size
-    gammaValue : np.ndarray  # initial / current gamma value
-    shift : float 
-    deltashift: float
-    a: float
-    functiontomap: Callable
+        self.N = N
+        self.gammaValue = gammaValue
+        self.shift = shift
+        self.deltashift = deltashift
+        self.a = a
+        self.functiontomap = functiontomap
+        
 
     # Gives a tiling with perfect central symetry,
     #  but 'singular' in the deBruijn sense.
@@ -46,13 +55,13 @@ class MappedGammaParameter:
     #    self.gammaValue = self.functiontomap(self.shift) - np.array([self.a * j for j in range(self.N)])
 
     def setNextValue(self):
+        print(self.shift)
         self.shift -= self.deltashift
         self.gammaValue = [self.shift]*self.N
         #self.setGamma()
         
     def string(self):
         s = "GAMMA="
-        print(self.gammaValue)
         for x in self.gammaValue:
             s += ("%+.3f" % x)
         return s

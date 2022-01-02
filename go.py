@@ -3,21 +3,9 @@ from tiling import outputTiling
 from gamma import MappedGammaParameter
 import numpy as np
 
-####################################
-def goSimple(N, gammaValue):
-    p = Parameters(
-        N = N,
-        GAMMA= MappedGammaParameter(
-            N=N,
-            gammaValue = gammaValue,
-            shift = 0,
-            deltashift = 0,
-            a=0,
-            functiontomap=lambda x: x
-        )
-    )
-
-    outputTiling(p)
+#################################### tous les parametres par defaut
+def goSimple():
+    outputTiling(Parameters())
 
     
 
@@ -27,14 +15,10 @@ def goLivret():
     gamma = MappedGammaParameter(
         N=N,  # Size
         gammaValue = np.array([-0.260, -0.155, -0.050, 0.055, 0.160]),
-        shift = 0,
-        deltashift = 0,
-        a=0,
-        functiontomap=lambda x: x
     )
     p = Parameters(
         GAMMA=gamma,
-        N=gamma.N,
+        N=N,
         DIAGONAL = False,
         SIDES = False,
         RECTANGLE = True,
@@ -67,7 +51,7 @@ def goLivretVar():
     )
     p = Parameters(
         GAMMA=gamma,
-        N=gamma.N,
+        N=N,
         DIAGONAL = False,
         SIDES = False,
         RECTANGLE = True,

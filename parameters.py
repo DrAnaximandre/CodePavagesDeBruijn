@@ -7,6 +7,8 @@ from matplotlib import style
 WHITE = 'w'
 BLACK = 'k'
 
+DEFAULT_N = 5
+
 def mapR(x, xD, xF, yD, yF) :
     return yD + (yF-yD)/(xF-xD)*(x-xD)
 
@@ -18,8 +20,8 @@ plt.rcParams['figure.figsize'] = 8., 8.    # pour petit ecran
 class Parameters(object):
 
     def __init__(self,
-                 GAMMA: MappedGammaParameter,
-                 N: int = 5,
+                 GAMMA: MappedGammaParameter = MappedGammaParameter(),
+                 N: int = DEFAULT_N,
                  DMAX: int = 8,
                  NBL: int = 6,
                  R: int = 0,
@@ -32,7 +34,7 @@ class Parameters(object):
                  BACKGROUND: str = 'w',
                  STROKECOLOR: str = 'k',
                  COLORING: int = 0,
-                 TILINGDIR: str = "../Pavages"):
+                 TILINGDIR: str = "../Pavages/toto"):
 
 
         
