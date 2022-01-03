@@ -5,6 +5,8 @@ import math
 from parameters import Parameters
 from outputs import display_rhombus
 
+###################################################  tiling computation following deBruijn paper
+
 def get_cos_sin(params: Parameters):
     ANGLE = 2 * math.pi / params.N
     COS = np.array([np.cos(j * ANGLE) for j in range(params.N)])
@@ -29,17 +31,17 @@ def interGrid(r, s, kr, ks, COS, SIN, params: Parameters):
 # de Bruijn (5.1)
 def f(k, COS, SIN, params: Parameters):
     """ Point associated to [ k_0, ... k_(N-1) ] """
-    x, y = 0, 0
+    x, y = 0.0, 0.0
     for j in range(params.N):
         x += k[j] * COS[j]
         y += k[j] * SIN[j]
     return (x, y)
 
 def tiling(params: Parameters):
-
-    COS, SIN = get_cos_sin(params)
     """ Computes (and possibly draws) all rombi determined by N, GAMMA and NBL """
+    COS, SIN = get_cos_sin(params)
     x, y = np.zeros(4), np.zeros(4)
+    
     # The index of a vertex could serve as its 'altitude' for a future 3D display
     # (see de Bruijn paper section 6)
     ind = np.zeros(4)
@@ -92,9 +94,8 @@ def outputTiling(params: Parameters):
     fig, ax = plt.subplots()
     plt.axis('equal')
     plt.axis('off')
-    title = params.title()
-    plt.title(title, fontsize=8, y=0, pad=-20.)
-    print(title)
+    plt.title(params.title(), fontsize=8, y=0, pad=-20.)
+    print(params.string())
     
     # les limites du dessin
     c = 0.94
@@ -102,7 +103,6 @@ def outputTiling(params: Parameters):
     xmin, xmax, ymin, ymax = -lim, lim, -lim, lim
     ax.set_xlim([xmin, xmax])
     ax.set_ylim([ymin, ymax])
-    #ax.set_frame_on(True)
 
     # le dessin
     tiling(params)
@@ -122,6 +122,5 @@ def outputTiling(params: Parameters):
         plt.show()
 
     plt.close()
-
 
 

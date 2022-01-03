@@ -1,15 +1,17 @@
+import numpy as np
+
 from parameters import Parameters
 from tiling import outputTiling
 from gamma import MappedGammaParameter
-import numpy as np
 
-#################################### tous les parametres par defaut
+
+#################################### uses all default parameters
 def goSimple():
     outputTiling(Parameters())
 
     
 
-###################################### avec un GAMMA fixe
+###################################### with a fixed GAMMA value
 def goLivret():
     N = 5
     gamma = MappedGammaParameter(
@@ -38,7 +40,7 @@ def goLivret():
         outputTiling(p)
 
             
-###################################### avec un GAMMA variable
+###################################### with an evolving GAMMA value
 def goLivretVar():
     N = 5
     initialshift = 0.03

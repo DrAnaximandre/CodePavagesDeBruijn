@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
 from time import localtime, strftime
-from gamma import MappedGammaParameter
 from matplotlib import style
 
+from gamma import MappedGammaParameter
 
 ######################################################
 
@@ -126,6 +126,14 @@ class Parameters(object):
 
     def title(self):
         sG = self.GAMMA.stringTex() + ' $d_{max}$=' + str(self.DMAX) + ' #L=' + str(self.NBL)
+        if self.RECTANGLE:
+            sG += ' R=' + str(self.R)
+        if self.DIAGONAL:
+            sG += ' D'
+        return sG
+
+    def string(self):
+        sG = self.GAMMA.string() + ' DMAX=' + str(self.DMAX) + ' NBL=' + str(self.NBL)
         if self.RECTANGLE:
             sG += ' R=' + str(self.R)
         if self.DIAGONAL:

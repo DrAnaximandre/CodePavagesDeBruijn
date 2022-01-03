@@ -30,4 +30,3 @@ from go import goSimple, goPolo, goLivret, goLivretVar
 
 goLivretVar() # does not display but saves pdf, and does not quit
 
-
