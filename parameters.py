@@ -24,6 +24,8 @@ class Parameters(object):
                  SAVE: bool = False,
                  SHOW: bool = True,
                  SAVE_FORMAT: str = 'png',
+                 SQUARE : bool = True,
+                 FRAME : bool = False,
                  SIDES: bool = True,
                  RECTANGLE: bool = False,
                  DIAGONAL: bool = False,
@@ -66,10 +68,10 @@ class Parameters(object):
         # If SQUARE == False :
         #   if the distance between C and the origin (center of screen)
         #   is greater than DMAX, then the rhombus will not be displayed.
-        self.SQUARE = True
+        self.SQUARE = SQUARE
 
         #============== draws a frame at the limits of drawings
-        self.FRAME = True
+        self.FRAME = FRAME
 
         ##################### DRAWINGS
 

@@ -23,9 +23,10 @@ def goLivret():
         SIDES = False,
         RECTANGLE = True,
         R=62,
-        SAVE=True,
+        FRAME = True,
+        SAVE=False,
         SAVE_FORMAT = 'pdf',
-        SHOW=False,
+        SHOW=True,
         TILINGDIR="../Pavages/toto"
     )
 
@@ -52,13 +53,14 @@ def goLivretVar():
     p = Parameters(
         GAMMA=gamma,
         N=N,
+        FRAME = True,
         DIAGONAL = False,
         SIDES = False,
         RECTANGLE = True,
         R=62,
-        SAVE=True,
+        SAVE=False,
         SAVE_FORMAT = 'pdf',
-        SHOW=False,
+        SHOW=True,
         TILINGDIR="../Pavages/toto"
     )
 

@@ -92,21 +92,28 @@ def outputTiling(params: Parameters):
     fig, ax = plt.subplots()
     plt.axis('equal')
     plt.axis('off')
-    plt.title(params.title(), fontsize=8, y=0, pad=-20.)
-
+    title = params.title()
+    plt.title(title, fontsize=8, y=0, pad=-20.)
+    print(title)
+    
     # les limites du dessin
-    lim = params.DMAX * 1.2
+    c = 0.94
+    lim = params.DMAX * c
     xmin, xmax, ymin, ymax = -lim, lim, -lim, lim
     ax.set_xlim([xmin, xmax])
     ax.set_ylim([ymin, ymax])
+    #ax.set_frame_on(True)
+
+    # le dessin
+    tiling(params)
 
     # la bordure carrée
-    #if params.FRAME and params.SQUARE:
-    #    left, bottom, width, height = -lim * 1.005, -lim, 2.01 * lim, 2 * lim
-    #    p = plt.Rectangle((left, bottom), width, height, fill=False, linewidth=1.0)
-    #    ax.add_patch(p)
+    b = 0.999
+    if params.FRAME and params.SQUARE:
+        left, bottom, width, height = -lim*b*1.01, -lim*b, lim*2*b*1.008, lim*2*b*1.002
+        p = plt.Rectangle((left, bottom), width, height, fill=False, linewidth=2.0)
+        ax.add_patch(p)
 
-    tiling(params)
 
     # save d'abord et show apres !
     if params.SAVE:
