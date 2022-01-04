@@ -76,9 +76,7 @@ def goLivretVar():
 
         gamma.setNextValue()
 
-        
-
-
+    
 
 
 ######################################
