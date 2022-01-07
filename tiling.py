@@ -98,7 +98,7 @@ def outputTiling(params: Parameters):
     print(params.string())
     
     # les limites du dessin
-    c = 0.94
+    c = 0.9
     lim = params.DMAX * c
     xmin, xmax, ymin, ymax = -lim, lim, -lim, lim
     ax.set_xlim([xmin, xmax])
@@ -110,8 +110,8 @@ def outputTiling(params: Parameters):
     # la bordure carrée
     b = 0.999
     if params.FRAME and params.SQUARE:
-        left, bottom, width, height = -lim*b*1.01, -lim*b, lim*2*b*1.008, lim*2*b*1.002
-        p = plt.Rectangle((left, bottom), width, height, fill=False, linewidth=2.0)
+        left, bottom, width, height = -lim*b*1.005, -lim*b, lim*2*b*1.005, lim*2*b*1.00
+        p = plt.Rectangle((left, bottom), width, height, fill=False, linewidth=0.5)
         ax.add_patch(p)
 
 

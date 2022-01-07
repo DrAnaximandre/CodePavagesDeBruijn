@@ -9,18 +9,19 @@ class MappedGammaParameter(object) :
  
     def __init__(self,
                  N: int = 5, # Size
-                 gammaValue : np.ndarray = [-0.260, -0.155, -0.050, 0.055, 0.160],  # initial gamma value
-                 shift : float = 0,
-                 deltashift: float = 0,
-                 a: float = 0,
-                 functiontomap: Callable = lambda x: x):
+                 fixedGammaValue : np.ndarray = [-0.260, -0.155, -0.050, 0.055, 0.160],
+                 fixed : bool = True,
+                 initialShift : float = 2.0,
+                 deltaShift: float = 0.025,
+                 functionToMap: Callable = lambda s,a,j : s
+                ):
 
         self.N = N
-        self.gammaValue = gammaValue
-        self.shift = shift
-        self.deltashift = deltashift
-        self.a = a
-        self.functiontomap = functiontomap
+        self.gammaValue = fixedGammaValue if fixed else [functionToMap(initialShift,j) for j in range(self.N)]
+        self.shift = initialShift
+        self.deltaShift = deltaShift
+        #self.a = a
+        self.functionToMap = functionToMap
         
 
     def getValue(self):
@@ -30,8 +31,9 @@ class MappedGammaParameter(object) :
     #    self.gammaValue = self.functiontomap(self.shift) - np.array([self.a * j for j in range(self.N)])
 
     def setNextValue(self):
-        self.shift -= self.deltashift
-        self.gammaValue = [self.shift]*self.N   # c'est là qu'il faut faire jouer functiontomap
+        self.shift -= self.deltaShift
+        #self.gammaValue = [self.shift]*self.N   # c'est là qu'il faut faire jouer functiontomap
+        self.gammaValue = [self.functionToMap(self.shift,j) for j in range(self.N)]
         
     def string(self):
         s = "GAMMA="
