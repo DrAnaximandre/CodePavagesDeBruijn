@@ -1,8 +1,9 @@
 import numpy as np
+import math
 
 from parameters import Parameters
 from tiling import outputTiling
-from gamma import MappedGammaParameter
+from gamma import MappedGammaParameter, MGPcentralSymetry, MGPnotExactSymetry, MGPdeBruijnRegular, MGPpentaville, MGPpentavilleS, MGPpentavilleVariation
 
 
 #################################### uses all default parameters
@@ -62,8 +63,8 @@ def goLivretVar():
 
     while True:
         # for (d, nbl) in [(4,3), (8,6), (15, 8), (30, 16), (60, 33), (100, 55)] :
-        for (d, nbl) in [(4, 3), (8, 6), (15, 8), (30, 16), (60, 33)]:
-        #for (d, nbl) in [(4, 3), (8, 6),]: 
+        #for (d, nbl) in [(4, 3), (8, 6), (15, 8), (30, 16), (60, 33)]:
+        for (d, nbl) in [(4, 3), (8, 6),]: 
             p.NBL = nbl
             p.updateDMAX(d)
             outputTiling(p)
@@ -96,3 +97,65 @@ def goPolo():
         p.NBL = nbl
         p.updateDMAX(d)
         outputTiling(p)
+
+###################################
+def goCentralSymetry() :
+    p = Parameters(GAMMA = MGPcentralSymetry)
+    outputTiling(p)
+
+def goNotExactSymetry() :
+    p = Parameters(GAMMA = MGPnotExactSymetry)
+    outputTiling(p)
+ 
+def goDeBruijnRegular() :
+    N = 5
+    p = Parameters(
+        GAMMA =  MGPdeBruijnRegular(N),
+        N = N)
+    outputTiling(p)
+
+def goPentaville() :
+    N = 5
+    gamma = MGPpentaville(N)
+    p = Parameters(
+        N = N,
+        GAMMA = gamma,
+        DMAX = 12,
+        SIDES = False,
+        RECTANGLE = True,
+        R = 2,
+        FRAME = True)
+    outputTiling(p)
+ 
+def goPentavilleS() :
+    N = 5
+    gamma = MGPpentavilleS(N)
+    p = Parameters(
+        N = N,
+        GAMMA = gamma,
+        DMAX = 12,
+        SIDES = False,
+        RECTANGLE = True,
+        R = 2,
+        FRAME = True)
+    while True :
+        outputTiling(p)
+        gamma.setNextValue()
+
+        
+def goPentavilleVariation() :
+    N = 5
+    gamma = MGPpentavilleVariation(N)
+    p = Parameters(
+        N = N,
+        GAMMA = gamma,
+        DMAX = 12,
+        NBL = 8,
+        SIDES = False,
+        RECTANGLE = True,
+        R = 2,
+        FRAME = True)
+    while True :
+        outputTiling(p)
+        gamma.setNextValue()
+ 

@@ -20,7 +20,7 @@
 #
 ##########################################################################
 
-from go import goSimple, goPolo, goLivret, goLivretVar
+from go import *
 
 #goSimple()
 
@@ -28,5 +28,11 @@ from go import goSimple, goPolo, goLivret, goLivretVar
 
 #goLivret() # does not display but saves pdf
 
-goLivretVar() # does not display but saves pdf, and does not quit
+#goLivretVar() # does not display but saves pdf, and does not quit
 
+#goCentralSymetry()
+#goNotExactSymetry()
+#goDeBruijnRegular()
+#goPentaville()
+#goPentavilleS()
+goPentavilleVariation()  

@@ -28,4 +28,14 @@
 Implementation:
 ---
 - ajouter une vérification dans gamma.py que shift est bien un np.ndarray
-- refaire ce fichier en .md
+    ===> la structure de MappedGammaParameter a changé, le pb ne se pose plus
+    
+- refaire ce fichier en .md  (c'est quoi ?)
+
+- trouver une bonne solution robuste pour dessiner la bordure (FRAME)
+
+- parametrer l epaisseur de ligne (cf SCALE_LINEWIDTH dans parameters)
+
+- les segments se raccordent pas bien : pb de précision ?
+       
+
