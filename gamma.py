@@ -78,8 +78,8 @@ MGPnotExactSymetry = MappedGammaParameter(
 def MGPdeBruijnRegular(N) :
     return MappedGammaParameter(
         N,
-        fixed = False,
-        functionToMap = lambda s, j : mapR(j, 0, N-1, -0.29 + s, 0.19 - s)   )
+        fixed=False,
+        functionToMap=lambda s, j: mapR(j, 0, N-1, -0.29 + s, 0.19 - s))
 
 
 

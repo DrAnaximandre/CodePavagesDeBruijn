@@ -109,8 +109,8 @@ def goNotExactSymetry() :
  
 def goDeBruijnRegular(N = 5):
     p = Parameters(
-    GAMMA =  MGPdeBruijnRegular(N),
-    N = N)
+        GAMMA=MGPdeBruijnRegular(N),
+        N=N)
     outputTiling(p)
 
 def goPentaville() :

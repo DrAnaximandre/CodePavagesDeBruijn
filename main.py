@@ -32,7 +32,7 @@ from go import *
 
 #goCentralSymetry()
 #goNotExactSymetry()
-goDeBruijnRegular(N=8)
+goDeBruijnRegular(6)
 #goPentaville()
 #goPentavilleS()
 #goPentavilleVariation()
