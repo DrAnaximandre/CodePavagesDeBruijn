@@ -20,7 +20,19 @@
 #
 ##########################################################################
 
-from go import goPolo, goLivret
+from go import *
+
+#goSimple()
 
 #goPolo()
-goLivret() # does not display but runs forever
+
+#goLivret() # does not display but saves pdf
+
+#goLivretVar() # does not display but saves pdf, and does not quit
+
+#goCentralSymetry()
+#goNotExactSymetry()
+goDeBruijnRegular(6)
+#goPentaville()
+#goPentavilleS()
+#goPentavilleVariation()

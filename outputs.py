@@ -1,12 +1,10 @@
-
 from colors import shape_rhombus, kolor
 import math
-
 import matplotlib.pyplot as plt
-
 import numpy as np
 from matplotlib.patches import Polygon
 
+from parameters import Parameters
 
 
 ################################################## draws the rhombus with matplotlib
@@ -16,7 +14,7 @@ def mplot(x,y,params) :
              linewidth=params.LINEWIDTH,
              color=params.STROKECOLOR,
              solid_joinstyle='round',
-             solid_capstyle='round')
+             solid_capstyle='projecting')   # fin de lignes
 
 def sides(x,y, params) :
     xc, yc = np.append(x,x[0]), np.append(y,y[0])
@@ -36,7 +34,7 @@ def line(xA,yA,xB,yB, params) :
 ###################################################
 
 def middle(x1, y1, x2, y2):
-    return((x1 + x2) / 2, (y1 + y2) / 2)
+    return((x1 + x2) / 2.0, (y1 + y2) / 2.0)
 
 def display_rhombus(r, s, kr, ks, x, y, ind, params):
     xm, ym = sum(x) / 4.0, sum(y) / 4.0

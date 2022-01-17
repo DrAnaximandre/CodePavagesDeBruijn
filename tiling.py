@@ -5,6 +5,8 @@ import math
 from parameters import Parameters
 from outputs import display_rhombus
 
+###################################################  tiling computation following deBruijn paper
+
 def get_cos_sin(params: Parameters):
     ANGLE = 2 * math.pi / params.N
     COS = np.array([np.cos(j * ANGLE) for j in range(params.N)])
@@ -22,24 +24,24 @@ def inter(a1, b1, c1, a2, b2, c2):
 def interGrid(r, s, kr, ks, COS, SIN, params: Parameters):
     """ Intersection of 2 lines of the pentagrid 
         0 <= r < s < N  and  r,s,kr,ks integers """
-    a, b, c = COS[r], SIN[r], params.GAMMA.setGamma()[r] - kr
-    a1, b1, c1 = COS[s], SIN[s], params.GAMMA.setGamma()[s] - ks
+    a, b, c = COS[r], SIN[r], params.GAMMA.getValue()[r] - kr
+    a1, b1, c1 = COS[s], SIN[s], params.GAMMA.getValue()[s] - ks
     return inter(a, b, c, a1, b1, c1)
 
 # de Bruijn (5.1)
 def f(k, COS, SIN, params: Parameters):
     """ Point associated to [ k_0, ... k_(N-1) ] """
-    x, y = 0, 0
+    x, y = 0.0, 0.0
     for j in range(params.N):
         x += k[j] * COS[j]
         y += k[j] * SIN[j]
     return (x, y)
 
 def tiling(params: Parameters):
-
-    COS, SIN = get_cos_sin(params)
     """ Computes (and possibly draws) all rombi determined by N, GAMMA and NBL """
+    COS, SIN = get_cos_sin(params)
     x, y = np.zeros(4), np.zeros(4)
+    
     # The index of a vertex could serve as its 'altitude' for a future 3D display
     # (see de Bruijn paper section 6)
     ind = np.zeros(4)
@@ -55,7 +57,7 @@ def tiling(params: Parameters):
                     (xp, yp) = interGrid(r, s, kr, ks, COS, SIN, params)
 
                     # (4.3)
-                    Kvect = np.array([math.ceil(xp * COS[j] + yp * SIN[j] + params.GAMMA.setGamma()[j])
+                    Kvect = np.array([math.ceil(xp * COS[j] + yp * SIN[j] + params.GAMMA.getValue()[j])
                                       for j in range(params.N)])
                     
                     # (4.5)
@@ -86,35 +88,39 @@ def tiling(params: Parameters):
 
 ######################################
 
-def outputNextTiling(params: Parameters):
+def outputTiling(params: Parameters):
     fn = params.filename()
 
     fig, ax = plt.subplots()
     plt.axis('equal')
     plt.axis('off')
     plt.title(params.title(), fontsize=8, y=0, pad=-20.)
-
+    print(params.string())
+    
     # les limites du dessin
-    lim = params.DMAX * 1.2
+    c = 0.9
+    lim = params.DMAX * c
     xmin, xmax, ymin, ymax = -lim, lim, -lim, lim
     ax.set_xlim([xmin, xmax])
     ax.set_ylim([ymin, ymax])
 
-    # la bordure carrée
-    #if params.FRAME and params.SQUARE:
-    #    left, bottom, width, height = -lim * 1.005, -lim, 2.01 * lim, 2 * lim
-    #    p = plt.Rectangle((left, bottom), width, height, fill=False, linewidth=1.0)
-    #    ax.add_patch(p)
-
+    # le dessin
     tiling(params)
+
+    # la bordure carrée
+    b = 0.999
+    if params.FRAME and params.SQUARE:
+        left, bottom, width, height = -lim*b*1.005, -lim*b, lim*2*b*1.005, lim*2*b*1.00
+        p = plt.Rectangle((left, bottom), width, height, fill=False, linewidth=0.5)
+        ax.add_patch(p)
+
 
     # save d'abord et show apres !
     if params.SAVE:
-        plt.savefig(fn + ".png", dpi=300) #, bbox_inches="tight")
+        plt.savefig(fn + '.' + params.SAVE_FORMAT, dpi=300) #, bbox_inches="tight")
     if params.SHOW:
         plt.show()
 
     plt.close()
-
 
 
