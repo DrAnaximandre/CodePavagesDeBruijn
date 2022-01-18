@@ -94,18 +94,25 @@ def kolor(r, s, kr, ks, d, params):
 
         elif params.COLORING == 11:
             """ Joli rond coloré"""
-            h = 300 * d / params.DMAX
-            # += 10*np.cos((s * 20 + kr*10 + ks*15-d)) + np.sin(2*(s * 20 + kr*10 + ks*15-d)) * 10
+            h = 200 * d / params.DMAX + 20
+            h += 10*np.cos((s * 20 + kr*10 + ks*15-d)) + np.sin(2*(s * 20 + kr*10 + ks*15-d)) * 10
             sat = 50
             if d > params.DMAX * 0.8:
                 sat = 80
             if d < params.DMAX * 0.2:
-                sat = 100
+                sat = 99
 
-            v = 50 + np.cos((s * 20 + kr * 10 + ks * 15 - d)) * 25 + np.sin(2 * (s * 20 + kr * 10 + ks * 15 - d)) * 25
+            v = 50 + np.cos((s * 20 + kr * 10 + ks * 15 - d)) * 24 + np.sin(2 * (s * 20 + kr * 10 + ks * 15 - d)) * 24
+
             return rgb((h, sat, v))
 
+        elif params.COLORING == 12:
 
+            h = 220
+            sat = 60# + np.cos((s * 20 + kr * 10 + ks * 15 - d)) * 24 + np.sin(2 * (s * 20 + kr * 10 + ks * 15 - d)) * 24
+            v = 50 + np.cos((s * 20 + kr * 10 + ks * 15 - d)) * 24 + np.sin(2 * (s * 20 + kr * 10 + ks * 15 - d)) * 24
+
+            return rgb((h, sat, v))
         else:
             print("COLORING=" + str(params.COLORING) + " is not defined !")
             exit
