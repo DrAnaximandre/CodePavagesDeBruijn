@@ -19,8 +19,13 @@
 #  Comments and suggestions are welcome. Mail to :  mike.lembitre@gmail.com
 #
 ##########################################################################
+import tqdm
+from joblib import Parallel,delayed
+from go import goPolo2
 
-from go import goPolo, goLivret
 
-#goPolo()
-goLivret() # does not display but runs forever
+L = Parallel(n_jobs=-2)(delayed(goPolo2)(5) for n in tqdm.tqdm(range(10)))
+
+
+
+#goLivret() # does not display but runs forever
