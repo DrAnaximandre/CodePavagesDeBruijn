@@ -24,7 +24,9 @@ from joblib import Parallel,delayed
 from go import *
 
 
-L = Parallel(n_jobs=-2)(delayed(goPolo)(n) for n in tqdm.tqdm(range(10)))
+goPolo(4)
+
+# L = Parallel(n_jobs=-2)(delayed(goPolo)(n+1) for n in tqdm.tqdm(range(3, 10)))
 
 #goSimple()
 #goPolo()
@@ -33,7 +35,7 @@ L = Parallel(n_jobs=-2)(delayed(goPolo)(n) for n in tqdm.tqdm(range(10)))
 
 #goCentralSymetry()
 #goNotExactSymetry()
-goDeBruijnRegular(6)
+#goDeBruijnRegular(6)
 #goPentaville()
 #goPentavilleS()
 #goPentavilleVariation()
