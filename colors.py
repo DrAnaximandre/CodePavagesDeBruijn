@@ -108,8 +108,8 @@ def kolor(r, s, kr, ks, d, params):
 
         elif params.COLORING == 12:
 
-            h = 220
-            sat = 60# + np.cos((s * 20 + kr * 10 + ks * 15 - d)) * 24 + np.sin(2 * (s * 20 + kr * 10 + ks * 15 - d)) * 24
+            h = 215
+            sat = 30 + np.cos((-s * 20 + kr * 10 * ks * 15 - d)) * 14 + np.sin(2 * (s * 20 - kr * 10 + ks * 15 - d)) * 16
             v = 50 + np.cos((s * 20 + kr * 10 + ks * 15 - d)) * 24 + np.sin(2 * (s * 20 + kr * 10 + ks * 15 - d)) * 24
 
             return rgb((h, sat, v))
