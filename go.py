@@ -89,7 +89,7 @@ def goPolo(N):
         TILINGDIR="../Pavages/poloTilings"
     )
 
-    for (dmax, nbl) in [(24, 2),]:
+    for (dmax, nbl) in [(24, 3),]:
         p.NBL = nbl
         p.updateDMAX(dmax)
         outputTiling(p)
