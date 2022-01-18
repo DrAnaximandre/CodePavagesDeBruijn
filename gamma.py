@@ -25,7 +25,6 @@ class MappedGammaParameter(object) :
         self.gammaValue = fixedGammaValue if fixed else [functionToMap(initialShift,j) for j in range(self.N)]
         self.shift = initialShift
         self.deltaShift = deltaShift
-        #self.a = a
         self.functionToMap = functionToMap
         
 
@@ -45,7 +44,7 @@ class MappedGammaParameter(object) :
     def stringTex(self) :
         g = self.gammaValue
         s = "$\gamma=[" + ("%+.3f" % g[0]) 
-        for i in range(1,self.N) :
+        for i in range(1, self.N):
             s += (",%+.3f" % g[i])
         return s+']$'
 
@@ -89,13 +88,13 @@ def MGPdeBruijnRegular(N) :
 def MGPpentaville(N):
     return MappedGammaParameter(
         fixed = False,
-        functionToMap = lambda s, j : math.sin(j*math.pi/N)   ) 
+        functionToMap = lambda s, j : math.sin(j*math.pi/N))
     
     # the same but now depends on shift (more interesting)
 def MGPpentavilleS(N):
     return MappedGammaParameter(
         fixed = False,
-        functionToMap = lambda s, j : math.sin(j*math.pi/N) + s  ) 
+        functionToMap = lambda s, j : math.sin(j*math.pi/N) + s)
  
 
 
