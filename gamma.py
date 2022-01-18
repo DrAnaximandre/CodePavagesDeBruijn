@@ -76,7 +76,7 @@ MGPnotExactSymetry = MappedGammaParameter(
     # self.GAMMA = [mapR(j, 0, self.N-1, -0.29 + self.SHIFT, 0.19 - self.SHIFT) for j in range(self.N)]
 def MGPdeBruijnRegular(N) :
     return MappedGammaParameter(
-        N,
+        N=N,
         fixed=False,
         functionToMap=lambda s, j: mapR(j, 0, N-1, -0.29 + s, 0.19 - s))
 
@@ -87,12 +87,14 @@ def MGPdeBruijnRegular(N) :
     # self.GAMMA = [math.sin(j*math.pi/self.N) for j in range(self.N)]
 def MGPpentaville(N):
     return MappedGammaParameter(
+        N=N,
         fixed = False,
         functionToMap = lambda s, j : math.sin(j*math.pi/N))
     
     # the same but now depends on shift (more interesting)
 def MGPpentavilleS(N):
     return MappedGammaParameter(
+        N=N,
         fixed = False,
         functionToMap = lambda s, j : math.sin(j*math.pi/N) + s)
  
@@ -102,6 +104,7 @@ def MGPpentavilleS(N):
     # self.GAMMA = [math.sin((j+1)*math.pi/self.N) + j*self.SHIFT/self.N for j in range(self.N)]
 def MGPpentavilleVariation(N):
     return MappedGammaParameter(
+        N=N,
         fixed = False,
         initialShift = 1.07,
         deltaShift = 0.08,
