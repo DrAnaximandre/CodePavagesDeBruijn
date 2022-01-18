@@ -60,3 +60,31 @@ def goPolo():
         p.NBL = nbl
         p.updateDMAX(d)
         outputNextTiling(p)
+
+
+def goPolo2(N=8):
+
+
+    gamma = MappedGammaParameter(
+        N=N,  # Size
+        shift=np.random.uniform(-10,10,size=N),
+        deltashift=[0 for _ in range(N)],
+        a=0,
+        functiontomap=lambda x: 25*np.sin(x)
+    )
+    p = Parameters(
+        GAMMA=gamma,
+        N=gamma.N,
+        R=3,
+        SAVE=True,
+        SHOW=False,
+        RECTANGLE=False,
+        COLORING = 12,
+        BACKGROUND = "k",
+        STROKECOLOR= "k",
+        TILINGDIR="./toto"
+    )
+
+    p.NBL = 9
+    p.updateDMAX(15)
+    outputNextTiling(p)
