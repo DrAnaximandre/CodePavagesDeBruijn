@@ -21,11 +21,19 @@
 ##########################################################################
 import tqdm
 from joblib import Parallel,delayed
-from go import goPolo2
+from go import *
 
 
-L = Parallel(n_jobs=-2)(delayed(goPolo2)(5) for n in tqdm.tqdm(range(10)))
+L = Parallel(n_jobs=-2)(delayed(goPolo)(n) for n in tqdm.tqdm(range(10)))
 
+#goSimple()
+#goPolo()
+#goLivret() # does not display but saves pdf
+#goLivretVar() # does not display but saves pdf, and does not quit
 
-
-#goLivret() # does not display but runs forever
+#goCentralSymetry()
+#goNotExactSymetry()
+goDeBruijnRegular(6)
+#goPentaville()
+#goPentavilleS()
+#goPentavilleVariation()

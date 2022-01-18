@@ -1,90 +1,160 @@
-from parameters import Parameters
-from tiling import outputNextTiling
-from gamma import MappedGammaParameter
 import numpy as np
+import math
+
+from parameters import Parameters
+from tiling import outputTiling
+from gamma import MappedGammaParameter, MGPcentralSymetry, MGPnotExactSymetry, MGPdeBruijnRegular, MGPpentaville, MGPpentavilleS, MGPpentavilleVariation
 
 
-######################################
+#################################### uses all default parameters
+def goSimple():
+    outputTiling(Parameters())
+
+    
+
+###################################### with a fixed GAMMA value
 def goLivret():
+    N = 5
     gamma = MappedGammaParameter(
-        N=5,  # Size
-        shift=[-0.260, -0.155, -0.050, 0.055, 0.160],
-        deltashift=[0 for _ in range(5)],
-        a=0,
-        functiontomap=lambda x: x
+        N=N,  # Size
+        fixedGammaValue = np.array([-0.260, -0.155, -0.050, 0.055, 0.160]),
     )
     p = Parameters(
         GAMMA=gamma,
-        N=5,
+        N=N,
+        SIDES = False,
+        RECTANGLE = True,
         R=62,
+        FRAME = True,
         SAVE=True,
+        SAVE_FORMAT = 'pdf',
         SHOW=False,
-        RECTANGLE=True,
-        TILINGDIR="./toto"
+        TILINGDIR="../Pavages/toto"
+    )
+
+    # for (d, nbl) in [(4,3), (8,6), (15, 8), (30, 16), (60, 33), (100, 55)] :
+    #for (d, nbl) in [(4, 3), (8, 6), (15, 8), (30, 16), (60, 33)]:
+    for (d, nbl) in [(4, 3), (8, 6), (15, 8)]:
+        p.NBL = nbl
+        p.updateDMAX(d)
+        outputTiling(p)
+
+            
+###################################### with a varying GAMMA value
+def goLivretVar():
+    N = 5
+    initialshift = 0.03
+    gamma = MappedGammaParameter(
+        N=N,  
+        fixed = False,
+        functionToMap=lambda s, j : s - 0.05 * j
+    )
+    p = Parameters(
+        GAMMA=gamma,
+        N=N,
+        FRAME = True,
+        DIAGONAL = True,
+        SIDES = False,
+        SHOW = False,
+        SAVE=True,
+        SAVE_FORMAT = 'pdf',
+        TILINGDIR="../Pavages/toto"
     )
 
     while True:
-
         # for (d, nbl) in [(4,3), (8,6), (15, 8), (30, 16), (60, 33), (100, 55)] :
-        for (d, nbl) in [(4, 3), (8, 6), (15, 8), (30, 16), (60, 33)]:
+        #for (d, nbl) in [(4, 3), (8, 6), (15, 8), (30, 16), (60, 33)]:
+        for (d, nbl) in [(4, 3), (8, 6),]: 
             p.NBL = nbl
             p.updateDMAX(d)
-            outputNextTiling(p)
+            outputTiling(p)
 
-        p.nextGAMMA()
+        gamma.setNextValue()
+
+    
 
 
 ######################################
-def goPolo():
+def goPolo(N):
     gamma = MappedGammaParameter(
-        N=8,  # Size
-        shift=np.array([10.5, 2, -15.2, 4, -5, 6, 2, 0.05]),
-        deltashift=[0 for _ in range(8)],
-        a=0,
-        functiontomap=lambda x: 20*np.sin(2*x)
+        N=N,  # Size
+        fixedGammaValue=np.array([10.5, 2, -15.2, 4, -5, 6, 2, 0.05]),
     )
     p = Parameters(
         GAMMA=gamma,
         N=gamma.N,
         R=0,
+        DIAGONAL=True,
+        COLORING = 11,
+        BACKGROUND = 'k',
+        STROKECOLOR= 'k',
         SAVE=True,
         SHOW=True,
-        RECTANGLE=False,
-        COLORING = 11,
-        BACKGROUND = "k",
-        STROKECOLOR= "k",
-        TILINGDIR="./toto"
+        TILINGDIR="../Pavages/poloTilings"
     )
 
     for (d, nbl) in [(10,5), (15,12)]:
         p.NBL = nbl
         p.updateDMAX(d)
-        outputNextTiling(p)
+        outputTiling(p)
 
+###################################
+def goCentralSymetry() :
+    p = Parameters(GAMMA = MGPcentralSymetry)
+    outputTiling(p)
 
-def goPolo2(N=8):
-
-
-    gamma = MappedGammaParameter(
-        N=N,  # Size
-        shift=np.random.uniform(-10,10,size=N),
-        deltashift=[0 for _ in range(N)],
-        a=0,
-        functiontomap=lambda x: 25*np.sin(x)
-    )
+def goNotExactSymetry() :
+    p = Parameters(GAMMA = MGPnotExactSymetry)
+    outputTiling(p)
+ 
+def goDeBruijnRegular(N = 5):
     p = Parameters(
-        GAMMA=gamma,
-        N=gamma.N,
-        R=3,
-        SAVE=True,
-        SHOW=False,
-        RECTANGLE=False,
-        COLORING = 12,
-        BACKGROUND = "k",
-        STROKECOLOR= "k",
-        TILINGDIR="./toto"
-    )
+        GAMMA=MGPdeBruijnRegular(N),
+        N=N)
+    outputTiling(p)
 
-    p.NBL = 9
-    p.updateDMAX(15)
-    outputNextTiling(p)
+def goPentaville() :
+    N = 5
+    gamma = MGPpentaville(N)
+    p = Parameters(
+        N = N,
+        GAMMA = gamma,
+        DMAX = 12,
+        SIDES = False,
+        RECTANGLE = True,
+        R = 2,
+        FRAME = True)
+    outputTiling(p)
+ 
+def goPentavilleS() :
+    N = 5
+    gamma = MGPpentavilleS(N)
+    p = Parameters(
+        N = N,
+        GAMMA = gamma,
+        DMAX = 12,
+        SIDES = False,
+        RECTANGLE = True,
+        R = 2,
+        FRAME = True)
+    while True :
+        outputTiling(p)
+        gamma.setNextValue()
+
+        
+def goPentavilleVariation() :
+    N = 5
+    gamma = MGPpentavilleVariation(N)
+    p = Parameters(
+        N = N,
+        GAMMA = gamma,
+        DMAX = 12,
+        NBL = 8,
+        SIDES = False,
+        RECTANGLE = True,
+        R = 2,
+        FRAME = True)
+    while True :
+        outputTiling(p)
+        gamma.setNextValue()
+ 
