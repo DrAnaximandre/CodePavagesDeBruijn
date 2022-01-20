@@ -13,6 +13,9 @@ def goSimple():
     
 
 ###################################### with a fixed GAMMA value
+
+SEQUENCE_LIVRET = [(4,3), (8,6), (15, 8), (30, 16), (60, 33), (100, 55)]
+
 def goLivret():
     N = 5
     gamma = MappedGammaParameter(
@@ -32,9 +35,7 @@ def goLivret():
         TILINGDIR="../Pavages/toto"
     )
 
-    # for (d, nbl) in [(4,3), (8,6), (15, 8), (30, 16), (60, 33), (100, 55)] :
-    #for (d, nbl) in [(4, 3), (8, 6), (15, 8), (30, 16), (60, 33)]:
-    for (d, nbl) in [(4, 3), (8, 6), (15, 8)]:
+    for (d, nbl) in SEQUENCE_LIVRET[:4]:
         p.NBL = nbl
         p.updateDMAX(d)
         outputTiling(p)
@@ -62,9 +63,7 @@ def goLivretVar():
     )
 
     while True:
-        # for (d, nbl) in [(4,3), (8,6), (15, 8), (30, 16), (60, 33), (100, 55)] :
-        #for (d, nbl) in [(4, 3), (8, 6), (15, 8), (30, 16), (60, 33)]:
-        for (d, nbl) in [(4, 3), (8, 6),]: 
+        for (d, nbl) in SEQUENCE_LIVRET[:4]:
             p.NBL = nbl
             p.updateDMAX(d)
             outputTiling(p)
@@ -75,17 +74,14 @@ def goLivretVar():
 
 
 ######################################
-def goPolo():
-    gamma = MappedGammaParameter(
-        N=8,  # Size
-        fixedGammaValue=np.array([10.5, 2, -15.2, 4, -5, 6, 2, 0.05]),
-    )
+def goPolo(N):
+    gamma = MGPpentavilleVariation(N)
     p = Parameters(
         GAMMA=gamma,
         N=gamma.N,
         R=0,
         DIAGONAL=True,
-        COLORING = 11,
+        COLORING = 12,
         BACKGROUND = 'k',
         STROKECOLOR= 'k',
         SAVE=True,
@@ -93,9 +89,9 @@ def goPolo():
         TILINGDIR="../Pavages/poloTilings"
     )
 
-    for (d, nbl) in [(10,5), (15,12)]:
+    for (dmax, nbl) in [(24, 3),]:
         p.NBL = nbl
-        p.updateDMAX(d)
+        p.updateDMAX(dmax)
         outputTiling(p)
 
 ###################################

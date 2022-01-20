@@ -19,20 +19,23 @@
 #  Comments and suggestions are welcome. Mail to :  mike.lembitre@gmail.com
 #
 ##########################################################################
-
+import tqdm
+from joblib import Parallel,delayed
 from go import *
 
+
+goPolo(4)
+
+# L = Parallel(n_jobs=-2)(delayed(goPolo)(n+1) for n in tqdm.tqdm(range(3, 10)))
+
 #goSimple()
-
 #goPolo()
-
 #goLivret() # does not display but saves pdf
-
 #goLivretVar() # does not display but saves pdf, and does not quit
 
 #goCentralSymetry()
 #goNotExactSymetry()
-goDeBruijnRegular(6)
+#goDeBruijnRegular(6)
 #goPentaville()
 #goPentavilleS()
 #goPentavilleVariation()

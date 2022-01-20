@@ -38,4 +38,4 @@ Implementation:
 
 - les segments se raccordent pas bien : pb de précision ?
        
-
+- attraper erreur si N=0
