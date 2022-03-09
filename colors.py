@@ -102,8 +102,9 @@ def kolor(r, s, kr, ks, d, params):
             if d < params.DMAX * 0.2:
                 sat = 99
 
-            v = 50 + np.cos((s * 20 + kr * 10 + ks * 15 - d)) * 24 + np.sin(2 * (s * 20 + kr * 10 + ks * 15 - d)) * 24
-
+            v = 50 + np.cos((s * 20 + kr * 10 + ks * 15 - d)) * 20 + np.sin(2 * (s * 20 + kr * 10 + ks * 15 - d)) * 24
+            if v < 30:
+                v= 95
             return rgb((h, sat, v))
 
         elif params.COLORING == 12:
@@ -113,6 +114,43 @@ def kolor(r, s, kr, ks, d, params):
             v = 50 + np.cos((s * 20 + kr * 10 + ks * 15 - d)) * 24 + np.sin(2 * (s * 20 + kr * 10 + ks * 15 - d)) * 24
 
             return rgb((h, sat, v))
+
+        elif params.COLORING == 13:
+            """ Joli rond coloré partant du rouge au centre"""
+            h = 500 * d / params.DMAX -100
+            h += 12 * s - 3*ks
+            h= h%360
+            sat = 45
+            sat += np.cos((s * 20 + kr * 10 + ks * 15 - d)) * 29 + np.sin(2 * (s * 20 + kr * 10 + ks * 15 - d)) * 24
+            sat = sat%100
+            if sat < 30:
+                sat = 95
+
+            v  = 50 + np.cos((s * 2 + kr * 15 + ks * 10 - d)) * 24 + np.sin(2 * (s * 20 + kr * 10 + ks * 15 - d)) * 24
+
+            return rgb((h, sat, v))
+
+        elif params.COLORING == 14:
+            """ Rouge noir blanc gris"""
+
+            r1 = (131, 2, 19)
+            r2 = (154,0,2)
+            r3 = (179, 13, 2)
+            r4 = (240, 234, 228)
+            r5 = (88, 88, 88)
+            r6 = (26, 26, 26)
+            L = np.array([r1,r2,r3,r4,r5,r6])
+            k = int(np.cos(d)*np.pi)%6
+
+            return L[k]/255
+        elif params.COLORING == 15:
+            """???"""
+
+            h = (ks+s)%360
+            s = (int(np.sin(d*5) * 125) +126)/2.6
+            v = (int(np.cos(2*d) * 20 + np.sin(d*2)*15) + 255-35)/2.6
+
+            return rgb((h,s,v))
         else:
             print("COLORING=" + str(params.COLORING) + " is not defined !")
             exit

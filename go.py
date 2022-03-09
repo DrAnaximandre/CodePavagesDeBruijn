@@ -74,22 +74,26 @@ def goLivretVar():
 
 
 ######################################
-def goPolo(N):
-    gamma = MGPpentavilleVariation(N)
+def goPolo(N, shift):
+    gamma = MappedGammaParameter(
+        N=N,
+        fixed=False,
+        initialShift=shift,
+        functionToMap=lambda s, j: (s+j/5**1.03)+1)
     p = Parameters(
         GAMMA=gamma,
         N=gamma.N,
         R=0,
         DIAGONAL=True,
-        COLORING = 12,
+        COLORING = 15,
         BACKGROUND = 'k',
         STROKECOLOR= 'k',
         SAVE=True,
         SHOW=True,
-        TILINGDIR="../Pavages/poloTilings"
+        TILINGDIR="./poloTilings"
     )
 
-    for (dmax, nbl) in [(24, 3),]:
+    for (dmax, nbl) in [(15, 7),]:
         p.NBL = nbl
         p.updateDMAX(dmax)
         outputTiling(p)
