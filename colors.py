@@ -45,7 +45,7 @@ C = list(map(rgb, [C3, C2, C4, C5, C1]))
     #plt.fill(xc,yc,colors[f])
     #plt.fill(xc,yc,'C'+str(f))
 
-def kolor(r, s, kr, ks, d, params):
+def kolor(r, s, kr, ks, d, params, x, y):
 
     
     NBF = math.floor(params.N / 2)  # number of different shapes
@@ -146,11 +146,39 @@ def kolor(r, s, kr, ks, d, params):
         elif params.COLORING == 15:
             """???"""
 
-            h = (ks+s)%360
+            h = (ks+s+200)%360
             s = (int(np.sin(d*5) * 125) +126)/2.6
             v = (int(np.cos(2*d) * 20 + np.sin(d*2)*15) + 255-35)/2.6
 
             return rgb((h,s,v))
+
+        elif params.COLORING == 16:
+            """photo simple"""
+            xm = np.mean(x)
+            ym = np.mean(y)
+            ims = params.image.shape
+            xm_c = int((xm + params.DMAX)/ (params.DMAX*2) * ims[0])
+            ym_c = int((ym + params.DMAX)/ (params.DMAX*2) * ims[1])
+
+            col_at_pix = params.image[xm_c, ym_c]
+            return col_at_pix/255
+
+
+        elif params.COLORING == 17:
+            """photo plus compliqué mais pas trop"""
+            ims = params.image.shape
+
+            xm_c = [int((xe + params.DMAX) / (params.DMAX * 2) * ims[0]) for xe in x]
+            ym_c = [int((ye + params.DMAX) / (params.DMAX * 2) * ims[1]) for ye in y]
+
+            mx = min(xm_c), max(xm_c)
+            my = min(ym_c), max(ym_c)
+
+            image_bloc = params.image[mx[0]:mx[1], my[0]:my[1]]
+            col_at_pix = image_bloc.mean(0).mean(0)/255
+
+            return col_at_pix
+
         else:
             print("COLORING=" + str(params.COLORING) + " is not defined !")
             exit

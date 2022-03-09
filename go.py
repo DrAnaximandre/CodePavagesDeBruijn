@@ -79,13 +79,13 @@ def goPolo(N, shift):
         N=N,
         fixed=False,
         initialShift=shift,
-        functionToMap=lambda s, j: (s+j/5**1.03)+1)
+        functionToMap=lambda s, j : s+np.sin(j))
     p = Parameters(
         GAMMA=gamma,
         N=gamma.N,
         R=0,
         DIAGONAL=True,
-        COLORING = 15,
+        COLORING = 16,
         BACKGROUND = 'k',
         STROKECOLOR= 'k',
         SAVE=True,
@@ -93,7 +93,7 @@ def goPolo(N, shift):
         TILINGDIR="./poloTilings"
     )
 
-    for (dmax, nbl) in [(15, 7),]:
+    for (dmax, nbl) in [(11,12)]:
         p.NBL = nbl
         p.updateDMAX(dmax)
         outputTiling(p)

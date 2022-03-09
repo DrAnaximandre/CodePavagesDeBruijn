@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 from time import localtime, strftime
 from matplotlib import style
+from PIL import Image
+import numpy as np
 
 from gamma import MappedGammaParameter
 
@@ -104,6 +106,15 @@ class Parameters(object):
         self.COLORING = COLORING   # different coloring styles (if FILL==True), see the colors module
         # -- for contours
         self.STROKECOLOR = STROKECOLOR
+
+        img = Image.open( "gromoko.jpg")
+        img.load()
+        #self.image =
+        self.image = np.asarray(img, dtype="int32" )
+        self.image  = np.swapaxes(self.image, 0,1)
+        self.image = np.flip(self.image,1)
+
+
 
 
         if self.BACKGROUND == self.STROKECOLOR :

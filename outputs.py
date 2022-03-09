@@ -59,9 +59,10 @@ def display_rhombus(r, s, kr, ks, x, y, ind, params):
     if params.SIDES:
         sides(x,y,params)
 
-    if params.FILL :
-        c = kolor(r,s,kr,ks,d, params)
+    if params.FILL:
+        c = kolor(r,s,kr,ks,d, params, x, y)
         fill(x, y, c)
+
 
     # draws the shortest rombi diagonal, according to
     # the rombus shape (specific for N=5 but works for any N)
@@ -95,9 +96,6 @@ def display_rhombus(r, s, kr, ks, x, y, ind, params):
         if params.R == 0:  # the whole rectangle 
             x1,y1 = [x01,x12,x23,x30],[y01,y12,y23,y30]
             sides(x1,y1,params)
-            if False :
-                c = kolor(params.COLORING,r,s,kr,ks,d)
-                fill(x1, y1, c)
 
         elif params.R == 1: # only opposite sides of rectangles
             l01_12()
