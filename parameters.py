@@ -34,6 +34,7 @@ class Parameters(object):
                  BACKGROUND: str = 'w',
                  STROKECOLOR: str = 'k',
                  COLORING: int = 0,
+                 IMAGEPATH:str = "lego.jpg", # used only for coloring 16, 17, 18
                  TILINGDIR: str = "../Pavages/toto"):
 
 
@@ -107,15 +108,13 @@ class Parameters(object):
         # -- for contours
         self.STROKECOLOR = STROKECOLOR
 
-        img = Image.open( "gromoko.jpg")
+        self.IMAGEPATH = IMAGEPATH
+        img = Image.open(self.IMAGEPATH)
         img.load()
         #self.image =
         self.image = np.asarray(img, dtype="int32" )
         self.image  = np.swapaxes(self.image, 0,1)
         self.image = np.flip(self.image,1)
-
-
-
 
         if self.BACKGROUND == self.STROKECOLOR :
             print("WARNING : BACKGROUND == STROKECOLOR !!!")
