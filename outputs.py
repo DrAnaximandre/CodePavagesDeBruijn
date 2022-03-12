@@ -23,7 +23,7 @@ def sides(x,y, params) :
 def fill(x, y, c) :
     xy = np.stack((x,y), axis=1)
     #p = Polygon(xy, facecolor=c, edgecolor='black')
-    p = Polygon(xy, facecolor=c)
+    p = Polygon(xy, facecolor=c, alpha = 0.75)
     ax = plt.gca()
     ax.add_patch(p)
 
@@ -61,8 +61,18 @@ def display_rhombus(r, s, kr, ks, x, y, ind, params):
 
     if params.FILL:
         c = kolor(r,s,kr,ks,d, params, x, y)
-        fill(x, y, c)
+        #std2 = np.abs(r+1)/params.N
+        std =2 - d**2/params.DMAX**2
+        xn, yn = np.random.normal(x, std), np.random.normal(y,std)
+        # xn = (x*5 + x.mean())/6
+        # yn = (y*5 + y.mean())/6
 
+        multic = max(1,min(np.random.normal(0.1,0.2),1))
+        nc = np.array(c) * multic
+
+        fill(xn, yn, nc)
+        #fill(xn*(2-d/params.DMAX), yn*(2-d/params.DMAX), c)
+        #fill(x, y, c)
 
     # draws the shortest rombi diagonal, according to
     # the rombus shape (specific for N=5 but works for any N)
