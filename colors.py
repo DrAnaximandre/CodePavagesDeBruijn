@@ -1,5 +1,6 @@
 import math
 import matplotlib.colors as clrs
+from matplotlib import path
 import numpy as np
 
 from parameters import Parameters, WHITE
@@ -174,7 +175,33 @@ def kolor(r, s, kr, ks, d, params, x, y):
             mx = min(xm_c), max(xm_c)
             my = min(ym_c), max(ym_c)
 
+            image_bloc = params.image[mx[0]:(mx[1]+1), my[0]:(my[1]+1)]
+            if image_bloc.shape[0] != 0  and image_bloc.shape[1] !=0:
+                col_at_pix = image_bloc.mean(0).mean(0)/255
+            else:
+                col_at_pix = (0,0,0)
+            return col_at_pix
+
+
+        elif params.COLORING == 18:
+            """photo plus compliqué, ne marche pas encore"""
+            ims = params.image.shape
+
+            xm_c = [int((xe + params.DMAX) / (params.DMAX * 2) * ims[0]) for xe in x]
+            ym_c = [int((ye + params.DMAX) / (params.DMAX * 2) * ims[1]) for ye in y]
+
+            mx = min(xm_c), max(xm_c)
+            my = min(ym_c), max(ym_c)
+
             image_bloc = params.image[mx[0]:mx[1], my[0]:my[1]]
+
+            xv, yv = np.meshgrid(np.arange(image_bloc.shape[0]), np.arange(image_bloc.shape[1]))
+            p = path.Path([ bob for bob in zip(xm_c, ym_c)])
+            flags = p.contains_points(np.hstack((xv.flatten()[:, np.newaxis], yv.flatten()[:, np.newaxis])))
+            print(flags.shape)
+
+
+
             col_at_pix = image_bloc.mean(0).mean(0)/255
 
             return col_at_pix
