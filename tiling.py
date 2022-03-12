@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import math
 
+import tqdm
+
 from parameters import Parameters
 from outputs import display_rhombus
 
@@ -46,7 +48,7 @@ def tiling(params: Parameters):
     # (see de Bruijn paper section 6)
     ind = np.zeros(4)
 
-    for r in range(params.N):  # first grid orientation
+    for r in tqdm.tqdm(range(params.N)):  # first grid orientation
         for s in range(r + 1, params.N):  # second grid orientation
             for kr in range(-params.NBL, params.NBL+1):  # line number on r grid
                 for ks in range(-params.NBL, params.NBL+1):  # line number on s grid
@@ -98,7 +100,7 @@ def outputTiling(params: Parameters):
     print(params.string())
     
     # les limites du dessin
-    c = 0.9
+    c = 0.95
     lim = params.DMAX * c
     xmin, xmax, ymin, ymax = -lim, lim, -lim, lim
     ax.set_xlim([xmin, xmax])
