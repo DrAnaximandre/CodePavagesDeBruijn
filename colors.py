@@ -1,5 +1,6 @@
 import math
 import matplotlib.colors as clrs
+from matplotlib import path
 import numpy as np
 
 from parameters import Parameters, WHITE
@@ -45,7 +46,7 @@ C = list(map(rgb, [C3, C2, C4, C5, C1]))
     #plt.fill(xc,yc,colors[f])
     #plt.fill(xc,yc,'C'+str(f))
 
-def kolor(r, s, kr, ks, d, params):
+def kolor(r, s, kr, ks, d, params, x, y):
 
     
     NBF = math.floor(params.N / 2)  # number of different shapes
@@ -102,8 +103,9 @@ def kolor(r, s, kr, ks, d, params):
             if d < params.DMAX * 0.2:
                 sat = 99
 
-            v = 50 + np.cos((s * 20 + kr * 10 + ks * 15 - d)) * 24 + np.sin(2 * (s * 20 + kr * 10 + ks * 15 - d)) * 24
-
+            v = 50 + np.cos((s * 20 + kr * 10 + ks * 15 - d)) * 20 + np.sin(2 * (s * 20 + kr * 10 + ks * 15 - d)) * 24
+            if v < 30:
+                v= 95
             return rgb((h, sat, v))
 
         elif params.COLORING == 12:
@@ -113,6 +115,97 @@ def kolor(r, s, kr, ks, d, params):
             v = 50 + np.cos((s * 20 + kr * 10 + ks * 15 - d)) * 24 + np.sin(2 * (s * 20 + kr * 10 + ks * 15 - d)) * 24
 
             return rgb((h, sat, v))
+
+        elif params.COLORING == 13:
+            """ Joli rond coloré partant du rouge au centre"""
+            h = 500 * d / params.DMAX -100
+            h += 12 * s - 3*ks
+            h= h%360
+            sat = 45
+            sat += np.cos((s * 20 + kr * 10 + ks * 15 - d)) * 29 + np.sin(2 * (s * 20 + kr * 10 + ks * 15 - d)) * 24
+            sat = sat%100
+            if sat < 30:
+                sat = 95
+
+            v  = 50 + np.cos((s * 2 + kr * 15 + ks * 10 - d)) * 24 + np.sin(2 * (s * 20 + kr * 10 + ks * 15 - d)) * 24
+
+            return rgb((h, sat, v))
+
+        elif params.COLORING == 14:
+            """ Rouge noir blanc gris"""
+
+            r1 = (131, 2, 19)
+            r2 = (154,0,2)
+            r3 = (179, 13, 2)
+            r4 = (240, 234, 228)
+            r5 = (88, 88, 88)
+            r6 = (26, 26, 26)
+            L = np.array([r1,r2,r3,r4,r5,r6])
+            k = int(np.cos(d)*np.pi)%6
+
+            return L[k]/255
+        elif params.COLORING == 15:
+            """???"""
+
+            h = (ks+s+200)%360
+            s = (int(np.sin(d*5) * 125) +126)/2.6
+            v = (int(np.cos(2*d) * 20 + np.sin(d*2)*15) + 255-35)/2.6
+
+            return rgb((h,s,v))
+
+        elif params.COLORING == 16:
+            """photo simple"""
+            xm = np.mean(x)
+            ym = np.mean(y)
+            ims = params.image.shape
+            xm_c = int((xm + params.DMAX)/ (params.DMAX*2) * ims[0])
+            ym_c = int((ym + params.DMAX)/ (params.DMAX*2) * ims[1])
+
+            col_at_pix = params.image[xm_c, ym_c]
+            return col_at_pix/255
+
+
+        elif params.COLORING == 17:
+            """photo plus compliqué mais pas trop"""
+            ims = params.image.shape
+
+            xm_c = [int((xe + params.DMAX) / (params.DMAX * 2) * ims[0]) for xe in x]
+            ym_c = [int((ye + params.DMAX) / (params.DMAX * 2) * ims[1]) for ye in y]
+
+            mx = min(xm_c), max(xm_c)
+            my = min(ym_c), max(ym_c)
+
+            image_bloc = params.image[mx[0]:(mx[1]+1), my[0]:(my[1]+1)]
+            if image_bloc.shape[0] != 0  and image_bloc.shape[1] !=0:
+                col_at_pix = image_bloc.mean(0).mean(0)/255
+            else:
+                col_at_pix = (0,0,0)
+            return col_at_pix
+
+
+        elif params.COLORING == 18:
+            """photo plus compliqué, ne marche pas encore"""
+            ims = params.image.shape
+
+            xm_c = [int((xe + params.DMAX) / (params.DMAX * 2) * ims[0]) for xe in x]
+            ym_c = [int((ye + params.DMAX) / (params.DMAX * 2) * ims[1]) for ye in y]
+
+            mx = min(xm_c), max(xm_c)
+            my = min(ym_c), max(ym_c)
+
+            image_bloc = params.image[mx[0]:mx[1], my[0]:my[1]]
+
+            xv, yv = np.meshgrid(np.arange(image_bloc.shape[0]), np.arange(image_bloc.shape[1]))
+            p = path.Path([ bob for bob in zip(xm_c, ym_c)])
+            flags = p.contains_points(np.hstack((xv.flatten()[:, np.newaxis], yv.flatten()[:, np.newaxis])))
+            print(flags.shape)
+
+
+
+            col_at_pix = image_bloc.mean(0).mean(0)/255
+
+            return col_at_pix
+
         else:
             print("COLORING=" + str(params.COLORING) + " is not defined !")
             exit

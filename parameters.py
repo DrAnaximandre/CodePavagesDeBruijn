@@ -1,8 +1,11 @@
 import matplotlib.pyplot as plt
 from time import localtime, strftime
 from matplotlib import style
+from PIL import Image
+import numpy as np
 
 from gamma import MappedGammaParameter
+from sklearn.cluster import KMeans
 
 ######################################################
 
@@ -32,7 +35,13 @@ class Parameters(object):
                  BACKGROUND: str = 'w',
                  STROKECOLOR: str = 'k',
                  COLORING: int = 0,
-                 TILINGDIR: str = "../Pavages/toto"):
+                 DESTRUCTURED: bool=True, #Should noise be applied to the coordinates of the rhombi
+                 FISHEYE: bool=False, #another kind of transformation
+                 AUGMENTED_COLORS:bool =False, # Should the colors be tilted a bit
+                 IMAGEPATH:str = "lego.jpg", # used only for coloring 16, 17, 18
+                 QUANTUM_COLOR:bool = True, # should color be quantized
+                 TILINGDIR: str = "../Pavages/toto",
+                 i:int = 0):
 
 
         
@@ -105,12 +114,40 @@ class Parameters(object):
         # -- for contours
         self.STROKECOLOR = STROKECOLOR
 
+        self.IMAGEPATH = IMAGEPATH
+        self.QUANTUM_COLOR = QUANTUM_COLOR
 
-        if self.BACKGROUND == self.STROKECOLOR :
-            print("WARNING : BACKGROUND == STROKECOLOR !!!")
+        if self.COLORING in [16,17,18]:
+            img = Image.open(self.IMAGEPATH)
+            img.load()
+            # passe-passe pour loader l'image dans le bon sens
+            self.image = np.asarray(img, dtype="int32" )
+            self.image  = np.swapaxes(self.image, 0,1)
+            self.image = np.flip(self.image,1)
+            X = self.image.reshape(self.image.shape[0] * self.image.shape[1], self.image.shape[2])
+            # resize si trop grand
+            print("fitting kmeans")
+            if self.QUANTUM_COLOR:
+                bob = KMeans(n_clusters=11, random_state=0).fit(X)
+                self.QUANTUM_COLOR = bob
+
+        self.DESTRUCTURED = DESTRUCTURED
+        self.FISHEYE = FISHEYE
+        self.AUGMENTED_COLORS = AUGMENTED_COLORS
+
+        self.magic = 0.5
+        self.i = i
+        self.FILLWITHCIRCLE=False
+
+        # if self.BACKGROUND == self.STROKECOLOR :
+        #     print("WARNING : BACKGROUND == STROKECOLOR !!!")
 
         if self.BACKGROUND == BLACK :
             style.use('dark_background')
+
+    def side(self):
+        fn = self.filename()
+        return "\n".join([chr(ord(ch)+2) for ch in fn])
 
 
 
@@ -120,8 +157,8 @@ class Parameters(object):
 
     def filename(self):
         stts = str(strftime("%Y-%m-%d_%H-%M-%S", localtime()))
-        name = self.TILINGDIR + "/deBruijn_" + \
-               str(self.N) + '_' + stts + "_" + self.GAMMA.string()
+        name = self.TILINGDIR + "/bob" + \
+               str(self.i) + '_' + stts + "_" + self.GAMMA.string()
         return name
 
     def title(self):

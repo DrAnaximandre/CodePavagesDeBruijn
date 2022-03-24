@@ -23,10 +23,9 @@ import tqdm
 from joblib import Parallel,delayed
 from go import *
 
+#L = Parallel(n_jobs=-2)(delayed(goPolo)(n+5, 5*np.sin(n), i) for i, n in enumerate(range(8, 9)))
 
-goPolo(4)
-
-# L = Parallel(n_jobs=-2)(delayed(goPolo)(n+1) for n in tqdm.tqdm(range(3, 10)))
+goPolo(5, 3, 0)
 
 #goSimple()
 #goPolo()

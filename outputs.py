@@ -2,7 +2,7 @@ from colors import shape_rhombus, kolor
 import math
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.patches import Polygon
+from matplotlib.patches import Polygon, Circle
 
 from parameters import Parameters
 
@@ -16,14 +16,15 @@ def mplot(x,y,params) :
              solid_joinstyle='round',
              solid_capstyle='projecting')   # fin de lignes
 
-def sides(x,y, params) :
+
+def sides(x,y, params):
     xc, yc = np.append(x,x[0]), np.append(y,y[0])
     mplot(xc,yc, params)
     
-def fill(x, y, c) :
+def fill(x, y, c, alpha=1):
     xy = np.stack((x,y), axis=1)
     #p = Polygon(xy, facecolor=c, edgecolor='black')
-    p = Polygon(xy, facecolor=c)
+    p = Polygon(xy, facecolor=c, alpha = alpha)
     ax = plt.gca()
     ax.add_patch(p)
 
@@ -44,10 +45,10 @@ def display_rhombus(r, s, kr, ks, x, y, ind, params):
     # and side or diameter 2*DMAX 
     if params.SQUARE :
         if xm < -params.DMAX or xm > params.DMAX or ym < -params.DMAX or ym > params.DMAX :
-            return
+            return 0
     else :
         if d > params.DMAX:
-            return
+            return 0
 
     def l02():
         line(x[0], y[0], x[2], y[2], params)
@@ -59,9 +60,42 @@ def display_rhombus(r, s, kr, ks, x, y, ind, params):
     if params.SIDES:
         sides(x,y,params)
 
-    if params.FILL :
-        c = kolor(r,s,kr,ks,d, params)
-        fill(x, y, c)
+    if params.FILLWITHCIRCLE:
+        c = kolor(r, s, kr, ks, d, params, x, y)
+        std = 2 - d ** 2 / params.DMAX ** 2
+        xn, yn = np.random.normal(x, std), np.random.normal(y, std)
+        xy = np.stack((xn, yn), axis=1)
+        p = Circle(xy.mean(0), radius= np.sqrt(np.max((xy-xy.mean(0))**2)), facecolor=c, alpha=0.9)
+        ax = plt.gca()
+        ax.add_patch(p)
+
+    elif params.FILL:
+        c = kolor(r,s,kr,ks,d, params, x, y)
+
+        if params.DESTRUCTURED:
+            std = 2-d**2/params.DMAX**2
+            xn, yn = np.random.normal(x, std), np.random.normal(y,std)
+            # xn = np.random.choice(xn,3, False)
+            # yn = np.random.choice(yn,3, False)
+        elif params.FISHEYE:
+            std = params.magic-d**4/params.DMAX**4
+            xn, yn = (0.3*x+std *np.mean(x)), (0.33*y+std *np.mean(y))
+        else:
+            xn, yn = x, y
+
+        if params.QUANTUM_COLOR:
+            inc = params.QUANTUM_COLOR.predict(255*np.array(c).reshape(1,-1))
+            nc = params.QUANTUM_COLOR.cluster_centers_[inc][0]/255
+        else:
+            nc = c
+
+  #       xn = np.concatenate(([0],xn[:3]))
+  #       yn = np.concatenate(([0],yn[:3]))
+  #       xn = xn[:-1]
+  #       yn = yn[:-1]
+        fill(xn, yn, nc, alpha = 1)
+    else:
+        pass # no fill
 
     # draws the shortest rombi diagonal, according to
     # the rombus shape (specific for N=5 but works for any N)
@@ -95,9 +129,6 @@ def display_rhombus(r, s, kr, ks, x, y, ind, params):
         if params.R == 0:  # the whole rectangle 
             x1,y1 = [x01,x12,x23,x30],[y01,y12,y23,y30]
             sides(x1,y1,params)
-            if False :
-                c = kolor(params.COLORING,r,s,kr,ks,d)
-                fill(x1, y1, c)
 
         elif params.R == 1: # only opposite sides of rectangles
             l01_12()
@@ -149,3 +180,4 @@ def display_rhombus(r, s, kr, ks, x, y, ind, params):
                 l01_12() 
                 l23_30()
             
+    return 1

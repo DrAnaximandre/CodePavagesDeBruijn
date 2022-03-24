@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import math
 
+import tqdm
+
 from parameters import Parameters
 from outputs import display_rhombus
 
@@ -46,7 +48,9 @@ def tiling(params: Parameters):
     # (see de Bruijn paper section 6)
     ind = np.zeros(4)
 
-    for r in range(params.N):  # first grid orientation
+    counter = 0
+
+    for r in tqdm.tqdm(range(params.N)):  # first grid orientation
         for s in range(r + 1, params.N):  # second grid orientation
             for kr in range(-params.NBL, params.NBL+1):  # line number on r grid
                 for ks in range(-params.NBL, params.NBL+1):  # line number on s grid
@@ -83,8 +87,9 @@ def tiling(params: Parameters):
                     Kvect[r] -= 1
                     xyind(3, params)
 
-                    display_rhombus(r, s, kr, ks, x, y, ind, params)
+                    counter += display_rhombus(r, s, kr, ks, x, y, ind, params)
 
+    print(counter)
 
 ######################################
 
@@ -94,11 +99,15 @@ def outputTiling(params: Parameters):
     fig, ax = plt.subplots()
     plt.axis('equal')
     plt.axis('off')
+
     plt.title(params.title(), fontsize=8, y=0, pad=-20.)
+    # ax.set_ylabel(params.side(), rotation=0,  color="white", loc="bottom")
+    # ax.get_xaxis().set_visible(False)
+    # ax.yaxis.set_ticklabels([])
     print(params.string())
     
     # les limites du dessin
-    c = 0.9
+    c = 0.95
     lim = params.DMAX * c
     xmin, xmax, ymin, ymax = -lim, lim, -lim, lim
     ax.set_xlim([xmin, xmax])

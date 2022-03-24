@@ -74,25 +74,40 @@ def goLivretVar():
 
 
 ######################################
-def goPolo(N):
-    gamma = MGPpentavilleVariation(N)
+def goPolo(N, shift, i):
+    gamma = MappedGammaParameter(
+        N=N,
+        fixed=False,
+        initialShift=shift,
+        functionToMap=lambda s, j : np.cos(s+j)+0.1)
     p = Parameters(
         GAMMA=gamma,
         N=gamma.N,
+        RECTANGLE=False,
         R=0,
-        DIAGONAL=True,
-        COLORING = 12,
+        DIAGONAL=False,
+        SIDES=False,
+        COLORING = 17,
         BACKGROUND = 'k',
         STROKECOLOR= 'k',
         SAVE=True,
         SHOW=True,
-        TILINGDIR="../Pavages/poloTilings"
+        IMAGEPATH="start/fleurs.jpg",
+        DESTRUCTURED=False,
+        FISHEYE=True,
+        AUGMENTED_COLORS=False,
+        TILINGDIR="./poloTilings",
+        QUANTUM_COLOR=False,
+        i=i
     )
 
-    for (dmax, nbl) in [(24, 3),]:
+    for (dmax, nbl) in [(55,55)]:
+        p.magic = shift
         p.NBL = nbl
         p.updateDMAX(dmax)
         outputTiling(p)
+
+
 
 ###################################
 def goCentralSymetry() :
