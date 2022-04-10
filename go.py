@@ -72,36 +72,35 @@ def goLivretVar():
 
     
 
-
 ######################################
 def goPolo(N, shift, i):
     gamma = MappedGammaParameter(
         N=N,
         fixed=False,
         initialShift=shift,
-        functionToMap=lambda s, j : np.cos(s+j)+0.1)
+        functionToMap=lambda s, j : 15*np.sin((s-j*np.pi)**2)+(j**2)/10 +1)
     p = Parameters(
         GAMMA=gamma,
         N=gamma.N,
-        RECTANGLE=False,
-        R=0,
+        RECTANGLE=True,
+        R=3,
         DIAGONAL=False,
-        SIDES=False,
-        COLORING = 17,
+        SIDES=True,
+        COLORING=19,
         BACKGROUND = 'k',
         STROKECOLOR= 'k',
         SAVE=True,
         SHOW=True,
         IMAGEPATH="start/fleurs.jpg",
         DESTRUCTURED=False,
-        FISHEYE=True,
+        FISHEYE=False,
         AUGMENTED_COLORS=False,
-        TILINGDIR="./poloTilings",
+        TILINGDIR="./toto",
         QUANTUM_COLOR=False,
         i=i
     )
 
-    for (dmax, nbl) in [(55,55)]:
+    for (dmax, nbl) in [(18,12)]:
         p.magic = shift
         p.NBL = nbl
         p.updateDMAX(dmax)

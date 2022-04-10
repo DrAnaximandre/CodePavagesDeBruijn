@@ -147,8 +147,10 @@ def kolor(r, s, kr, ks, d, params, x, y):
         elif params.COLORING == 15:
             """???"""
 
+            dp = 1-np.mean(x)/2
+
             h = (ks+s+200)%360
-            s = (int(np.sin(d*5) * 125) +126)/2.6
+            s = (int(np.sin(dp*5) * 125) +126)/2.6
             v = (int(np.cos(2*d) * 20 + np.sin(d*2)*15) + 255-35)/2.6
 
             return rgb((h,s,v))
@@ -199,12 +201,23 @@ def kolor(r, s, kr, ks, d, params, x, y):
             p = path.Path([ bob for bob in zip(xm_c, ym_c)])
             flags = p.contains_points(np.hstack((xv.flatten()[:, np.newaxis], yv.flatten()[:, np.newaxis])))
             print(flags.shape)
-
-
-
             col_at_pix = image_bloc.mean(0).mean(0)/255
-
             return col_at_pix
+
+        elif params.COLORING == 19:
+            """???"""
+
+            dp = 1-np.mean(x)/2
+
+            h = (dp+125)%360
+            s = (int(np.sin(d*2) * 50) + 55)/2.1
+            if s < 25:
+                s=100
+
+            v = (int(np.cos(3*dp) * 20 + np.sin(d*4)*15) + 125-35)/2.1
+            if np.random.rand() < 0.1:
+                v = 100
+            return rgb((h,s,v))
 
         else:
             print("COLORING=" + str(params.COLORING) + " is not defined !")
