@@ -73,7 +73,7 @@ def goLivretVar():
     
 
 ######################################
-def goPolo(N, shift, i):
+def goPolo(N=4, shift=1, i=1234):
     gamma = MappedGammaParameter(
         N=N,
         fixed=False,
