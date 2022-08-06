@@ -130,6 +130,10 @@ class Parameters(object):
             if self.QUANTUM_COLOR:
                 bob = KMeans(n_clusters=11, random_state=0).fit(X)
                 self.QUANTUM_COLOR = bob
+        else:
+            if self.QUANTUM_COLOR:
+                print('inappropriate parameters, overriding QC ')
+                self.QUANTUM_COLOR = False
 
         self.DESTRUCTURED = DESTRUCTURED
         self.FISHEYE = FISHEYE
