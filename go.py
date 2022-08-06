@@ -95,7 +95,7 @@ def goPolo(N, shift, i):
         DESTRUCTURED=False,
         FISHEYE=False,
         AUGMENTED_COLORS=False,
-        TILINGDIR="./toto",
+        TILINGDIR="./results",
         QUANTUM_COLOR=False,
         i=i
     )

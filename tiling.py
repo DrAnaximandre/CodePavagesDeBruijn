@@ -1,4 +1,6 @@
 import matplotlib.pyplot as plt
+from pathlib import Path
+
 import numpy as np
 import math
 
@@ -126,6 +128,9 @@ def outputTiling(params: Parameters):
 
     # save d'abord et show apres !
     if params.SAVE:
+
+        Path(params.TILINGDIR).mkdir(parents=True, exist_ok=True)
+
         plt.savefig(fn + '.' + params.SAVE_FORMAT, dpi=300) #, bbox_inches="tight")
     if params.SHOW:
         plt.show()
