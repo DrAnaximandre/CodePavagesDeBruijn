@@ -1,5 +1,4 @@
 import numpy as np
-import math
 
 from parameters import Parameters
 from tiling import outputTiling
@@ -9,8 +8,6 @@ from gamma import MappedGammaParameter, MGPcentralSymetry, MGPnotExactSymetry, M
 #################################### uses all default parameters
 def goSimple():
     outputTiling(Parameters())
-
-    
 
 ###################################### with a fixed GAMMA value
 
@@ -71,22 +68,20 @@ def goLivretVar():
         gamma.setNextValue()
 
     
-
-######################################
-def goPolo(N=4, shift=1, i=1234):
+def goPolo3D(N=4, shift=1, i=1234, dmax=5, nbl=5):
     gamma = MappedGammaParameter(
         N=N,
         fixed=False,
         initialShift=shift,
-        functionToMap=lambda s, j : 15*np.sin((s-j*np.pi)**2)+(j**2)/10 +1)
+        functionToMap=lambda s, j : s*np.sin((1+j)/5)) #/(1+j))
     p = Parameters(
         GAMMA=gamma,
         N=gamma.N,
-        RECTANGLE=True,
+        RECTANGLE=False,
         R=3,
         DIAGONAL=False,
         SIDES=True,
-        COLORING=19,
+        COLORING=0,
         BACKGROUND = 'k',
         STROKECOLOR= 'k',
         SAVE=True,
@@ -97,11 +92,57 @@ def goPolo(N=4, shift=1, i=1234):
         AUGMENTED_COLORS=False,
         TILINGDIR="./results",
         QUANTUM_COLOR=False,
+        i=i,
+        SAVELOP=True
+    )
+
+    p.magic = shift
+    p.NBL = nbl
+    p.updateDMAX(dmax)
+    outputTiling(p)
+
+
+######################################
+def goPolo(N=4, # N=4 is for a squarish feeling?
+           shift=1, # shift ?
+           i=1234 # I think it should be used for file naming)?
+           ):
+    """
+    Go Polo! Go Polo!
+
+    Generate and save pretty images.
+
+
+    """
+    gamma = MappedGammaParameter(
+        N=N, # N ? 3 is triangle, 4 is squarish, 5 is cool and pentagonal, 6 has stars
+        fixed=False,
+        initialShift=shift, # shift ?
+        functionToMap=lambda s, j : 15*np.cos((30*j+25*s)**2)-30*np.sin(j*(s+np.pi))-s)
+    p = Parameters(
+        GAMMA=gamma,
+        N=gamma.N,
+        RECTANGLE=False,
+        R=4,
+        DIAGONAL=False,
+        SIDES=True,
+        COLORING=23,  # 16 uses a photo and "tiles" it, doesn't always work ...
+        BACKGROUND = 'k',
+        STROKECOLOR= 'k',
+        SAVE=True,
+        SHOW=True,
+        IMAGEPATH="catinspace.png",
+        DESTRUCTURED=False,
+        FISHEYE=False,
+        AUGMENTED_COLORS=False,
+        TILINGDIR="./results",
+        QUANTUM_COLOR=False, # very slow, much AI, consider small images
         i=i
     )
 
-    for (dmax, nbl) in [(18,12)]:
-        p.magic = shift
+    for (dmax, nbl) in [(15,
+                         14)]:
+        p.magic = shift  # seriously ?
         p.NBL = nbl
         p.updateDMAX(dmax)
         outputTiling(p)

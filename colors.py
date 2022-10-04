@@ -74,7 +74,7 @@ def kolor(r, s, kr, ks, d, params, x, y):
 
         # color depending on shape_rhombus and distance
         elif params.COLORING == 4:
-            h = mapR(f, 0, NBF - 1, 110, 225)
+            h = mapR(f, -1, NBF - 1, 110, 225)
             s = 100 - mapR(d, 0, params.DMAX, 0, 20)
             b = 100 - mapR(d, 0, params.DMAX, 0, 70)
             return rgb((h, s, b))
@@ -157,11 +157,11 @@ def kolor(r, s, kr, ks, d, params, x, y):
 
         elif params.COLORING == 16:
             """photo simple"""
-            xm = np.mean(x)
-            ym = np.mean(y)
+            xm = (np.mean(x)/params.DMAX+params.DMAX)/2
+            ym = (np.mean(y)/params.DMAX+params.DMAX)/2
             ims = params.image.shape
-            xm_c = int((xm + params.DMAX)/ (params.DMAX*2) * ims[0])
-            ym_c = int((ym + params.DMAX)/ (params.DMAX*2) * ims[1])
+            xm_c = int(xm * ims[0])
+            ym_c = int(ym * ims[1])
 
             col_at_pix = params.image[xm_c, ym_c]
             return col_at_pix/255
@@ -181,7 +181,7 @@ def kolor(r, s, kr, ks, d, params, x, y):
             if image_bloc.shape[0] != 0  and image_bloc.shape[1] !=0:
                 col_at_pix = image_bloc.mean(0).mean(0)/255
             else:
-                col_at_pix = (0,0,0)
+                col_at_pix = (0, 0, 0)
             return col_at_pix
 
 

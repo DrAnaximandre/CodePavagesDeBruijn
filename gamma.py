@@ -9,8 +9,10 @@ def mapR(x, xD, xF, yD, yF) :
     return yD + (yF-yD)/(xF-xD)*(x-xD)
 
 
-@dataclass
+@dataclass # TODO is it still needed or how should it be used ?
 class MappedGammaParameter(object) :
+
+
  
     def __init__(self,
                  N: int = 5, # Size
@@ -18,14 +20,16 @@ class MappedGammaParameter(object) :
                  fixed : bool = True,
                  initialShift : float = 2.01,
                  deltaShift: float = 0.025,
-                 functionToMap: Callable = lambda s,j : s
+                 functionToMap: Callable = lambda shift,j : shift
                 ):
 
         self.N = N
-        self.gammaValue = fixedGammaValue if fixed else [functionToMap(initialShift,j) for j in range(self.N)]
         self.shift = initialShift
         self.deltaShift = deltaShift
         self.functionToMap = functionToMap
+
+        self.gammaValue = fixedGammaValue if fixed else [self.functionToMap(self.shift,j) for j in range(self.N)]
+
         
 
     def getValue(self):

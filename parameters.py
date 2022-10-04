@@ -38,10 +38,12 @@ class Parameters(object):
                  DESTRUCTURED: bool=True, #Should noise be applied to the coordinates of the rhombi
                  FISHEYE: bool=False, #another kind of transformation
                  AUGMENTED_COLORS:bool =False, # Should the colors be tilted a bit
-                 IMAGEPATH:str = "lego.jpg", # used only for coloring 16, 17, 18
+                 IMAGEPATH:str = "mokos.jpg", # used only for coloring 16, 17, 18
                  QUANTUM_COLOR:bool = True, # should color be quantized
                  TILINGDIR: str = "../Pavages/toto",
-                 i:int = 0):
+                 i:int = 0,
+                 SAVELOP: bool = False,
+                 PATHSAVELOP: str = "../3dtiling/test.npy"):
 
 
         
@@ -117,7 +119,11 @@ class Parameters(object):
         self.IMAGEPATH = IMAGEPATH
         self.QUANTUM_COLOR = QUANTUM_COLOR
 
+        self.i = i
+
         if self.COLORING in [16,17,18]:
+            # very crude, can be demanding for the CPU if the input image is large
+
             img = Image.open(self.IMAGEPATH)
             img.load()
             # passe-passe pour loader l'image dans le bon sens
@@ -128,8 +134,8 @@ class Parameters(object):
             # resize si trop grand
             print("fitting kmeans")
             if self.QUANTUM_COLOR:
-                bob = KMeans(n_clusters=11, random_state=0).fit(X)
-                self.QUANTUM_COLOR = bob
+                color_model = KMeans(n_clusters=15, random_state=self.i).fit(X) # Todo, parameterise the number of clusters
+                self.QUANTUM_COLOR = color_model
         else:
             if self.QUANTUM_COLOR:
                 print('inappropriate parameters, overriding QC ')
@@ -140,7 +146,7 @@ class Parameters(object):
         self.AUGMENTED_COLORS = AUGMENTED_COLORS
 
         self.magic = 0.5
-        self.i = i
+
         self.FILLWITHCIRCLE=False
 
         # if self.BACKGROUND == self.STROKECOLOR :
@@ -148,6 +154,9 @@ class Parameters(object):
 
         if self.BACKGROUND == BLACK :
             style.use('dark_background')
+
+        self.savelop = SAVELOP
+        self.PATHSAVELOP = PATHSAVELOP
 
     def side(self):
         fn = self.filename()
@@ -161,16 +170,17 @@ class Parameters(object):
 
     def filename(self):
         stts = str(strftime("%Y-%m-%d_%H-%M-%S", localtime()))
-        name = self.TILINGDIR + "/bob" + \
-               str(self.i) + '_' + stts + "_" + self.GAMMA.string()
+        name = f"{self.TILINGDIR}/{self.i}_{stts}_{self.GAMMA.string()}"
         return name
 
     def title(self):
-        sG = self.GAMMA.stringTex() + ' $d_{max}$=' + str(self.DMAX) + ' #L=' + str(self.NBL)
+        sG = str(self.N) + ' $d_{max}$=' + str(self.DMAX) + ' i=' + str(self.i)
         if self.RECTANGLE:
             sG += ' R=' + str(self.R)
         if self.DIAGONAL:
             sG += ' D'
+
+        sG += self.GAMMA.string()
         return sG
 
     def string(self):

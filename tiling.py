@@ -45,12 +45,14 @@ def tiling(params: Parameters):
     """ Computes (and possibly draws) all rombi determined by N, GAMMA and NBL """
     COS, SIN = get_cos_sin(params)
     x, y = np.zeros(4), np.zeros(4)
+   # XY = np.zeros([params.N**4*4*params.NBL**2, 12]) # it's a little too large
     
     # The index of a vertex could serve as its 'altitude' for a future 3D display
     # (see de Bruijn paper section 6)
     ind = np.zeros(4)
 
     counter = 0
+    i3d = 0
 
     for r in tqdm.tqdm(range(params.N)):  # first grid orientation
         for s in range(r + 1, params.N):  # second grid orientation
@@ -91,8 +93,14 @@ def tiling(params: Parameters):
 
                     counter += display_rhombus(r, s, kr, ks, x, y, ind, params)
 
-    print(counter)
+                    # XY[i3d,:4] = x
+                    # XY[i3d, 4:8] = y
+                    # XY[i3d, 8:] = ind
+                    # i3d += 1
 
+    print(counter)
+    #return XY
+    return 0
 ######################################
 
 def outputTiling(params: Parameters):
@@ -116,7 +124,12 @@ def outputTiling(params: Parameters):
     ax.set_ylim([ymin, ymax])
 
     # le dessin
-    tiling(params)
+    XY = tiling(params)
+
+    if params.savelop:
+        with open(params.PATHSAVELOP, 'wb') as f:
+            np.save(f, XY)
+
 
     # la bordure carrée
     b = 0.999
