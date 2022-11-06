@@ -118,7 +118,7 @@ def goPolo(N=4, # N=4 is for a squarish feeling?
         N=N, # N ? 3 is triangle, 4 is squarish, 5 is cool and pentagonal, 6 has stars
         fixed=False,
         initialShift=shift, # shift ?
-        functionToMap=lambda s, j : 15*np.cos((30*j+25*s)**2)-30*np.sin(j*(s+np.pi))-s)
+        functionToMap=lambda s, j : (4+s)*np.cos(j*10))
     p = Parameters(
         GAMMA=gamma,
         N=gamma.N,
@@ -126,7 +126,7 @@ def goPolo(N=4, # N=4 is for a squarish feeling?
         R=4,
         DIAGONAL=False,
         SIDES=True,
-        COLORING=23,  # 16 uses a photo and "tiles" it, doesn't always work ...
+        COLORING=15,  # 16 uses a photo and "tiles" it, doesn't always work ...
         BACKGROUND = 'k',
         STROKECOLOR= 'k',
         SAVE=True,
@@ -140,7 +140,7 @@ def goPolo(N=4, # N=4 is for a squarish feeling?
         i=i
     )
 
-    for (dmax, nbl) in [(15,
+    for (dmax, nbl) in [(25,
                          14)]:
         p.magic = shift  # seriously ?
         p.NBL = nbl

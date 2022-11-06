@@ -141,17 +141,19 @@ def kolor(r, s, kr, ks, d, params, x, y):
             r5 = (88, 88, 88)
             r6 = (26, 26, 26)
             L = np.array([r1,r2,r3,r4,r5,r6])
-            k = int(np.cos(d)*np.pi)%6
+            k = int(np.cos(d+kr)*np.pi)%6
 
             return L[k]/255
+
+
         elif params.COLORING == 15:
             """???"""
 
-            dp = 1-np.mean(x)/2
+            dp = 1-np.mean(x*y)/2
 
-            h = (ks+s+200)%360
-            s = (int(np.sin(dp*5) * 125) +126)/2.6
-            v = (int(np.cos(2*d) * 20 + np.sin(d*2)*15) + 255-35)/2.6
+            h = (ks+s+r+200-kr)%360
+            s = (int(np.sin(dp*5) * 125) + 126)/2.6
+            v = (int(np.cos(2*d+s/(1.2+ks)) * 20 + np.sin(d*2+kr)*15) + 255-35)/2.6
 
             return rgb((h,s,v))
 
@@ -218,6 +220,38 @@ def kolor(r, s, kr, ks, d, params, x, y):
             if np.random.rand() < 0.1:
                 v = 100
             return rgb((h,s,v))
+
+        elif params.COLORING == 23:
+
+            gradations = np.arange(-20, 20, step=1)
+
+            n_grads = gradations.shape[0]
+            red = 0
+            blue = 0
+            green = 0
+
+            for j, une_gradation in enumerate(gradations):
+
+                c1r = np.sqrt(d*2) < j/n_grads
+                c2r = np.mean(x)/np.mean(y) < 1
+
+                if c1r and c2r:
+                    red += (1 - np.sin(2*np.pi*j/n_grads)/10)/n_grads
+                else:
+                    red += 0.4 + 0.2*np.sin(2*np.pi*j/n_grads)/10
+
+                if r*s/(1+np.sin(ks)) >= 0.1:
+                    blue += (1-np.sin(une_gradation))/(3)
+                if kr*ks >= f:
+                    green += np.cos(0.5*j/n_grads)/n_grads
+                elif c1r:
+                    green += 0.4/n_grads
+                else:
+                    green += j/n_grads + np.sin(kr/(r+0.001))/n_grads
+
+            # print(red,green, blue)
+            return ((red/n_grads,green/n_grads,blue/n_grads))
+
 
         else:
             print("COLORING=" + str(params.COLORING) + " is not defined !")
