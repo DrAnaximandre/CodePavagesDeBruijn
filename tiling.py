@@ -54,7 +54,6 @@ def tiling(params: Parameters):
     ind = np.zeros(4)
     
     Kvect = np.zeros(N, dtype=np.int)
-    print(Kvect)
     pre_setKvect = np.zeros((4,N), dtype=np.int)
     setKvect = set()
     
@@ -130,10 +129,11 @@ def tiling(params: Parameters):
                     
                     counter += 1
 
-    print(counter)
+    print(counter, 'rhombuses')
     
     if params.OUTPUT_COORDINATES :
         nomfich = params.filename_coordinates()
+        print('output vertices coordinates in file', nomfich)
         fich = open(nomfich, 'w')
         i = 1
         for s in setKvect:

@@ -27,6 +27,8 @@ import go
 #go.goPolo(5, -1, 0)
 
 #go.allDefaults() # uses all defaults
+#go.verySmall()
+
 #goPolo()
 #go.goLivret() # does not display but saves pdf
 #goLivretVar() # does not display but saves pdf, and does not quit
@@ -38,5 +40,4 @@ import go
 #go.goPentavilleS() # arranger la sortie
 #go.goPentavilleVariation()
 
-#go.verySmall()
-go.forGrilArt()
+go.forGrilArt()  # liaison avec le projer GrilArt (TSP)

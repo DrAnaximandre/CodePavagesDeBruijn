@@ -8,7 +8,9 @@ from gamma import MappedGammaParameter, MGPcentralSymetry, MGPnotExactSymetry, M
 
 #################################### uses all default parameters
 def allDefaults():
-    outputTiling(Parameters())
+    p = Parameters()
+    #print(str(p))
+    outputTiling(p)
 
 #################################### a very small tiling 
 def verySmall():
