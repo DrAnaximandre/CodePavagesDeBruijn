@@ -7,10 +7,12 @@ from gamma import MappedGammaParameter, MGPcentralSymetry, MGPnotExactSymetry, M
 
 
 #################################### uses all default parameters
-def goSimple():
+def allDefaults():
     outputTiling(Parameters())
 
-    
+#################################### a very small tiling 
+def verySmall():
+    outputTiling(Parameters(N=5,DMAX=2,NBL=0))
 
 ###################################### with a fixed GAMMA value
 
@@ -32,7 +34,7 @@ def goLivret():
         SAVE=True,
         SAVE_FORMAT = 'pdf',
         SHOW=False,
-        TILINGDIR="../Pavages/toto"
+        #TILINGDIR="../Pavages/toto"
     )
 
     for (d, nbl) in SEQUENCE_LIVRET[:4]:
@@ -59,7 +61,7 @@ def goLivretVar():
         SHOW = False,
         SAVE=True,
         SAVE_FORMAT = 'pdf',
-        TILINGDIR="../Pavages/toto"
+        #TILINGDIR="../Pavages/toto"
     )
 
     while True:
@@ -107,8 +109,8 @@ def goPolo(N, shift, i):
         outputTiling(p)
 
 
-
 ###################################
+
 def goCentralSymetry() :
     p = Parameters(GAMMA = MGPcentralSymetry)
     outputTiling(p)
@@ -150,7 +152,6 @@ def goPentavilleS() :
     while True :
         outputTiling(p)
         gamma.setNextValue()
-
         
 def goPentavilleVariation() :
     N = 5
@@ -167,4 +168,19 @@ def goPentavilleVariation() :
     while True :
         outputTiling(p)
         gamma.setNextValue()
- 
+
+################################ Pour donner à manger au projet ..../Python/Grilles/grilArt2
+
+def forGrilArt():
+    N = 17
+    p = Parameters(
+        GAMMA=MGPdeBruijnRegular(N),
+        N=N,
+        DMAX=6,
+        NBL=2,
+        OUTPUT_COORDINATES=True)
+    outputTiling(p)
+
+######################### un pb à corriger dans gamma.py, le N ne correspond pas
+def pb():
+    outputTiling(Parameters(N=7))    
