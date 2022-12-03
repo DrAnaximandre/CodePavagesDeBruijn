@@ -63,10 +63,22 @@ def display_rhombus(r, s, kr, ks, x, y, ind, params):
 
     if params.FILLWITHCIRCLE:
         c = kolor(r, s, kr, ks, d, params, x, y)
-        std = 2 - d ** 2 / params.DMAX ** 2
-        xn, yn = np.random.normal(x, std), np.random.normal(y, std)
-        xy = np.stack((xn, yn), axis=1)
-        p = Circle(xy.mean(0), radius= np.sqrt(np.max((xy-xy.mean(0))**2)), facecolor=c, alpha=0.9)
+        #std = 1# 2 - d ** 2 / params.DMAX ** 2
+        #xn, yn = np.random.normal(x, std), np.random.normal(y, std)
+        #xy = np.stack((xn, yn), axis=1)
+
+        xy = np.stack((x, y), axis=1)
+
+        p = Circle(
+            xy.mean(0),
+            radius= 0.4* np.sqrt(
+               d**4/params.DMAX**4,
+
+            ),
+            facecolor=c,
+            edgecolor=np.mean((c,(0,0,0)), axis=0),
+            linewidth=1,
+            alpha=0.99)
         ax = plt.gca()
         ax.add_patch(p)
 
