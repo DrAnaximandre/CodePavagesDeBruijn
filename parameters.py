@@ -181,7 +181,7 @@ class Parameters(object):
         if self.DIAGONAL:
             sG += ' D'
 
-        sG += self.GAMMA.string()
+        sG += self.GAMMA.string()[:50]
         return sG
 
     def string(self):
