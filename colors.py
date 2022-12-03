@@ -74,14 +74,20 @@ def kolor(r, s, kr, ks, d, params, x, y):
         elif params.COLORING == 9:
             c = C[f % len(C)]
             return c
+
         elif params.COLORING == 10:
             #  nuance of blue
-            h = np.random.uniform(170, 190)
-            if s > 0:
-                sat = 60 + np.cos((r * 20 + kr * 10 - ks * 5+s) * 2) * 40
+            # h = 180  + 10 * np.arctan(x[0]+y[0])
+            # if s > 0:
+            #     sat = 60 + np.cos((r * 20 + kr * 10 - ks * 5+s) * 2) * 4
+            # v = 50 + np.cos((s * 20 + kr * 20)) * 50
+            # v = 0 if v < 10 else v
 
-            v = 50 + np.cos((s * 20 + kr * 20)) * 50
-            v = 0 if v < 10 else v
+            h = 200
+            sat = 50
+            v = 70
+
+
             return rgb((h, sat, v))
 
         elif params.COLORING == 11:
