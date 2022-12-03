@@ -28,7 +28,7 @@ class MappedGammaParameter(object) :
         self.deltaShift = deltaShift
         self.functionToMap = functionToMap
 
-        self.gammaValue = fixedGammaValue if fixed else [self.functionToMap(self.shift,j) for j in range(self.N)]
+        self.gammaValue = fixedGammaValue if fixed else [self.functionToMap(self.shift, j) for j in range(self.N)]
 
         
 

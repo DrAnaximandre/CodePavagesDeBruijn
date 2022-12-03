@@ -13,6 +13,7 @@ def mplot(x,y,params) :
     plt.plot(x,y,
              linewidth=params.LINEWIDTH,
              color=params.STROKECOLOR,
+             alpha=0.7,
              solid_joinstyle='round',
              solid_capstyle='projecting')   # fin de lignes
 
