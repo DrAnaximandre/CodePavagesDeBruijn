@@ -4,7 +4,7 @@ from matplotlib import path
 import numpy as np
 
 from parameters import Parameters, WHITE
-
+from itertools import combinations
 
 #######################################
 
@@ -134,16 +134,27 @@ def kolor(r, s, kr, ks, d, params, x, y):
         elif params.COLORING == 14:
             """ Rouge noir blanc gris"""
 
-            r1 = (131, 2, 19)
-            r2 = (154,0,2)
-            r3 = (179, 13, 2)
-            r4 = (240, 234, 228)
-            r5 = (88, 88, 88)
-            r6 = (26, 26, 26)
-            L = np.array([r1,r2,r3,r4,r5,r6])
-            k = int(np.cos(d+kr)*np.pi)%6
+            n_colors = 6
+            ldc = list(combinations(range(n_colors),2))
+            comb = len(ldc)
 
-            return L[k]/255
+            L = np.zeros((comb,3))
+
+            L[0,: ] = (131,2,19)
+            L[1,: ] = (25, 25, 25)
+            L[2,: ] = (200,23,210)
+            L[3, :] = (179, 13, 2)
+            L[4, :] = (250, 250, 250)
+            L[5, :] = (99, 99, 99)
+
+            # we do the average between each combination of colors
+            for i in range(comb):
+                L[i, :] = (L[ldc[i][0], :] + L[ldc[i][1], :]) / 2
+
+            i1 = int(np.mean(x[0]+y[1]+ 0.22*x[2]+y[2]))%comb
+            i2 = int(np.mean(x[1]-y[2]))%comb
+            ctr = np.mean(L[[i1, i2]], axis=0)
+            return ctr/255
 
 
         elif params.COLORING == 15:
