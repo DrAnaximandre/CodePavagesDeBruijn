@@ -67,7 +67,37 @@ def goLivretVar():
 
         gamma.setNextValue()
 
-    
+def goDemo(N=7):
+    """
+    goDemo is a demo of the tiling generator.
+    It generates white patterns on a black background.
+
+    """
+    gamma = MappedGammaParameter(
+        N=N,
+        fixed=False,
+        initialShift=1.2345,
+        functionToMap=lambda s, j:  2*np.sin(s-(1 + j) / N) + 0.1 * j /N + np.cos(j)/N
+    )
+    p = Parameters(
+        GAMMA=gamma,
+        N=gamma.N,
+        RECTANGLE=True,
+        SIDES=False,
+        R=1,
+        DMAX=25,
+        NBL=25,
+        COLORING=0,
+        i=i,
+        SAVE=True,
+        SHOW=False,
+        SAVE_FORMAT='png',
+        TILINGDIR = "./results/demo",
+        BACKGROUND = 'k',
+        STROKECOLOR = 'w',
+    )
+    outputTiling(p)
+
 def goPolo3D(N=4, shift=1, i=1234, dmax=5, nbl=5):
     gamma = MappedGammaParameter(
         N=N,
