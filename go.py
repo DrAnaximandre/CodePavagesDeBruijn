@@ -133,32 +133,26 @@ def goPolo3D(N=4, shift=1, i=1234, dmax=5, nbl=5):
 
 
 ######################################
-def goPolo(N=4, # N=4 is for a squarish feeling?
-           shift=1, # shift ?
-           i=1234 # I think it should be used for file naming)?
-           ):
+def goPolo(N=4):
     """
     Go Polo! Go Polo!
-
     Generate and save pretty images.
-
-
+    This is a test function, not a demo.
     """
-    gamma = MappedGammaParameter(
-        N=N, # N ? 3 is triangle, 4 is squarish, 5 is cool and pentagonal, 6 has stars
-        fixed=False,
-        initialShift=shift, # shift ?
-        functionToMap=lambda s, j : (4+s)*np.cos(j*10))
+    gamma = MGPpentavilleVariation(N)
     p = Parameters(
         GAMMA=gamma,
         N=gamma.N,
         RECTANGLE=False,
         R=4,
+        FRAME=False,
         DIAGONAL=False,
-        SIDES=True,
-        COLORING=15,  # 16 uses a photo and "tiles" it, doesn't always work ...
+        SIDES=False,
+        DMAX=20,
+        NBL=10,
+        COLORING=12,  # 16 uses a photo and "tiles" it, doesn't always work ...
         BACKGROUND = 'k',
-        STROKECOLOR= 'k',
+        STROKECOLOR= 'w',
         SAVE=True,
         SHOW=True,
         IMAGEPATH="catinspace.png",
@@ -167,15 +161,9 @@ def goPolo(N=4, # N=4 is for a squarish feeling?
         AUGMENTED_COLORS=False,
         TILINGDIR="./results",
         QUANTUM_COLOR=False, # very slow, much AI, consider small images
-        i=i
+        i=123,
     )
-
-    for (dmax, nbl) in [(25,
-                         14)]:
-        p.magic = shift  # seriously ?
-        p.NBL = nbl
-        p.updateDMAX(dmax)
-        outputTiling(p)
+    outputTiling(p)
 
 
 
