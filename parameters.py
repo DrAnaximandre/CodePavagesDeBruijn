@@ -64,7 +64,7 @@ class Parameters(object):
         #self.INITIALSHIFT = 0.03  # should not be integer
         #self.DELTASHIFT = 0.1
                    
-        self.SCALE_LINEWIDTH = 8.
+        self.SCALE_LINEWIDTH = 30
         self.LINEWIDTH = self.SCALE_LINEWIDTH / self.DMAX
 
         self.SAVE = SAVE # save to a file ?
