@@ -39,22 +39,13 @@ C = list(map(rgb, [C3, C2, C4, C5, C1]))
 
 ######### the main function for coloring ##########
 
-#NBF = math.floor(N / 2)  # number of different shapes
-
-
-    #colors = ['red','green','blue','cyan']
-    #plt.fill(xc,yc,colors[f])
-    #plt.fill(xc,yc,'C'+str(f))
-
 def kolor(r, s, kr, ks, d, params, x, y):
 
-    
     NBF = math.floor(params.N / 2)  # number of different shapes
-
 
     # no color (white)
     if params.COLORING == 0:
-        return WHITE
+        return (0,0,0)
 
     else:
 
