@@ -170,7 +170,7 @@ class Parameters(object):
 
     def filename(self):
         stts = str(strftime("%Y-%m-%d_%H-%M-%S", localtime()))
-        name = f"{self.TILINGDIR}/{self.i}_{stts}_{self.GAMMA.string()}"
+        name = f"{self.TILINGDIR}/{self.i:03}_{stts}_{self.GAMMA.string()}"
         name = name[:100]
         return name
 
