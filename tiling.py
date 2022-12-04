@@ -136,7 +136,7 @@ def tiling(params: Parameters):
         print('output vertices coordinates in file', nomfich)
         with open(nomfich, 'w+') as f:
             for i, v in  enumerate(setKvect):
-                f.write(f"{i} {' '.join(map(str, v))}")
+                f.write(f"{i} {' '.join(map(str, v))} \n")
     
 
 ######################################
