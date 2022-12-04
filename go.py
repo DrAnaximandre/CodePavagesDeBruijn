@@ -88,13 +88,13 @@ def goDemo(N=7):
         DMAX=25,
         NBL=25,
         COLORING=0,
-        i=i,
+        i=0,
         SAVE=True,
         SHOW=False,
         SAVE_FORMAT='png',
         TILINGDIR = "./results/demo",
         BACKGROUND = 'k',
-        STROKECOLOR = 'w',
+        STROKECOLOR = 'w'
     )
     outputTiling(p)
 
