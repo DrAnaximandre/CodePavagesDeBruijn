@@ -132,11 +132,13 @@ def tiling(params: Parameters):
     print(counter, 'rhombuses')
     
     if params.OUTPUT_COORDINATES :
-        nomfich = params.filename_coordinates()
+        nomfich = params.FILENAME_COORDINATES
         print('output vertices coordinates in file', nomfich)
         with open(nomfich, 'w+') as f:
             for i, v in  enumerate(setKvect):
-                f.write(f"{i} {' '.join(map(str, v))} \n")
+                (x,y) = point(v,COS,SIN,N)
+                #f.write(f"{i} {' '.join(map(str, v))} \n")
+                f.write(str(i) + ' ' + str(x) + ' ' + str(y) + '\n')
     
 
 ######################################
@@ -150,7 +152,7 @@ def outputTiling(params: Parameters):
     plt.axis('off')
 
     plt.title(params.title(), fontsize=8, y=0, pad=-20.)
-    # ax.set_ylabel(params.side(), rotation=0,  color="white", loc="bottom")
+    # ax.set_ylabel(params.side(), rotation=0,  color="white", loc="bottom)")
     # ax.get_xaxis().set_visible(False)
     # ax.yaxis.set_ticklabels([])
     print(params.string())

@@ -173,7 +173,7 @@ def goPentavilleVariation() :
 ################################ Pour donner à manger au projet ..../Python/Grilles/grilArt2
 
 def forGrilArt():
-    N = 17
+    N = 6
     p = Parameters(
         GAMMA=MGPdeBruijnRegular(N),
         N=N,

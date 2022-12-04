@@ -47,7 +47,8 @@ class Parameters(object):
                  TILINGDIR: str = "../Pavages/DefaultTilingDir",
                  i: int = 0,
                  # to output coordinates of all vertices in a special file
-                 OUTPUT_COORDINATES: bool = False):
+                 OUTPUT_COORDINATES: bool = False,
+                 FILENAME_COORDINATES:str = "../../Grilles/Data/pavage_coords.txt"):
 
         # Must be 4 or higher
         # Set N = 5 for pentagrids. It works also for 7, 9, 11 ....
@@ -151,6 +152,7 @@ class Parameters(object):
             style.use('dark_background')
 
         self.OUTPUT_COORDINATES = OUTPUT_COORDINATES
+        self.FILENAME_COORDINATES = FILENAME_COORDINATES
 
     def side(self):
         fn = self.filename()
@@ -166,9 +168,9 @@ class Parameters(object):
                str(self.i) + '_' + stts + "_" + self.GAMMA.string()
         return name
 
-    def filename_coordinates(self):
-        filename_with_coordinates = self.filename() + "_coordinates.txt"
-        return filename_with_coordinates
+    #def filename_coordinates(self):
+    #    filename_with_coordinates = self.filename() + "_coordinates.txt"
+    #    return filename_with_coordinates
 
     def title(self):
         sG = self.GAMMA.stringTex() + ' $d_{max}$=' + str(self.DMAX) + ' #L=' + str(self.NBL)
