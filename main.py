@@ -28,7 +28,6 @@ import go
 
 #go.allDefaults() # uses all defaults
 #go.verySmall()
-
 #goPolo()
 #go.goLivret() # does not display but saves pdf
 #goLivretVar() # does not display but saves pdf, and does not quit
