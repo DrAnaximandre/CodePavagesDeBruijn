@@ -1,8 +1,11 @@
+from pathlib import Path
+
 import matplotlib.pyplot as plt
 from time import localtime, strftime
 from matplotlib import style
 from PIL import Image
 import numpy as np
+
 
 from gamma import MappedGammaParameter
 from sklearn.cluster import KMeans
@@ -101,6 +104,8 @@ class Parameters(object):
 
         # ---- Directory where to write the tilings
         self.TILINGDIR = TILINGDIR
+        # create the directory
+        Path(self.TILINGDIR).mkdir(parents=True, exist_ok=True)
 
         # =============== COLORS
 
