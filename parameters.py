@@ -162,8 +162,8 @@ class Parameters(object):
         return name
 
     def filename_coordinates(self):
-        #return self.filename() + '-coordinates.txt'
-        return '../../Grilles/Data/pavage_coords.txt'
+        filename_with_coordinates = self.filename() + "_coordinates.txt"
+        return filename_with_coordinates
 
     def title(self):
         sG = self.GAMMA.stringTex() + ' $d_{max}$=' + str(self.DMAX) + ' #L=' + str(self.NBL)
