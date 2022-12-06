@@ -37,7 +37,7 @@ class Parameters(object):
                  BACKGROUND: str = 'w',
                  STROKECOLOR: str = 'k',
                  COLORING: int = 0,
-                 DESTRUCTURED: bool = True,  # Should noise be applied to the coordinates of the rhombi
+                 DESTRUCTURED: bool = False,  # Should noise be applied to the coordinates of the rhombi
                  FISHEYE: bool = False,  # another kind of transformation
                  AUGMENTED_COLORS: bool = False,  # Should the colors be tilted a bit
                  IMAGEPATH: str = "lego.jpg",  # used only for coloring 16, 17, 18
