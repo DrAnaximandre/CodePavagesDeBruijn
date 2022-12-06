@@ -3,7 +3,7 @@ import matplotlib.colors as clrs
 from matplotlib import path
 import numpy as np
 
-from parameters import Parameters, WHITE
+from parameters import WHITE
 
 
 #######################################
@@ -28,7 +28,7 @@ def rgb(my_hsv) :
 # some specific colors (HSB color mode)
 # note : HSB and HSV are the same
 C1 = (198, 86, 40)  # dark blue
-C2 = (180, 100, 64)  # cyan fonce
+C2 = (180, 100, 64)  # dark cyan
 #C3 = (47, 9, 96)  # 'broken' white
 C3 = (47, 9, 80)  # 'broken' light grey
 C4 = (39, 85, 66)  # light brown
@@ -39,18 +39,13 @@ C = list(map(rgb, [C3, C2, C4, C5, C1]))
 
 ######### the main function for coloring ##########
 
-#NBF = math.floor(N / 2)  # number of different shapes
-
-
     #colors = ['red','green','blue','cyan']
     #plt.fill(xc,yc,colors[f])
     #plt.fill(xc,yc,'C'+str(f))
 
 def kolor(r, s, kr, ks, d, params, x, y):
 
-    
     NBF = math.floor(params.N / 2)  # number of different shapes
-
 
     # no color (white)
     if params.COLORING == 0:
@@ -86,6 +81,7 @@ def kolor(r, s, kr, ks, d, params, x, y):
         elif params.COLORING == 10:
             #  nuance of blue
             h = np.random.uniform(170, 190)
+            sat = 0
             if s > 0:
                 sat = 60 + np.cos((r * 20 + kr * 10 - ks * 5+s) * 2) * 40
 
@@ -221,4 +217,4 @@ def kolor(r, s, kr, ks, d, params, x, y):
 
         else:
             print("COLORING=" + str(params.COLORING) + " is not defined !")
-            exit
+            exit()

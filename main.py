@@ -12,29 +12,31 @@
 #
 #  Another valuable site : https://www.mathpages.com/home/kmath621/kmath621.htm
 #
-###########################################################################
+###########################################################################
 #  
 #  Parameters can be adjusted, see the 'parameters' module.
 #
 #  Comments and suggestions are welcome. Mail to :  mike.lembitre@gmail.com
 #
 ##########################################################################
-import tqdm
-from joblib import Parallel,delayed
-from go import *
 
-#L = Parallel(n_jobs=-2)(delayed(goPolo)(n+5, 5*np.sin(n), i) for i, n in enumerate(range(8, 9)))
+import go
 
-goPolo(5, -1, 0)
+# L = Parallel(n_jobs=-2)(delayed(goPolo)(n+5, 5*np.sin(n), i) for i, n in enumerate(range(8, 9)))
 
-#goSimple()
+#go.goPolo(5, -1, 0)
+
+#go.allDefaults() # uses all defaults
+#go.verySmall()
 #goPolo()
-#goLivret() # does not display but saves pdf
+#go.goLivret() # does not display but saves pdf
 #goLivretVar() # does not display but saves pdf, and does not quit
 
-#goCentralSymetry()
-#goNotExactSymetry()
-#goDeBruijnRegular(6)
-#goPentaville()
-#goPentavilleS()
-#goPentavilleVariation()
+#go.goCentralSymetry()
+#go.goNotExactSymetry()
+#go.goDeBruijnRegular(7)
+#go.goPentaville()  # arranger le cadre
+#go.goPentavilleS() # arranger la sortie
+#go.goPentavilleVariation()
+
+go.forGrilArt()  # liaison avec le projer GrilArt (TSP)
