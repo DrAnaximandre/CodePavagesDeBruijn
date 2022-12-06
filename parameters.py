@@ -43,7 +43,8 @@ class Parameters(object):
                  TILINGDIR: str = "../Pavages/toto/bobby",
                  i:int = 0,
                  SAVELOP: bool = False,
-                 PATHSAVELOP: str = "../3dtiling/test.npy"):
+                 PATHSAVELOP: str = "../3dtiling/test.npy",
+                 COLOR_ON_DISTANCE: bool = False):
 
 
         
@@ -64,7 +65,7 @@ class Parameters(object):
         #self.INITIALSHIFT = 0.03  # should not be integer
         #self.DELTASHIFT = 0.1
                    
-        self.SCALE_LINEWIDTH = 30
+        self.SCALE_LINEWIDTH = 20
         self.LINEWIDTH = self.SCALE_LINEWIDTH / self.DMAX
 
         self.SAVE = SAVE # save to a file ?
@@ -140,6 +141,8 @@ class Parameters(object):
             if self.QUANTUM_COLOR:
                 print('inappropriate parameters, overriding QC ')
                 self.QUANTUM_COLOR = False
+
+        self.COLOR_ON_DISTANCE = COLOR_ON_DISTANCE
 
         self.DESTRUCTURED = DESTRUCTURED
         self.FISHEYE = FISHEYE
