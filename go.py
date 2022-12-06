@@ -96,7 +96,8 @@ def goDemo(N=7):
         SAVE_FORMAT='png',
         TILINGDIR = "./results/demo",
         BACKGROUND = 'k',
-        STROKECOLOR = 'w'
+        STROKECOLOR = 'w',
+        SCALE_LINEWIDTH = 20
     )
     outputTiling(p)
 

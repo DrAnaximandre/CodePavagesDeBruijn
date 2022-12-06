@@ -46,7 +46,8 @@ class Parameters(object):
                  i: int = 0,
                  # to output coordinates of all vertices in a special file
                  OUTPUT_COORDINATES: bool = False,
-                 FILENAME_COORDINATES:str = "../../Grilles/Data/pavage_coords.txt"):
+                 FILENAME_COORDINATES:str = "../../Grilles/Data/pavage_coords.txt",
+                 SCALE_LINEWIDTH: int= 8):
 
 
         
@@ -67,7 +68,7 @@ class Parameters(object):
         # self.INITIALSHIFT = 0.03  # should not be integer
         # self.DELTASHIFT = 0.1
 
-        self.SCALE_LINEWIDTH = 8.
+        self.SCALE_LINEWIDTH = SCALE_LINEWIDTH
         self.LINEWIDTH = self.SCALE_LINEWIDTH / self.DMAX
 
         self.SAVE = SAVE  # save to a file ?
