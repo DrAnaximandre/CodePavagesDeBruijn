@@ -6,8 +6,8 @@ from go import *
 from utils import ParallelProcessor
 
 P = ParallelProcessor()
-P.add(goDemo)
-P.run([3, 4, 5, 7, 9])
+P.add(goPoloVideo)
+P.run([i for i in range(60)])
 
 #goLivret() # does not display but saves pdf
 #goLivretVar() # does not display but saves pdf, and does not quit
