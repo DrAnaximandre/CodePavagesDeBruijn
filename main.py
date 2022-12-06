@@ -18,3 +18,5 @@ P.run([3, 4, 5, 7, 9])
 # goPentaville()
 # goPentavilleS()
 # goPentavilleVariation()
+
+forGrilArt()  # liaison avec le projer GrilArt (TSP)

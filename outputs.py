@@ -33,24 +33,30 @@ def line(xA,yA,xB,yB, params) :
     x, y = [xA,xB], [yA,yB]
     mplot(x,y, params)
 
+def middle(x1, y1, x2, y2):
+    return((x1 + x2) / 2.0, (y1 + y2) / 2.0)
+
+
+def show_rhombus_properties(r,s, kr, ks, x, y, ind):
+    s = '(r,s)=(' + str(r) + ',' + str(s) + ')'
+    s += '  (kr,ks)=(' + str(kr) + ',' + str(ks) + ')'
+    print(s)
+    for i in range(4):
+        s = '      (x[' + str(i) + '],y[' + str(i) + '])=(' + str(x[i]) + ',' +  str(y[i])  + ')    '
+        s += '  ind[' + str(i) + ']=' + str(ind[i])
+        print(s)
+
 ###################################################
 
 def middle(x1, y1, x2, y2):
     return((x1 + x2) / 2.0, (y1 + y2) / 2.0)
 
 def display_rhombus(r, s, kr, ks, x, y, ind, params):
-    xm, ym = sum(x) / 4.0, sum(y) / 4.0
-    d = math.sqrt(xm * xm + ym * ym)  # distance from the rhombus center to (0,0)
 
-    # we do not draw the rhombus if it is not in the square or the circle centered in the origin
-    # and side or diameter 2*DMAX 
-    if params.SQUARE :
-        if xm < -params.DMAX or xm > params.DMAX or ym < -params.DMAX or ym > params.DMAX :
-            return 0
-    else :
-        if d > params.DMAX:
-            return 0
-
+    #if params.OUTPUT_COORDINATES :
+    #    show_rhombus_properties(r,s, kr, ks, x, y, ind)
+        
+ 
     def l02():
         line(x[0], y[0], x[2], y[2], params)
 
@@ -83,6 +89,9 @@ def display_rhombus(r, s, kr, ks, x, y, ind, params):
         ax.add_patch(p)
 
     elif params.FILL:
+        xm, ym = sum(x) / 4.0, sum(y) / 4.0
+        d = math.sqrt(xm * xm + ym * ym)  # distance from the rhombus center to (0,0)
+
         c = kolor(r,s,kr,ks,d, params, x, y)
 
         if params.DESTRUCTURED:

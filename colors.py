@@ -3,8 +3,9 @@ import matplotlib.colors as clrs
 from matplotlib import path
 import numpy as np
 
-from parameters import Parameters, WHITE
 from itertools import combinations
+from parameters import WHITE
+
 
 #######################################
 
@@ -28,7 +29,7 @@ def rgb(my_hsv) :
 # some specific colors (HSB color mode)
 # note : HSB and HSV are the same
 C1 = (198, 86, 40)  # dark blue
-C2 = (180, 100, 64)  # cyan fonce
+C2 = (180, 100, 64)  # dark cyan
 #C3 = (47, 9, 96)  # 'broken' white
 C3 = (47, 9, 80)  # 'broken' light grey
 C4 = (39, 85, 66)  # light brown
@@ -41,10 +42,16 @@ C = list(map(rgb, [C3, C2, C4, C5, C1]))
 
 def kolor(r, s, kr, ks, d, params, x, y):
 
+    
     NBF = math.floor(params.N / 2)  # number of different shapes
+
 
     # no color (white)
     if params.COLORING == 0:
+        return WHITE
+
+    elif params.COLORING == 2:
+        """ black tiles """
         return (0,0,0)
 
     else:
@@ -77,15 +84,10 @@ def kolor(r, s, kr, ks, d, params, x, y):
 
         elif params.COLORING == 10:
             #  nuance of blue
-            # h = 180  + 10 * np.arctan(x[0]+y[0])
-            # if s > 0:
-            #     sat = 60 + np.cos((r * 20 + kr * 10 - ks * 5+s) * 2) * 4
-            # v = 50 + np.cos((s * 20 + kr * 20)) * 50
-            # v = 0 if v < 10 else v
-
-            h = 200
-            sat = 50
-            v = 70
+            h = np.random.uniform(170, 190)
+            sat = 0
+            if s > 0:
+                sat = 60 + np.cos((r * 20 + kr * 10 - ks * 5+s) * 2) * 40
 
 
             return rgb((h, sat, v))
@@ -263,4 +265,4 @@ def kolor(r, s, kr, ks, d, params, x, y):
 
         else:
             print("COLORING=" + str(params.COLORING) + " is not defined !")
-            exit
+            exit()
