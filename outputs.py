@@ -10,16 +10,33 @@ from parameters import Parameters
 ################################################## draws the rhombus with matplotlib
 
 def mplot(x,y,params) :
+
+    if params.COLOR_ON_DISTANCE:
+
+        d = (x[0]**2 + y[0]**2)**0.5
+        # l1 = np.abs(x[1] - x[0])
+        # l2 = np.abs(y[1] - y[0])
+
+        if d > params.DMAX :
+            return
+        cloc = [c*(1-(d/params.DMAX)**3) for c in params.STROKECOLOR]
+        # cloc[0] *= l1
+        # cloc[1] *= l2
+        # cloc[2] *= d/params.DMAX
+
+    else:
+        cloc = params.STROKECOLOR
+
     plt.plot(x,y,
              linewidth=params.LINEWIDTH,
-             color=params.STROKECOLOR,
-             alpha=0.7,
+             color=cloc,
+             alpha=0.9999,
              solid_joinstyle='round',
-             solid_capstyle='projecting')   # fin de lignes
+             solid_capstyle='round')   # fin de lignes
 
 
 def sides(x,y, params):
-    xc, yc = np.append(x,x[0]), np.append(y,y[0])
+    xc, yc = np.append(x, x[0]), np.append(y,y[0])
     mplot(xc,yc, params)
     
 def fill(x, y, c, alpha=1):
