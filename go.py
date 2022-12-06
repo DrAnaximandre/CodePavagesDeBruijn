@@ -165,27 +165,35 @@ def goPolo(N=4):
     )
     outputTiling(p)
 
-def goPoloVideo(N=65):
+def goPoloVideo(kappa=10):
     """
     goPoloVideo is a demo of the tiling generator.
-    It generates white patterns on a black background.
+    It generates patterns on a black background.
 
     """
     def ftm(k, s, j):
         """
         Function to map.
         """
-        g = 1/np.pi + 1/(1+j)
-        if j%3 ==0:
-            g *= j*np.cos(1+np.pi*k/30)
+        g = 1/np.pi + 1/(1+j) + k/60
+        if j % 3 == 0:
+            g += np.arctan(s+j)*(1+np.cos(1+np.pi*k/30))
         return g
 
+    def ftnbl(kappa):
+
+        if kappa < 7 :
+            return 0
+        elif kappa < 35:
+            return (np.log(kappa+1)*0.65).astype(np.int_)
+        else:
+            return int((kappa-12)/5)
 
     gamma = MappedGammaParameter(
-        N=43,
+        N=5,
         fixed=False,
-        initialShift=1.2345,
-        functionToMap = lambda s, j : ftm(N, s, j)
+        initialShift=12.2345,
+        functionToMap=lambda s, j : ftm(kappa, s, j)
     )
     p = Parameters(
         GAMMA=gamma,
@@ -194,16 +202,17 @@ def goPoloVideo(N=65):
         SQUARE=False,
         SIDES=False,
         R=1,
-        DMAX=30,
-        NBL=8,
+        DMAX=22,
+        NBL=ftnbl(kappa),
         COLORING=0,
-        i=N,
+        i=kappa,
         SAVE=True,
         SHOW=False,
         SAVE_FORMAT='png',
-        TILINGDIR="./results/tv8",
+        TILINGDIR="./results/tv9",
         BACKGROUND="k",
         STROKECOLOR=(1,1,1),
+        COLOR_ON_DISTANCE=True
     )
     outputTiling(p)
 
