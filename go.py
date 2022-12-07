@@ -1,6 +1,4 @@
 import numpy as np
-import math
-
 from parameters import Parameters
 from tiling import outputTiling
 from gamma import MappedGammaParameter, MGPcentralSymetry, MGPnotExactSymetry, MGPdeBruijnRegular, MGPpentaville, MGPpentavilleS, MGPpentavilleVariation
@@ -11,7 +9,7 @@ def allDefaults():
     p = Parameters()
     outputTiling(p)
 
-#################################### a very small tiling 
+#################################### a very small tiling
 def verySmall():
     outputTiling(Parameters(N=5,DMAX=2,NBL=0))
 
@@ -34,8 +32,7 @@ def goLivret():
         FRAME = True,
         SAVE=True,
         SAVE_FORMAT = 'pdf',
-        SHOW=False,
-        #TILINGDIR="../Pavages/toto"
+        SHOW=False
     )
 
     for (d, nbl) in SEQUENCE_LIVRET[:4]:
@@ -61,8 +58,7 @@ def goLivretVar():
         SIDES = False,
         SHOW = False,
         SAVE=True,
-        SAVE_FORMAT = 'pdf',
-        #TILINGDIR="../Pavages/toto"
+        SAVE_FORMAT = 'pdf'
     )
 
     while True:
@@ -73,23 +69,52 @@ def goLivretVar():
 
         gamma.setNextValue()
 
-    
+def goDemo(N=7):
+    """
+    goDemo is a demo of the tiling generator.
+    It generates white patterns on a black background.
 
-######################################
-def goPolo(N, shift, i):
+    """
     gamma = MappedGammaParameter(
         N=N,
         fixed=False,
-        initialShift=shift,
-        functionToMap=lambda s, j : 15*np.sin((s-j*np.pi)**2)+(j**2)/10 +1)
+        initialShift=1.2345,
+        functionToMap=lambda s, j:  2*np.sin(s-(1 + j) / N) + 0.1 * j /N + np.cos(j)/N
+    )
     p = Parameters(
         GAMMA=gamma,
         N=gamma.N,
         RECTANGLE=True,
+        SIDES=False,
+        R=1,
+        DMAX=25,
+        NBL=25,
+        COLORING=2,
+        i=0,
+        SAVE=True,
+        SHOW=False,
+        SAVE_FORMAT='png',
+        TILINGDIR = "./results/demo",
+        BACKGROUND = 'k',
+        STROKECOLOR = 'w',
+        SCALE_LINEWIDTH = 20
+    )
+    outputTiling(p)
+
+def goPolo3D(N=4, shift=1, i=1234, dmax=5, nbl=5):
+    gamma = MappedGammaParameter(
+        N=N,
+        fixed=False,
+        initialShift=shift,
+        functionToMap=lambda s, j : s*np.sin((1+j)/5)) #/(1+j))
+    p = Parameters(
+        GAMMA=gamma,
+        N=gamma.N,
+        RECTANGLE=False,
         R=3,
         DIAGONAL=False,
         SIDES=True,
-        COLORING=19,
+        COLORING=0,
         BACKGROUND = 'k',
         STROKECOLOR= 'k',
         SAVE=True,
@@ -98,20 +123,100 @@ def goPolo(N, shift, i):
         DESTRUCTURED=False,
         FISHEYE=False,
         AUGMENTED_COLORS=False,
-        TILINGDIR="./toto",
+        TILINGDIR="./results",
         QUANTUM_COLOR=False,
-        i=i
+        i=i,
     )
 
-    for (dmax, nbl) in [(18,12)]:
-        p.magic = shift
-        p.NBL = nbl
-        p.updateDMAX(dmax)
-        outputTiling(p)
+    p.magic = shift
+    p.NBL = nbl
+    p.updateDMAX(dmax)
+    outputTiling(p)
+
+
+######################################
+def goPolo(N=4):
+    """
+    Go Polo! Go Polo!
+    Generate and save pretty images.
+    This is a test function, not a demo.
+    """
+    gamma = MGPpentavilleVariation(N)
+    p = Parameters(
+        GAMMA=gamma,
+        N=gamma.N,
+        RECTANGLE=False,
+        R=4,
+        FRAME=False,
+        DIAGONAL=False,
+        SIDES=False,
+        DMAX=20,
+        NBL=10,
+        COLORING=12,  # 16 uses a photo and "tiles" it, doesn't always work ...
+        BACKGROUND = 'k',
+        STROKECOLOR= 'w',
+        SAVE=True,
+        SHOW=True,
+        IMAGEPATH="catinspace.png",
+        DESTRUCTURED=False,
+        FISHEYE=False,
+        AUGMENTED_COLORS=False,
+        TILINGDIR="./results",
+        QUANTUM_COLOR=False, # very slow, much AI, consider small images
+        i=123,
+    )
+    outputTiling(p)
+
+def goPoloVideo(N=7):
+    """
+    goPoloVideo is a demo of the tiling generator.
+    It generates white patterns on a black background.
+
+    """
+    def ftm(k, s, j):
+        """
+        Function to map.
+        """
+        g = np.sin(s-(1 + j) / 7) + 0.1 * j /7 + np.cos(j)/7
+        if j==0:
+            g *= np.cos(k/3)
+        elif j==1:
+            g += np.cos(k/20)
+        elif j==2:
+            g *= np.cos(k/5) + np.cos(k/7)
+        elif j==4:
+            g += 3*np.sin(k/5)
+        return g
+
+
+    gamma = MappedGammaParameter(
+        N=5,
+        fixed=False,
+        initialShift=1.2345,
+        functionToMap = lambda s, j : ftm(N, s, j)
+    )
+    p = Parameters(
+        GAMMA=gamma,
+        N=gamma.N,
+        RECTANGLE=True,
+        SIDES=False,
+        R=1,
+        DMAX=15,
+        NBL=8,
+        COLORING=0,
+        i=N,
+        SAVE=True,
+        SHOW=False,
+        SAVE_FORMAT='png',
+        TILINGDIR="./results/testf",
+        BACKGROUND="k",
+        STROKECOLOR="w"
+    )
+    outputTiling(p)
+
 
 
 ###################################
-
 def goCentralSymetry() :
     p = Parameters(GAMMA = MGPcentralSymetry)
     outputTiling(p)
@@ -153,6 +258,7 @@ def goPentavilleS() :
     while True :
         outputTiling(p)
         gamma.setNextValue()
+
         
 def goPentavilleVariation() :
     N = 5
@@ -184,4 +290,4 @@ def forGrilArt():
 
 ######################### un pb à corriger dans gamma.py, le N ne correspond pas
 def pb():
-    outputTiling(Parameters(N=7))    
+    outputTiling(Parameters(N=7))

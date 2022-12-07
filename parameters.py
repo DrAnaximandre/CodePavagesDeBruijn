@@ -6,7 +6,6 @@ from matplotlib import style
 from PIL import Image
 import numpy as np
 
-
 from gamma import MappedGammaParameter
 from sklearn.cluster import KMeans
 
@@ -38,18 +37,20 @@ class Parameters(object):
                  BACKGROUND: str = 'w',
                  STROKECOLOR: str = 'k',
                  COLORING: int = 0,
-                 DESTRUCTURED: bool = True,  # Should noise be applied to the coordinates of the rhombi
+                 DESTRUCTURED: bool = False,  # Should noise be applied to the coordinates of the rhombi
                  FISHEYE: bool = False,  # another kind of transformation
                  AUGMENTED_COLORS: bool = False,  # Should the colors be tilted a bit
                  IMAGEPATH: str = "lego.jpg",  # used only for coloring 16, 17, 18
-                 # QUANTUM_COLOR: bool = True,  # should color be quantized
                  QUANTUM_COLOR: bool = False,  # should color be quantized
                  TILINGDIR: str = "../Pavages/DefaultTilingDir",
                  i: int = 0,
                  # to output coordinates of all vertices in a special file
                  OUTPUT_COORDINATES: bool = False,
-                 FILENAME_COORDINATES:str = "../../Grilles/Data/pavage_coords.txt"):
+                 FILENAME_COORDINATES:str = "../../Grilles/Data/pavage_coords.txt",
+                 SCALE_LINEWIDTH: int= 8):
 
+
+        
         # Must be 4 or higher
         # Set N = 5 for pentagrids. It works also for 7, 9, 11 ....
         # and even for even numbers
@@ -67,7 +68,7 @@ class Parameters(object):
         # self.INITIALSHIFT = 0.03  # should not be integer
         # self.DELTASHIFT = 0.1
 
-        self.SCALE_LINEWIDTH = 8.
+        self.SCALE_LINEWIDTH = SCALE_LINEWIDTH
         self.LINEWIDTH = self.SCALE_LINEWIDTH / self.DMAX
 
         self.SAVE = SAVE  # save to a file ?
@@ -123,7 +124,9 @@ class Parameters(object):
         self.IMAGEPATH = IMAGEPATH
         self.QUANTUM_COLOR = QUANTUM_COLOR
 
-        if self.COLORING in [16, 17, 18]:
+        if self.COLORING in [16,17,18]:
+            # very crude, can be demanding for the CPU if the input image is large
+
             img = Image.open(self.IMAGEPATH)
             img.load()
             # passe-passe pour loader l'image dans le bon sens
@@ -134,8 +137,12 @@ class Parameters(object):
             # resize si trop grand
             print("fitting kmeans")
             if self.QUANTUM_COLOR:
-                bob = KMeans(n_clusters=11, random_state=0).fit(X)
-                self.QUANTUM_COLOR = bob
+                color_model = KMeans(n_clusters=15, random_state=self.i).fit(X) # Todo, parameterise the number of clusters
+                self.QUANTUM_COLOR = color_model
+        else:
+            if self.QUANTUM_COLOR:
+                print('inappropriate parameters, overriding QC ')
+                self.QUANTUM_COLOR = False
 
         self.DESTRUCTURED = DESTRUCTURED
         self.FISHEYE = FISHEYE
@@ -158,26 +165,26 @@ class Parameters(object):
         fn = self.filename()
         return "\n".join([chr(ord(ch) + 2) for ch in fn])
 
+
+
     def updateDMAX(self, dmax):
         self.DMAX = dmax
         self.LINEWIDTH = self.SCALE_LINEWIDTH / self.DMAX
 
     def filename(self):
         stts = str(strftime("%Y-%m-%d_%H-%M-%S", localtime()))
-        name = self.TILINGDIR + "/bob" + \
-               str(self.i) + '_' + stts + "_" + self.GAMMA.string()
+        name = f"{self.TILINGDIR}/{self.i:03}_{stts}_{self.GAMMA.string()}"
+        name = name[:100]
         return name
 
-    #def filename_coordinates(self):
-    #    filename_with_coordinates = self.filename() + "_coordinates.txt"
-    #    return filename_with_coordinates
-
     def title(self):
-        sG = self.GAMMA.stringTex() + ' $d_{max}$=' + str(self.DMAX) + ' #L=' + str(self.NBL)
+        sG = str(self.N) + ' $d_{max}$=' + str(self.DMAX) + ' i=' + str(self.i)
         if self.RECTANGLE:
             sG += ' R=' + str(self.R)
         if self.DIAGONAL:
             sG += ' D'
+
+        sG += self.GAMMA.string()[:50]
         return sG
 
     def string(self):
@@ -187,3 +194,4 @@ class Parameters(object):
         if self.DIAGONAL:
             sG += ' D'
         return sG
+

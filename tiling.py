@@ -1,4 +1,6 @@
 import matplotlib.pyplot as plt
+from pathlib import Path
+
 import numpy as np
 import math
 
@@ -52,14 +54,14 @@ def tiling(params: Parameters):
     # The index of a vertex could serve as its 'altitude' for a future 3D display
     # (see de Bruijn paper section 6)
     ind = np.zeros(4)
-    
+
     Kvect = np.zeros(N, dtype=np.int)
     pre_setKvect = np.zeros((4,N), dtype=np.int)
     setKvect = set()
-    
+
     counter = 0
 
-    #for r in tqdm.tqdm(range(params.N)):  # first grid orientation
+    # later: compute all combination and TQDM it up
     for r in range(N):  # first grid orientation
         for s in range(r + 1, N):  # second grid orientation
             for kr in range(-NBL, NBL+1):  # line number on r grid
@@ -67,7 +69,7 @@ def tiling(params: Parameters):
 
                     # We compute the rhombus vertices associated to r,s,kr,ks
 
-                    # Pentagrid intersection, de Bruijn (4.4). (xp,yp) is the z_0 of de Bruijn 
+                    # Pentagrid intersection, de Bruijn (4.4). (xp,yp) is the z_0 of de Bruijn
                     (xp, yp) = interGrid(r, s, kr, ks, COS, SIN, GAMMA)
 
                     #  Kvect is the K of deBruijn, a vector of N integers
@@ -82,18 +84,18 @@ def tiling(params: Parameters):
                             Kvect[r] = kr
                         elif j == s :
                             Kvect[s] = ks
-                        else : # (4.3) 
+                        else : # (4.3)
                             Kvect[j] = math.ceil(xp * COS[j] + yp * SIN[j] + GAMMA[j])
- 
-                    
+
+
                     def setxyind(j):
                         (x[j], y[j]) = point(Kvect, COS, SIN, N)
                         ind[j] = sum(Kvect)
                         if params.OUTPUT_COORDINATES :
                             pre_setKvect[j] = Kvect
 
-                    # (4.5) computation of the four values 
- 
+                    # (4.5) computation of the four values
+
                     setxyind(0)
 
                     Kvect[r] += 1
@@ -106,13 +108,13 @@ def tiling(params: Parameters):
                     setxyind(3)
 
                     # here we keep the rhombus or not, according to its distance from origin
-                    
+
                     xm, ym = sum(x) / 4.0, sum(y) / 4.0
                     d = math.sqrt(xm * xm + ym * ym)  # distance from the rhombus center to (0,0)
 
                     # we do not consider the rhombus
                     # if it is not in the square (or the circle) centered in the origin
-                    # and 2*DMAX side (or diameter)  
+                    # and 2*DMAX side (or diameter)
                     if params.SQUARE :
                         if xm < -params.DMAX or xm > params.DMAX or ym < -params.DMAX or ym > params.DMAX :
                             continue
@@ -121,16 +123,16 @@ def tiling(params: Parameters):
                             continue
 
                     # possibility to outputs the set of points coordinates in a file
-                    if params.OUTPUT_COORDINATES :    
+                    if params.OUTPUT_COORDINATES :
                         for v in pre_setKvect:
                             setKvect.add(tuple(v))
-    
+
                     display_rhombus(r, s, kr, ks, x, y, ind, params)
-                    
+
                     counter += 1
 
     print(counter, 'rhombuses')
-    
+
     if params.OUTPUT_COORDINATES :
         nomfich = params.FILENAME_COORDINATES
         print('output vertices coordinates in file', nomfich)
@@ -139,24 +141,23 @@ def tiling(params: Parameters):
                 (x,y) = point(v,COS,SIN,N)
                 #f.write(f"{i} {' '.join(map(str, v))} \n")
                 f.write(str(i) + ' ' + str(x) + ' ' + str(y) + '\n')
-    
+
 
 ######################################
 
 def outputTiling(params: Parameters):
-
     fn = params.filename()
 
     fig, ax = plt.subplots()
     plt.axis('equal')
     plt.axis('off')
 
-    plt.title(params.title(), fontsize=8, y=0, pad=-20.)
-    # ax.set_ylabel(params.side(), rotation=0,  color="white", loc="bottom)")
+    plt.title(params.title(), fontsize=7, y=0, pad=-20.)
+    # ax.set_ylabel(params.side(), rotation=0,  color="white", loc="bottom")
     # ax.get_xaxis().set_visible(False)
     # ax.yaxis.set_ticklabels([])
     print(params.string())
-
+    
     # les limites du dessin
     c = 0.95
     lim = params.DMAX * c
@@ -177,6 +178,9 @@ def outputTiling(params: Parameters):
 
     # save d'abord et show apres !
     if params.SAVE:
+
+        Path(params.TILINGDIR).mkdir(parents=True, exist_ok=True)
+
         plt.savefig(fn + '.' + params.SAVE_FORMAT, dpi=300) #, bbox_inches="tight")
     if params.SHOW:
          plt.show()

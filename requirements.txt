@@ -1,0 +1,6 @@
+numpy~=1.23.1
+tqdm~=4.64.0
+Pillow~=9.0.1
+joblib
+matplotlib
+scikit-learn

@@ -3,6 +3,7 @@ import matplotlib.colors as clrs
 from matplotlib import path
 import numpy as np
 
+from itertools import combinations
 from parameters import WHITE
 
 
@@ -39,17 +40,19 @@ C = list(map(rgb, [C3, C2, C4, C5, C1]))
 
 ######### the main function for coloring ##########
 
-    #colors = ['red','green','blue','cyan']
-    #plt.fill(xc,yc,colors[f])
-    #plt.fill(xc,yc,'C'+str(f))
-
 def kolor(r, s, kr, ks, d, params, x, y):
 
+    
     NBF = math.floor(params.N / 2)  # number of different shapes
+
 
     # no color (white)
     if params.COLORING == 0:
         return WHITE
+
+    elif params.COLORING == 2:
+        """ black tiles """
+        return (0,0,0)
 
     else:
 
@@ -69,7 +72,7 @@ def kolor(r, s, kr, ks, d, params, x, y):
 
         # color depending on shape_rhombus and distance
         elif params.COLORING == 4:
-            h = mapR(f, 0, NBF - 1, 110, 225)
+            h = mapR(f, -1, NBF - 1, 110, 225)
             s = 100 - mapR(d, 0, params.DMAX, 0, 20)
             b = 100 - mapR(d, 0, params.DMAX, 0, 70)
             return rgb((h, s, b))
@@ -78,6 +81,7 @@ def kolor(r, s, kr, ks, d, params, x, y):
         elif params.COLORING == 9:
             c = C[f % len(C)]
             return c
+
         elif params.COLORING == 10:
             #  nuance of blue
             h = np.random.uniform(170, 190)
@@ -85,8 +89,7 @@ def kolor(r, s, kr, ks, d, params, x, y):
             if s > 0:
                 sat = 60 + np.cos((r * 20 + kr * 10 - ks * 5+s) * 2) * 40
 
-            v = 50 + np.cos((s * 20 + kr * 20)) * 50
-            v = 0 if v < 10 else v
+
             return rgb((h, sat, v))
 
         elif params.COLORING == 11:
@@ -130,34 +133,47 @@ def kolor(r, s, kr, ks, d, params, x, y):
         elif params.COLORING == 14:
             """ Rouge noir blanc gris"""
 
-            r1 = (131, 2, 19)
-            r2 = (154,0,2)
-            r3 = (179, 13, 2)
-            r4 = (240, 234, 228)
-            r5 = (88, 88, 88)
-            r6 = (26, 26, 26)
-            L = np.array([r1,r2,r3,r4,r5,r6])
-            k = int(np.cos(d)*np.pi)%6
+            n_colors = 6
+            ldc = list(combinations(range(n_colors),2))
+            comb = len(ldc)
 
-            return L[k]/255
+            L = np.zeros((comb,3))
+
+            L[0,: ] = (131,2,19)
+            L[1,: ] = (25, 25, 25)
+            L[2,: ] = (200,23,210)
+            L[3, :] = (179, 13, 2)
+            L[4, :] = (250, 250, 250)
+            L[5, :] = (99, 99, 99)
+
+            # we do the average between each combination of colors
+            for i in range(comb):
+                L[i, :] = (L[ldc[i][0], :] + L[ldc[i][1], :]) / 2
+
+            i1 = int(np.mean(x[0]+y[1]+ 0.22*x[2]+y[2]))%comb
+            i2 = int(np.mean(x[1]-y[2]))%comb
+            ctr = np.mean(L[[i1, i2]], axis=0)
+            return ctr/255
+
+
         elif params.COLORING == 15:
             """???"""
 
-            dp = 1-np.mean(x)/2
+            dp = 1-np.mean(x*y)/2
 
-            h = (ks+s+200)%360
-            s = (int(np.sin(dp*5) * 125) +126)/2.6
-            v = (int(np.cos(2*d) * 20 + np.sin(d*2)*15) + 255-35)/2.6
+            h = (ks+s+r+200-kr)%360
+            s = (int(np.sin(dp*5) * 125) + 126)/2.6
+            v = (int(np.cos(2*d+s/(1.2+ks)) * 20 + np.sin(d*2+kr)*15) + 255-35)/2.6
 
             return rgb((h,s,v))
 
         elif params.COLORING == 16:
             """photo simple"""
-            xm = np.mean(x)
-            ym = np.mean(y)
+            xm = (np.mean(x)/params.DMAX+params.DMAX)/2
+            ym = (np.mean(y)/params.DMAX+params.DMAX)/2
             ims = params.image.shape
-            xm_c = int((xm + params.DMAX)/ (params.DMAX*2) * ims[0])
-            ym_c = int((ym + params.DMAX)/ (params.DMAX*2) * ims[1])
+            xm_c = int(xm * ims[0])
+            ym_c = int(ym * ims[1])
 
             col_at_pix = params.image[xm_c, ym_c]
             return col_at_pix/255
@@ -177,7 +193,7 @@ def kolor(r, s, kr, ks, d, params, x, y):
             if image_bloc.shape[0] != 0  and image_bloc.shape[1] !=0:
                 col_at_pix = image_bloc.mean(0).mean(0)/255
             else:
-                col_at_pix = (0,0,0)
+                col_at_pix = (0, 0, 0)
             return col_at_pix
 
 
@@ -214,6 +230,38 @@ def kolor(r, s, kr, ks, d, params, x, y):
             if np.random.rand() < 0.1:
                 v = 100
             return rgb((h,s,v))
+
+        elif params.COLORING == 23:
+
+            gradations = np.arange(-20, 20, step=1)
+
+            n_grads = gradations.shape[0]
+            red = 0
+            blue = 0
+            green = 0
+
+            for j, une_gradation in enumerate(gradations):
+
+                c1r = np.sqrt(d*2) < j/n_grads
+                c2r = np.mean(x)/np.mean(y) < 1
+
+                if c1r and c2r:
+                    red += (1 - np.sin(2*np.pi*j/n_grads)/10)/n_grads
+                else:
+                    red += 0.4 + 0.2*np.sin(2*np.pi*j/n_grads)/10
+
+                if r*s/(1+np.sin(ks)) >= 0.1:
+                    blue += (1-np.sin(une_gradation))/(3)
+                if kr*ks >= f:
+                    green += np.cos(0.5*j/n_grads)/n_grads
+                elif c1r:
+                    green += 0.4/n_grads
+                else:
+                    green += j/n_grads + np.sin(kr/(r+0.001))/n_grads
+
+            # print(red,green, blue)
+            return ((red/n_grads,green/n_grads,blue/n_grads))
+
 
         else:
             print("COLORING=" + str(params.COLORING) + " is not defined !")
