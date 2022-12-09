@@ -9,6 +9,8 @@ P = ParallelProcessor()
 P.add(goDemo)
 P.run([3, 4, 5, 7, 9])
 
+#go.allDefaults() # uses all defaults
+#go.verySmall()
 #goLivret() # does not display but saves pdf
 #goLivretVar() # does not display but saves pdf, and does not quit
 
@@ -19,4 +21,4 @@ P.run([3, 4, 5, 7, 9])
 # goPentavilleS()
 # goPentavilleVariation()
 
-forGrilArt()  # liaison avec le projer GrilArt (TSP)
+#forGrilArt()  # liaison avec le projer GrilArt (TSP)
