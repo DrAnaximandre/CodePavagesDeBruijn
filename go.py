@@ -5,12 +5,12 @@ from gamma import MappedGammaParameter, MGPcentralSymetry, MGPnotExactSymetry, M
 
 
 #################################### uses all default parameters
-def allDefaults():
+def goAllDefaults():
     p = Parameters()
     outputTiling(p)
 
 #################################### a very small tiling
-def verySmall():
+def goVerySmall():
     outputTiling(Parameters(N=5,DMAX=2,NBL=0))
 
 ###################################### with a fixed GAMMA value
