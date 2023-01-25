@@ -59,20 +59,20 @@ class MappedGammaParameter(object) :
     # Gives a tiling with perfect central symetry,
     #  but 'singular' in the deBruijn sense.
     # self.GAMMA = [self.SHIFT] * self.N
-MGPcentralSymetry = MappedGammaParameter(
-    fixed = False)
-
-
+def MGPcentralSymetry(N, shift) :
+    return MappedGammaParameter(
+        N=N,
+        fixed = True,
+        fixedGammaValue = [shift] * N)
 
     # Tilings could be not exactly symetric
     # self.GAMMA = [self.SHIFT - 0.00085 * j for j in range(self.N)]
     # self.GAMMA = [self.SHIFT - 0.05 * j for j in range(self.N)]
-MGPnotExactSymetry = MappedGammaParameter(
-    fixed = False,
-    functionToMap = lambda s, j :  s - 0.05 * j)
-
-
-
+def MGPnotExactSymetry(N) :
+    return MappedGammaParameter(
+        N=N,
+        fixed = False,
+        functionToMap = lambda s, j :  s - 0.05 * j))
 
     # More or less enforces the deBruijn 'regular' conditions for the tiling
     #   (see the paper, and the 'mathpage' site).
@@ -83,8 +83,6 @@ def MGPdeBruijnRegular(N) :
         N=N,
         fixed=False,
         functionToMap=lambda s, j: mapR(j, 0, N-1, -0.29 + s, 0.19 - s))
-
-
 
     # special "Pentaville" (best for N=5, large DMAX, screen entirely filled)
     # -- always gives the same tilling ! (does not depend on SHIFT)
@@ -119,8 +117,6 @@ def MGPpentavilleVariation(N):
 
     # for livret #2 (avec DIAGONALS) with N=5
     # self.GAMMA = [0.0, 0.486, 0.747, 0.645, 0.180]
-
-# use fixed = True and corresponding fixedGammaValue (see default value)
 
     # for livret #3 with R=2 (ancienne valeur, elle a pu changer) pour N=5
     # self.GAMMA = [1.890, 1.885, 1.880, 1.875, 1.870]

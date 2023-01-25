@@ -46,7 +46,7 @@ class Parameters(object):
                  i: int = 0,
                  # to output coordinates of all vertices in a special file
                  OUTPUT_COORDINATES: bool = False,
-                 FILENAME_COORDINATES:str = "../../Grilles/Data/pavage_coords.txt",
+                 FILENAME_COORDINATES:str = "../../ACM/Data/pavage_coords.txt",
                  SCALE_LINEWIDTH: int= 8):
 
 

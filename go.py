@@ -93,7 +93,7 @@ def goDemo(N=7):
         i=0,
         SAVE=True,
         SHOW=False,
-        SAVE_FORMAT='png',
+        SAVE_FORMAT='pdf',
         TILINGDIR = "./results/demo",
         BACKGROUND = 'k',
         STROKECOLOR = 'w',
@@ -279,12 +279,14 @@ def goPentavilleVariation() :
 ################################ Pour donner à manger au projet ..../Python/Grilles/grilArt2
 
 def forGrilArt():
-    N = 6
+    N = 5
     p = Parameters(
-        GAMMA=MGPdeBruijnRegular(N),
+        #GAMMA=MGPdeBruijnRegular(N),
+        GAMMA = MGPcentralSymetry(N,-0.0001),
         N=N,
-        DMAX=6,
-        NBL=2,
+        DMAX=40,
+        NBL=20,
+        SQUARE = True,
         OUTPUT_COORDINATES=True)
     outputTiling(p)
 
