@@ -79,6 +79,7 @@ def tiling(params: Parameters):
                     # Numerical computation of 'ceil' in Kvect below may incorrectly yield the upper integer.
                     # To prevent this we directly reassign Kvect[r] to kr. Idem for ks.
 
+ 
                     for j in range(N):
                         if j == r :
                             Kvect[r] = kr
@@ -116,7 +117,8 @@ def tiling(params: Parameters):
                     # if it is not in the square (or the circle) centered in the origin
                     # and 2*DMAX side (or diameter)
                     if params.SQUARE :
-                        if xm < -params.DMAX or xm > params.DMAX or ym < -params.DMAX or ym > params.DMAX :
+                        if xm < -params.DMAX or xm > params.DMAX\
+                          or ym < -params.DMAX or ym > params.DMAX :
                             continue
                     else :
                         if d > params.DMAX:

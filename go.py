@@ -13,7 +13,7 @@ def goAllDefaults():
 def goVerySmall():
     outputTiling(Parameters(N=5,DMAX=2,NBL=0))
 
-###################################### with a fixed GAMMA value
+###################################### with a fixed and initial GAMMA value
 
 SEQUENCE_LIVRET = [(4,3), (8,6), (15, 8), (30, 16), (60, 33), (100, 55)]
 
@@ -21,7 +21,7 @@ def goLivret():
     N = 5
     gamma = MappedGammaParameter(
         N=N,  # Size
-        fixedGammaValue = np.array([-0.260, -0.155, -0.050, 0.055, 0.160]),
+        initialGammaValue = np.array([-0.260, -0.155, -0.050, 0.055, 0.160]),
     )
     p = Parameters(
         GAMMA=gamma,
@@ -47,7 +47,6 @@ def goLivretVar():
     initialshift = 0.03
     gamma = MappedGammaParameter(
         N=N,  
-        fixed = False,
         functionToMap=lambda s, j : s - 0.05 * j
     )
     p = Parameters(
@@ -61,7 +60,7 @@ def goLivretVar():
         SAVE_FORMAT = 'pdf'
     )
 
-    while True:
+    for i in range(4):
         for (d, nbl) in SEQUENCE_LIVRET[:4]:
             p.NBL = nbl
             p.updateDMAX(d)
@@ -77,7 +76,6 @@ def goDemo(N=7):
     """
     gamma = MappedGammaParameter(
         N=N,
-        fixed=False,
         initialShift=1.2345,
         functionToMap=lambda s, j:  2*np.sin(s-(1 + j) / N) + 0.1 * j /N + np.cos(j)/N
     )
@@ -104,7 +102,6 @@ def goDemo(N=7):
 def goPolo3D(N=4, shift=1, i=1234, dmax=5, nbl=5):
     gamma = MappedGammaParameter(
         N=N,
-        fixed=False,
         initialShift=shift,
         functionToMap=lambda s, j : s*np.sin((1+j)/5)) #/(1+j))
     p = Parameters(
@@ -191,7 +188,6 @@ def goPoloVideo(N=7):
 
     gamma = MappedGammaParameter(
         N=5,
-        fixed=False,
         initialShift=1.2345,
         functionToMap = lambda s, j : ftm(N, s, j)
     )
@@ -218,11 +214,11 @@ def goPoloVideo(N=7):
 
 ###################################
 def goCentralSymetry() :
-    p = Parameters(GAMMA = MGPcentralSymetry)
+    p = Parameters(GAMMA = MGPcentralSymetry())
     outputTiling(p)
 
 def goNotExactSymetry() :
-    p = Parameters(GAMMA = MGPnotExactSymetry)
+    p = Parameters(GAMMA = MGPnotExactSymetry())
     outputTiling(p)
  
 def goDeBruijnRegular(N = 5):
@@ -255,7 +251,7 @@ def goPentavilleS() :
         RECTANGLE = True,
         R = 2,
         FRAME = True)
-    while True :
+    for i in range(4) :
         outputTiling(p)
         gamma.setNextValue()
 
@@ -272,7 +268,7 @@ def goPentavilleVariation() :
         RECTANGLE = True,
         R = 2,
         FRAME = True)
-    while True :
+    for i in range(4) :
         outputTiling(p)
         gamma.setNextValue()
 
@@ -289,7 +285,3 @@ def forGrilArt():
         SQUARE = True,
         OUTPUT_COORDINATES=True)
     outputTiling(p)
-
-######################### un pb à corriger dans gamma.py, le N ne correspond pas
-def pb():
-    outputTiling(Parameters(N=7))
