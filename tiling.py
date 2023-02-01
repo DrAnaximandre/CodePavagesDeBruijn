@@ -33,12 +33,12 @@ def interGrid(r, s, kr, ks, COS, SIN, GAMMA):
     return inter(a, b, c, a1, b1, c1)
 
 # de Bruijn (5.1)
-def point(k, COS, SIN, N):
+def point(kVect, COS, SIN, N):
     """ Point associated to [ k_0, ... k_(N-1) ] """
     x, y = 0.0, 0.0
     for j in range(N):
-        x += k[j] * COS[j]
-        y += k[j] * SIN[j]
+        x += kVect[j] * COS[j]
+        y += kVect[j] * SIN[j]
     return (x, y)
 
 def tiling(params: Parameters):
@@ -51,10 +51,11 @@ def tiling(params: Parameters):
     # coordonnees du rhombus courant
     x, y = np.zeros(4), np.zeros(4)
     
-    # The index of a vertex could serve as its 'altitude' for a future 3D display
+    # The index of a vertex could serve later as its 'altitude' for a future 3D display
     # (see de Bruijn paper section 6)
     ind = np.zeros(4)
 
+    #  Kvect is the K of deBruijn's paper, a vector of N integers
     Kvect = np.zeros(N, dtype=np.int)
     pre_setKvect = np.zeros((4,N), dtype=np.int)
     setKvect = set()
@@ -72,7 +73,7 @@ def tiling(params: Parameters):
                     # Pentagrid intersection, de Bruijn (4.4). (xp,yp) is the z_0 of de Bruijn
                     (xp, yp) = interGrid(r, s, kr, ks, COS, SIN, GAMMA)
 
-                    #  Kvect is the K of deBruijn, a vector of N integers
+                    
                     # The following seems strange but it works, thanks Zhao Liang (github pywonderland).
                     # This solves a precision problem : we can prove that (with de Bruijn notation)
                     # K_r(z) = kr when z is on the line (r,kr), hence it is an integer.
@@ -85,7 +86,7 @@ def tiling(params: Parameters):
                             Kvect[r] = kr
                         elif j == s :
                             Kvect[s] = ks
-                        else : # (4.3)
+                        else : # de Bruijn (4.3)
                             Kvect[j] = math.ceil(xp * COS[j] + yp * SIN[j] + GAMMA[j])
 
 
@@ -95,7 +96,7 @@ def tiling(params: Parameters):
                         if params.OUTPUT_COORDINATES :
                             pre_setKvect[j] = Kvect
 
-                    # (4.5) computation of the four values
+                    # (4.5) computation of the four values corresponding to the four vertices of the current rhombus
 
                     setxyind(0)
 
@@ -125,6 +126,8 @@ def tiling(params: Parameters):
                             continue
 
                     # possibility to outputs the set of points coordinates in a file
+                    # Kvect is more accurate than coordinates, this is the reason
+                    # why we keep it in the setKvect dictionnary
                     if params.OUTPUT_COORDINATES :
                         for v in pre_setKvect:
                             setKvect.add(tuple(v))
