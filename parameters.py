@@ -21,7 +21,8 @@ plt.rcParams['figure.figsize'] = 8., 8.  # pour petit ecran
 class Parameters(object):
 
     def __init__(self,
-                 GAMMA: MappedGammaParameter = MappedGammaParameter(),
+                 # GAMMA actual value defined later because of N dependancy
+                 GAMMA: MappedGammaParameter = None, 
                  N: int = 5,
                  DMAX: int = 8,
                  NBL: int = 5,
@@ -46,7 +47,7 @@ class Parameters(object):
                  i: int = 0,
                  # to output coordinates of all vertices in a special file
                  OUTPUT_COORDINATES: bool = False,
-                 FILENAME_COORDINATES:str = "../../Grilles/Data/pavage_coords.txt",
+                 FILENAME_COORDINATES:str = "../../ACM/Data/pavage_coords.txt",
                  SCALE_LINEWIDTH: int= 8):
 
 
@@ -63,7 +64,8 @@ class Parameters(object):
         # Half the number of lines in the pentagrid for a fixed angle.
         self.NBL = NBL
 
-        self.GAMMA = GAMMA
+        
+        self.GAMMA = GAMMA if GAMMA else MappedGammaParameter(N=N)
 
         # self.INITIALSHIFT = 0.03  # should not be integer
         # self.DELTASHIFT = 0.1
