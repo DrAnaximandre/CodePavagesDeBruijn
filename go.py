@@ -1,7 +1,8 @@
 import numpy as np
+
 from parameters import Parameters
 from tiling import outputTiling
-from gamma import MappedGammaParameter, MGPcentralSymetry, MGPnotExactSymetry, MGPdeBruijnRegular, MGPpentaville, MGPpentavilleS, MGPpentavilleVariation
+import gamma as gm
 
 
 #################################### uses all default parameters
@@ -9,17 +10,19 @@ def goAllDefaults():
     p = Parameters()
     outputTiling(p)
 
+    
 #################################### a very small tiling
 def goVerySmall():
     outputTiling(Parameters(N=5,DMAX=2,NBL=0))
 
+    
 ###################################### with a fixed and initial GAMMA value
 
 SEQUENCE_LIVRET = [(4,3), (8,6), (15, 8), (30, 16), (60, 33), (100, 55)]
 
 def goLivret():
     N = 5
-    gamma = MappedGammaParameter(
+    gamma = gm.MappedGammaParameter(
         N=N,  # Size
         initialGammaValue = np.array([-0.260, -0.155, -0.050, 0.055, 0.160]),
     )
@@ -42,10 +45,11 @@ def goLivret():
 
             
 ###################################### with a varying GAMMA value
+
 def goLivretVar():
     N = 5
     initialshift = 0.03
-    gamma = MappedGammaParameter(
+    gamma = gm.MappedGammaParameter(
         N=N,  
         functionToMap=lambda s, j : s - 0.05 * j
     )
@@ -68,13 +72,15 @@ def goLivretVar():
 
         gamma.setNextValue()
 
+
+############################### Polo's demo
 def goDemo(N=7):
     """
     goDemo is a demo of the tiling generator.
     It generates white patterns on a black background.
 
     """
-    gamma = MappedGammaParameter(
+    gamma = gm.MappedGammaParameter(
         N=N,
         initialShift=1.2345,
         functionToMap=lambda s, j:  2*np.sin(s-(1 + j) / N) + 0.1 * j /N + np.cos(j)/N
@@ -100,7 +106,7 @@ def goDemo(N=7):
     outputTiling(p)
 
 def goPolo3D(N=4, shift=1, i=1234, dmax=5, nbl=5):
-    gamma = MappedGammaParameter(
+    gamma = gm.MappedGammaParameter(
         N=N,
         initialShift=shift,
         functionToMap=lambda s, j : s*np.sin((1+j)/5)) #/(1+j))
@@ -138,7 +144,7 @@ def goPolo(N=4):
     Generate and save pretty images.
     This is a test function, not a demo.
     """
-    gamma = MGPpentavilleVariation(N)
+    gamma = gm.MGPpentavilleVariation(N)
     p = Parameters(
         GAMMA=gamma,
         N=gamma.N,
@@ -186,7 +192,7 @@ def goPoloVideo(N=7):
         return g
 
 
-    gamma = MappedGammaParameter(
+    gamma = gm.MappedGammaParameter(
         N=5,
         initialShift=1.2345,
         functionToMap = lambda s, j : ftm(N, s, j)
@@ -212,24 +218,25 @@ def goPoloVideo(N=7):
 
 
 
-###################################
+################################### miscellanous
+
 def goCentralSymetry() :
-    p = Parameters(GAMMA = MGPcentralSymetry())
+    p = Parameters(GAMMA = gm.MGPcentralSymetry())
     outputTiling(p)
 
 def goNotExactSymetry() :
-    p = Parameters(GAMMA = MGPnotExactSymetry())
+    p = Parameters(GAMMA = gm.MGPnotExactSymetry())
     outputTiling(p)
  
 def goDeBruijnRegular(N = 5):
     p = Parameters(
-        GAMMA=MGPdeBruijnRegular(N),
+        GAMMA = gm.MGPdeBruijnRegular(N),
         N=N)
     outputTiling(p)
 
 def goPentaville() :
     N = 5
-    gamma = MGPpentaville(N)
+    gamma = gm.MGPpentaville(N)
     p = Parameters(
         N = N,
         GAMMA = gamma,
@@ -242,7 +249,7 @@ def goPentaville() :
  
 def goPentavilleS() :
     N = 5
-    gamma = MGPpentavilleS(N)
+    gamma = gm.MGPpentavilleS(N)
     p = Parameters(
         N = N,
         GAMMA = gamma,
@@ -258,7 +265,7 @@ def goPentavilleS() :
         
 def goPentavilleVariation() :
     N = 5
-    gamma = MGPpentavilleVariation(N)
+    gamma = gm.MGPpentavilleVariation(N)
     p = Parameters(
         N = N,
         GAMMA = gamma,
@@ -272,16 +279,3 @@ def goPentavilleVariation() :
         outputTiling(p)
         gamma.setNextValue()
 
-################################ Pour donner à manger au projet ..../Python/Grilles/grilArt2
-
-def forGrilArt():
-    N = 5
-    p = Parameters(
-        #GAMMA=MGPdeBruijnRegular(N),
-        GAMMA = MGPcentralSymetry(N,-0.0001),
-        N=N,
-        DMAX=40,
-        NBL=20,
-        SQUARE = True,
-        OUTPUT_COORDINATES=True)
-    outputTiling(p)

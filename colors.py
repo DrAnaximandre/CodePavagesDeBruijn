@@ -2,8 +2,8 @@ import math
 import matplotlib.colors as clrs
 from matplotlib import path
 import numpy as np
-
 from itertools import combinations
+
 from parameters import WHITE
 
 

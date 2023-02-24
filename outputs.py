@@ -13,9 +13,9 @@ def mplot(x,y,params) :
     plt.plot(x,y,
              linewidth=params.LINEWIDTH,
              color=params.STROKECOLOR,
-             alpha=0.7,
+             #alpha=0.7,
              solid_joinstyle='round',
-             solid_capstyle='projecting')   # fin de lignes
+             solid_capstyle='projecting')   # end of lines
 
 
 def sides(x,y, params):
@@ -24,8 +24,7 @@ def sides(x,y, params):
     
 def fill(x, y, c, alpha=1):
     xy = np.stack((x,y), axis=1)
-    #p = Polygon(xy, facecolor=c, edgecolor='black')
-    p = Polygon(xy, facecolor=c, alpha = alpha)
+    p = Polygon(xy, facecolor=c, alpha=alpha)
     ax = plt.gca()
     ax.add_patch(p)
 
@@ -53,10 +52,6 @@ def middle(x1, y1, x2, y2):
 
 def display_rhombus(r, s, kr, ks, x, y, ind, params):
 
-    #if params.OUTPUT_COORDINATES :
-    #    show_rhombus_properties(r,s, kr, ks, x, y, ind)
-        
- 
     def l02():
         line(x[0], y[0], x[2], y[2], params)
 
@@ -79,7 +74,6 @@ def display_rhombus(r, s, kr, ks, x, y, ind, params):
             xy.mean(0),
             radius= 0.4* np.sqrt(
                d**4/params.DMAX**4,
-
             ),
             facecolor=c,
             edgecolor=np.mean((c,(0,0,0)), axis=0),
@@ -156,7 +150,7 @@ def display_rhombus(r, s, kr, ks, x, y, ind, params):
             l01_12()
             l23_30()
 
-        elif params.R == 2: # Pentaville, other sides of rectangles
+        elif params.R == 2: # "Pentaville", other sides of rectangles
             l12_23()
             l30_01()
 
@@ -183,7 +177,7 @@ def display_rhombus(r, s, kr, ks, x, y, ind, params):
                 l12_23()
                 l30_01()
                 
-        elif params.R == 61 : # mélange  
+        elif params.R == 61 : # mix
             sh = shape_rhombus(r, s, params)
             if sh == 1: # côté du rectangle
                 l01_12() 
@@ -192,13 +186,13 @@ def display_rhombus(r, s, kr, ks, x, y, ind, params):
                 line(x12, y12, x30, y30, params)
                 line(x23, y23, x01, y01, params)
 
-        elif params.R == 62 : # mélange  
+        elif params.R == 62 : # mix
             sh = shape_rhombus(r, s, params)
             if sh == 1 :
                 # pseudo-diags
                 line(x12, y12, x30, y30, params)
                 line(x23, y23, x01, y01, params)
-            else: # côté du rectangle
+            else: # side of rectangle
                 l01_12() 
                 l23_30()
             

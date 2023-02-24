@@ -26,9 +26,6 @@
 - lisser les courbes bris�es
 
 Implementation:
----
-- ajouter une vérification dans gamma.py que shift est bien un np.ndarray
-    ===> la structure de MappedGammaParameter a changé, le pb ne se pose plus
     
 - refaire ce fichier en .md  (c'est quoi ?)
 

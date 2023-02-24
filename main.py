@@ -5,10 +5,20 @@
 from go import *
 from utils import ParallelProcessor
 
-#P = ParallelProcessor()
-#P.add(goDemo)
-#P.run([3, 4, 5, 7, 9])
+###########  Polo's
 
+#goDemo()
+#goPolo3D()
+#goPolo()
+#goPoloVideo()
+
+P = ParallelProcessor()
+P.add(goDemo)
+P.run([3, 4, 5, 7, 9])
+
+
+
+########## Mike's
 
 #goAllDefaults() # uses all defaults
 #goVerySmall()
@@ -22,10 +32,3 @@ from utils import ParallelProcessor
 #goPentaville()
 #goPentavilleS()
 #goPentavilleVariation()
-
-#forGrilArt()  # liaison avec le projer GrilArt (TSP)
-
-#goDemo()
-#goPolo3D()
-#goPolo()
-goPoloVideo()
