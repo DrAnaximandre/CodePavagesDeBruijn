@@ -2,6 +2,7 @@
 #  Comments and suggestions are welcome. Mail to :  mike.lembitre@gmail.com
 ###########################################################################
 
+
 from go import *
 from utils import ParallelProcessor
 
@@ -12,15 +13,15 @@ from utils import ParallelProcessor
 #goPolo()
 #goPoloVideo()
 
-P = ParallelProcessor()
-P.add(goDemo)
-P.run([3, 4, 5, 7, 9])
+#P = ParallelProcessor()
+#P.add(goDemo)
+#P.run([3, 4, 5, 7, 9])
 
 
 
 ########## Mike's
 
-#goAllDefaults() # uses all defaults
+goAllDefaults() # uses all defaults
 #goVerySmall()
 
 #goLivret() # does not display but saves pdf

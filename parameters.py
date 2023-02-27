@@ -44,7 +44,8 @@ class Parameters(object):
                  IMAGEPATH: str = "lego.jpg",  # used only for coloring 16, 17, 18
                  QUANTUM_COLOR: bool = False,  # should color be quantized
                  TILINGDIR: str = "../Pavages/DefaultTilingDir", # where to output the tilings
-                 i: int = 0) :
+                 i: int = 0,
+                     ) :
         
         # Must be 4 or higher
         # Set N = 5 for pentagrids. It works also for 7, 9, 11 ....

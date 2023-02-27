@@ -47,9 +47,6 @@ def show_rhombus_properties(r,s, kr, ks, x, y, ind):
 
 ###################################################
 
-def middle(x1, y1, x2, y2):
-    return((x1 + x2) / 2.0, (y1 + y2) / 2.0)
-
 def display_rhombus(r, s, kr, ks, x, y, ind, params):
 
     def l02():
