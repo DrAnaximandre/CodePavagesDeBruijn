@@ -5,10 +5,12 @@
 from go import *
 from utils import ParallelProcessor
 
-#P = ParallelProcessor()
-#P.add(goDemo)
-#P.run([3, 4, 5, 7, 9])
+P = ParallelProcessor()
+P.add(goDemo)
+P.run(list(range(4,12)))
 
+# make a video with the following command:
+# ffmpeg -framerate 1 -i %d.png -c:v libx264 -r 30 -pix_fmt yuv420p out.mp4
 
 #goAllDefaults() # uses all defaults
 #goVerySmall()
@@ -28,4 +30,4 @@ from utils import ParallelProcessor
 #goDemo()
 #goPolo3D()
 #goPolo()
-goPoloVideo()
+#goPoloVideo()

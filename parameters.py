@@ -1,5 +1,5 @@
 from pathlib import Path
-
+import inspect
 import matplotlib.pyplot as plt
 from time import localtime, strftime
 from matplotlib import style
@@ -41,7 +41,7 @@ class Parameters(object):
                  DESTRUCTURED: bool = False,  # Should noise be applied to the coordinates of the rhombi
                  FISHEYE: bool = False,  # another kind of transformation
                  AUGMENTED_COLORS: bool = False,  # Should the colors be tilted a bit
-                 IMAGEPATH: str = "lego.jpg",  # used only for coloring 16, 17, 18
+                 IMAGEPATH: str = "mokos.jpg",  # used only for coloring 16, 17, 18
                  QUANTUM_COLOR: bool = False,  # should color be quantized
                  TILINGDIR: str = "../Pavages/DefaultTilingDir",
                  i: int = 0,
@@ -139,7 +139,11 @@ class Parameters(object):
             # resize si trop grand
             print("fitting kmeans")
             if self.QUANTUM_COLOR:
-                color_model = KMeans(n_clusters=15, random_state=self.i).fit(X) # Todo, parameterise the number of clusters
+                color_model = KMeans(n_clusters=36,
+                                     random_state=0,
+                                     max_iter=100,
+                                     init = 'random',
+                                     tol=1e-1).fit(X) # Todo, parameterise the number of clusters
                 self.QUANTUM_COLOR = color_model
         else:
             if self.QUANTUM_COLOR:
@@ -175,18 +179,23 @@ class Parameters(object):
 
     def filename(self):
         stts = str(strftime("%Y-%m-%d_%H-%M-%S", localtime()))
-        name = f"{self.TILINGDIR}/{self.i:03}_{stts}_{self.GAMMA.string()}"
+        name = f"{self.TILINGDIR}/{self.i:03}_{self.N}_{stts}_{self.DMAX}_{self.NBL}_{self.GAMMA.string()}"
         name = name[:100]
         return name
 
     def title(self):
-        sG = str(self.N) + ' $d_{max}$=' + str(self.DMAX) + ' i=' + str(self.i)
+        sG = "\n\n\n\n" + str(self.N) + ' $d_{max}$=' + str(self.DMAX) + ' i=' + str(self.i)
         if self.RECTANGLE:
             sG += ' R=' + str(self.R)
         if self.DIAGONAL:
             sG += ' D'
 
         sG += self.GAMMA.string()[:50]
+
+        sG += f"\n quantum = {self.QUANTUM_COLOR}"
+
+        # the code that is in the lambda called functionToMap is displayed here
+        sG += f" {inspect.getsourcelines(self.GAMMA.functionToMap)[0][0]}"
         return sG
 
     def string(self):

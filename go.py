@@ -76,26 +76,28 @@ def goDemo(N=7):
     """
     gamma = MappedGammaParameter(
         N=N,
-        initialShift=1.2345,
-        functionToMap=lambda s, j:  2*np.sin(s-(1 + j) / N) + 0.1 * j /N + np.cos(j)/N
+        initialShift=9.12345,
+        functionToMap=lambda s, j: 0 + j/100
     )
     p = Parameters(
         GAMMA=gamma,
         N=gamma.N,
         RECTANGLE=True,
         SIDES=False,
-        R=1,
-        DMAX=25,
+        R=0,
+        DMAX=37,
         NBL=25,
-        COLORING=2,
+        COLORING=17,
+        QUANTUM_COLOR=True,
         i=0,
         SAVE=True,
         SHOW=False,
-        SAVE_FORMAT='pdf',
-        TILINGDIR = "./results/demo",
+        IMAGEPATH="lego_in_the_sun.jpg",
+        SAVE_FORMAT='png',
+        TILINGDIR = "./results/lego_sun",
         BACKGROUND = 'k',
-        STROKECOLOR = 'w',
-        SCALE_LINEWIDTH = 20
+        STROKECOLOR = 'k',
+        SCALE_LINEWIDTH = 0.5
     )
     outputTiling(p)
 
