@@ -17,11 +17,29 @@ from utils import ParallelProcessor
 #P.add(goDemo)
 #P.run([3, 4, 5, 7, 9])
 
+gamma = gm.MappedGammaParameter(
+    N=5,
+    initialShift=0,
+    functionToMap=lambda s, j: s+j*0.7
+)
+
+p = Parameters(GAMMA=gamma,
+               R=1,
+               COLORING=2,
+               BACKGROUND='k',
+               STROKECOLOR='w',
+               SCALE_LINEWIDTH=20,
+               RECTANGLE=True,
+               DIAGONAL=False,
+               SIDES=False,
+               SAVE=True,
+               TILINGDIR="./results/repro-18-juin")
+outputTiling(p)
 
 
 ########## Mike's
 
-goAllDefaults() # uses all defaults
+#goAllDefaults() # uses all defaults
 #goVerySmall()
 
 #goLivret() # does not display but saves pdf
