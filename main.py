@@ -5,9 +5,9 @@
 from go import *
 from utils import ParallelProcessor
 
-P = ParallelProcessor()
+P = ParallelProcessor(n_jobs=-3)
 P.add(goDemo)
-P.run(list(range(4,12)))
+P.run([5])
 
 # make a video with the following command:
 # ffmpeg -framerate 1 -i %d.png -c:v libx264 -r 30 -pix_fmt yuv420p out.mp4

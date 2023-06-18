@@ -154,7 +154,7 @@ def outputTiling(params: Parameters):
     plt.axis('equal')
     plt.axis('off')
 
-    plt.title(params.title(), fontsize=7, y=0, pad=-20.)
+    plt.title(params.title(), fontsize=7, y=0, pad=-30.)
     # ax.set_ylabel(params.side(), rotation=0,  color="white", loc="bottom")
     # ax.get_xaxis().set_visible(False)
     # ax.yaxis.set_ticklabels([])

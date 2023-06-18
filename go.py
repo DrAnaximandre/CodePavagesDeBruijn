@@ -68,7 +68,7 @@ def goLivretVar():
 
         gamma.setNextValue()
 
-def goDemo(N=7):
+def goDemo(N=5, initialShift=1.1234):
     """
     goDemo is a demo of the tiling generator.
     It generates white patterns on a black background.
@@ -76,28 +76,29 @@ def goDemo(N=7):
     """
     gamma = MappedGammaParameter(
         N=N,
-        initialShift=9.12345,
-        functionToMap=lambda s, j: 0 + j/100
+        initialShift=initialShift,
+        functionToMap=lambda s, j: j+s
     )
     p = Parameters(
         GAMMA=gamma,
         N=gamma.N,
-        RECTANGLE=True,
+        RECTANGLE=False,
         SIDES=False,
-        R=0,
-        DMAX=37,
-        NBL=25,
+        DIAGONAL=False,
+        R=61,
+        DMAX=50,
+        NBL=40,
         COLORING=17,
-        QUANTUM_COLOR=True,
+        QUANTUM_COLOR=False,
         i=0,
         SAVE=True,
         SHOW=False,
-        IMAGEPATH="lego_in_the_sun.jpg",
+        IMAGEPATH="thing.png",
         SAVE_FORMAT='png',
-        TILINGDIR = "./results/lego_sun",
+        TILINGDIR = "./results/demothing.",
         BACKGROUND = 'k',
-        STROKECOLOR = 'k',
-        SCALE_LINEWIDTH = 0.5
+        STROKECOLOR = 'w',
+        SCALE_LINEWIDTH = 18.5
     )
     outputTiling(p)
 

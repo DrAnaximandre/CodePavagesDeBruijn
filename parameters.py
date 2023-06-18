@@ -139,7 +139,7 @@ class Parameters(object):
             # resize si trop grand
             print("fitting kmeans")
             if self.QUANTUM_COLOR:
-                color_model = KMeans(n_clusters=36,
+                color_model = KMeans(n_clusters=15,
                                      random_state=0,
                                      max_iter=100,
                                      init = 'random',
@@ -184,7 +184,7 @@ class Parameters(object):
         return name
 
     def title(self):
-        sG = "\n\n\n\n" + str(self.N) + ' $d_{max}$=' + str(self.DMAX) + ' i=' + str(self.i)
+        sG = "\n\n\n\n\n" + str(self.N) + ' $d_{max}$=' + str(self.DMAX) + ' i=' + str(self.i)
         if self.RECTANGLE:
             sG += ' R=' + str(self.R)
         if self.DIAGONAL:
