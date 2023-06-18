@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 from pathlib import Path
+
 import numpy as np
 import math
 import tqdm   # to show computation progress on console
@@ -7,8 +8,7 @@ import tqdm   # to show computation progress on console
 from parameters import Parameters
 from outputs import display_rhombus
 
-
-###################################################  tiling computation, following deBruijn paper
+###################################################  tiling computation following deBruijn paper
 
 def get_cos_sin(N):
     ANGLE = 2 * math.pi / N
@@ -47,7 +47,7 @@ def tiling(params: Parameters):
     GAMMA = params.GAMMA.getValue()
     COS, SIN = get_cos_sin(N)
 
-    # coordinates of current rhombus 
+    # coordinates of current rhombus
     x, y = np.zeros(4), np.zeros(4)
     
     # The index of a vertex could serve later as its 'altitude' for a future 3D display
@@ -90,6 +90,10 @@ def tiling(params: Parameters):
                     def setxyind(j):
                         (x[j], y[j]) = point(Kvect, COS, SIN, N)
                         ind[j] = sum(Kvect)
+                        if params.OUTPUT_COORDINATES :
+                            pre_setKvect[j] = Kvect
+
+                    # (4.5) computation of the four values
 
                     setxyind(0)
 
@@ -124,8 +128,8 @@ def tiling(params: Parameters):
 
     print(counter, 'rhombuses')
 
-       
-###################################### main function 
+
+###################################### main function
 
 def outputTiling(params: Parameters):
     fn = params.filename()

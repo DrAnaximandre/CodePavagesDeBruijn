@@ -119,16 +119,27 @@ def kolor(r, s, kr, ks, d, params, x, y):
 
         elif params.COLORING == 13:
             """ Joli rond coloré partant du rouge au centre"""
-            h = 500 * d / params.DMAX -100
-            h += 12 * s - 3*ks
-            h= h%360
-            sat = 45
-            sat += np.cos((s * 20 + kr * 10 + ks * 15 - d)) * 29 + np.sin(2 * (s * 20 + kr * 10 + ks * 15 - d)) * 24
-            sat = sat%100
-            if sat < 30:
-                sat = 95
+            # h = 500 * d / params.DMAX - 100
+            # h += 12 * s - 3*ks
+            # h= h%360
+            # sat = 45
+            # sat += np.cos((s * 20 + kr * 10 + ks * 15 - d)) * 29 + np.sin(2 * (s * 20 + kr * 10 + ks * 15 - d)) * 24
+            # sat = sat%100
+            # if sat < 30:
+            #     sat = 95
+            #
+            # v  = 50 + np.cos((s * 2 + kr * 15 + ks * 10 - d)) * 24 + np.sin(2 * (s * 20 + kr * 10 + ks * 15 - d)) * 24
 
-            v  = 50 + np.cos((s * 2 + kr * 15 + ks * 10 - d)) * 24 + np.sin(2 * (s * 20 + kr * 10 + ks * 15 - d)) * 24
+            h = 500 * d / params.DMAX - 100
+            h += 12 * s
+            h= h%360
+
+            sat = 55
+            sat += np.cos((s * 20 + kr * 10 + ks * 15 - s)) * 30 + np.sin(2 * (s * 30 + kr * 13 + ks * 11 - r)) * 24
+            sat = 100 -sat % 100
+
+            v = 50
+            v += 20 * np.cos(r+s*s+kr*ks) + 19 * np.sin(s + kr + ks)
 
             return rgb((h, sat, v))
 

@@ -1,7 +1,8 @@
 from pathlib import Path
+
 import matplotlib.pyplot as plt
-from matplotlib import style
 from time import localtime, strftime
+from matplotlib import style
 from PIL import Image
 import numpy as np
 
@@ -34,7 +35,6 @@ class Parameters(object):
                  SIDES: bool = True,
                  RECTANGLE: bool = False,
                  DIAGONAL: bool = False,
-                 SCALE_LINEWIDTH: int= 8,
                  BACKGROUND: str = 'w',
                  STROKECOLOR: str = 'k',
                  COLORING: int = 0,
@@ -61,6 +61,9 @@ class Parameters(object):
 
         
         self.GAMMA = GAMMA if GAMMA else MappedGammaParameter(N=N)
+
+        # self.INITIALSHIFT = 0.03  # should not be integer
+        # self.DELTASHIFT = 0.1
 
         self.SCALE_LINEWIDTH = SCALE_LINEWIDTH
         self.LINEWIDTH = self.SCALE_LINEWIDTH / self.DMAX
@@ -131,7 +134,11 @@ class Parameters(object):
             # resize si trop grand
             print("fitting kmeans")
             if self.QUANTUM_COLOR:
-                color_model = KMeans(n_clusters=15, random_state=self.i).fit(X) # Todo, parameterise the number of clusters
+                color_model = KMeans(n_clusters=15,
+                                     random_state=0,
+                                     max_iter=100,
+                                     init = 'random',
+                                     tol=1e-1).fit(X) # Todo, parameterise the number of clusters
                 self.QUANTUM_COLOR = color_model
         else:
             if self.QUANTUM_COLOR:
@@ -146,13 +153,13 @@ class Parameters(object):
         self.i = i
         self.FILLWITHCIRCLE = False
 
-        #if self.BACKGROUND == self.STROKECOLOR :
-        #    print("WARNING : BACKGROUND == STROKECOLOR !!!")
+        # if self.BACKGROUND == self.STROKECOLOR :
+        #     print("WARNING : BACKGROUND == STROKECOLOR !!!")
 
         if self.BACKGROUND == BLACK:
             style.use('dark_background')
 
-        
+
 
     def side(self):
         fn = self.filename()
@@ -164,17 +171,23 @@ class Parameters(object):
 
     def filename(self):
         stts = str(strftime("%Y-%m-%d_%H-%M-%S", localtime()))
-        name = f"{self.TILINGDIR}/{self.i:03}_{stts}_{self.GAMMA.string()}"
+        name = f"{self.TILINGDIR}/{self.i:03}_{self.N}_{stts}_{self.DMAX}_{self.NBL}_{self.GAMMA.string()}"
         name = name[:100]
         return name
 
     def title(self):
-        sG = 'N=' + str(self.N) + ' $d_{max}$=' + str(self.DMAX) + ' i=' + str(self.i) + ' '
+        sG = str(self.N) + ' $d_{max}$=' + str(self.DMAX) + ' i=' + str(self.i)
         if self.RECTANGLE:
             sG += ' R=' + str(self.R)
         if self.DIAGONAL:
             sG += ' D'
+
         sG += self.GAMMA.string()[:50]
+
+        sG += f"\n quantum = {self.QUANTUM_COLOR}"
+
+        # the code that is in the lambda called functionToMap is displayed here
+        sG += f" {inspect.getsourcelines(self.GAMMA.functionToMap)[0][0]}"
         return sG
 
     def string(self):
@@ -184,3 +197,4 @@ class Parameters(object):
         if self.DIAGONAL:
             sG += ' D'
         return sG
+
