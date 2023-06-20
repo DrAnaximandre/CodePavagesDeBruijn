@@ -73,7 +73,6 @@ def goLivretVar():
         gamma.setNextValue()
 
 
-=========
 def goDemo(N=5):
     """
     goDemo is a demo of the tiling generator.

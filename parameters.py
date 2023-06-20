@@ -44,7 +44,8 @@ class Parameters(object):
                  AUGMENTED_COLORS: bool = False,  # Should the colors be tilted a bit
                  IMAGEPATH: str = "lego.jpg",  # used only for coloring 16, 17, 18
                  QUANTUM_COLOR: bool = False,  # should color be quantized
-                 TILINGDIR: str = "../Pavages/DefaultTilingDir", # where to output the tilings
+                 TILINGDIR: str = "../Pavages/DefaultTilingDir", # where to output the tilings,
+                 OUTPUT_COORDINATES: bool = False,
                  i: int = 0,
                      ) :
         
@@ -150,6 +151,8 @@ class Parameters(object):
         self.magic = 0.5
         self.i = i
         self.FILLWITHCIRCLE = False
+
+        self.OUTPUT_COORDINATES = OUTPUT_COORDINATES
 
         # if self.BACKGROUND == self.STROKECOLOR :
         #     print("WARNING : BACKGROUND == STROKECOLOR !!!")
