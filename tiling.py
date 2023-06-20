@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 from pathlib import Path
+
 import numpy as np
 import math
 import tqdm   # to show computation progress on console
@@ -47,7 +48,7 @@ def tiling(params: Parameters):
     GAMMA = params.GAMMA.getValue()
     COS, SIN = get_cos_sin(N)
 
-    # coordinates of current rhombus 
+    # coordinates of current rhombus
     x, y = np.zeros(4), np.zeros(4)
     
     # The index of a vertex could serve later as its 'altitude' for a future 3D display
@@ -124,8 +125,8 @@ def tiling(params: Parameters):
 
     print(counter, 'rhombuses')
 
-       
-###################################### main function 
+
+###################################### main function
 
 def outputTiling(params: Parameters):
     fn = params.filename()
@@ -162,3 +163,5 @@ def outputTiling(params: Parameters):
          plt.show()
 
     plt.close()
+
+
