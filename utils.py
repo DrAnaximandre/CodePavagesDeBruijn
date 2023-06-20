@@ -1,5 +1,4 @@
 from typing import Iterable
-
 from joblib import Parallel,delayed
 
 class ParallelProcessor:

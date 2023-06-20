@@ -2,13 +2,15 @@ import math
 import matplotlib.colors as clrs
 from matplotlib import path
 import numpy as np
-
 from itertools import combinations
+
 from parameters import WHITE
 
 
 #######################################
 
+# returns the y coordinates corresponding to the given x,
+# so that the point (x,y) is on the DF line (linear interpolation)
 def mapR(x, xD, xF, yD, yF) :
     return yD + (yF-yD)/(xF-xD)*(x-xD)
 

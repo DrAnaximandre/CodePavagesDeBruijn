@@ -1,8 +1,8 @@
 from pathlib import Path
 import inspect
 import matplotlib.pyplot as plt
-from time import localtime, strftime
 from matplotlib import style
+from time import localtime, strftime
 from PIL import Image
 import numpy as np
 
@@ -15,7 +15,7 @@ WHITE = 'w'
 BLACK = 'k'
 
 # plt.rcParams['savefig.facecolor'] = "0.8"
-plt.rcParams['figure.figsize'] = 8., 8.  # pour petit ecran
+plt.rcParams['figure.figsize'] = 8., 8.  # for small screen
 
 
 class Parameters(object):
@@ -35,22 +35,18 @@ class Parameters(object):
                  SIDES: bool = True,
                  RECTANGLE: bool = False,
                  DIAGONAL: bool = False,
+                 SCALE_LINEWIDTH: int= 8,
                  BACKGROUND: str = 'w',
                  STROKECOLOR: str = 'k',
                  COLORING: int = 0,
                  DESTRUCTURED: bool = False,  # Should noise be applied to the coordinates of the rhombi
                  FISHEYE: bool = False,  # another kind of transformation
                  AUGMENTED_COLORS: bool = False,  # Should the colors be tilted a bit
-                 IMAGEPATH: str = "mokos.jpg",  # used only for coloring 16, 17, 18
+                 IMAGEPATH: str = "lego.jpg",  # used only for coloring 16, 17, 18
                  QUANTUM_COLOR: bool = False,  # should color be quantized
-                 TILINGDIR: str = "../Pavages/DefaultTilingDir",
+                 TILINGDIR: str = "../Pavages/DefaultTilingDir", # where to output the tilings
                  i: int = 0,
-                 # to output coordinates of all vertices in a special file
-                 OUTPUT_COORDINATES: bool = False,
-                 FILENAME_COORDINATES:str = "../../ACM/Data/pavage_coords.txt",
-                 SCALE_LINEWIDTH: int= 8):
-
-
+                     ) :
         
         # Must be 4 or higher
         # Set N = 5 for pentagrids. It works also for 7, 9, 11 ....
@@ -66,9 +62,6 @@ class Parameters(object):
 
         
         self.GAMMA = GAMMA if GAMMA else MappedGammaParameter(N=N)
-
-        # self.INITIALSHIFT = 0.03  # should not be integer
-        # self.DELTASHIFT = 0.1
 
         self.SCALE_LINEWIDTH = SCALE_LINEWIDTH
         self.LINEWIDTH = self.SCALE_LINEWIDTH / self.DMAX
@@ -164,14 +157,11 @@ class Parameters(object):
         if self.BACKGROUND == BLACK:
             style.use('dark_background')
 
-        self.OUTPUT_COORDINATES = OUTPUT_COORDINATES
-        self.FILENAME_COORDINATES = FILENAME_COORDINATES
+
 
     def side(self):
         fn = self.filename()
         return "\n".join([chr(ord(ch) + 2) for ch in fn])
-
-
 
     def updateDMAX(self, dmax):
         self.DMAX = dmax

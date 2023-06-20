@@ -14,8 +14,7 @@ def mapR(x, xD, xF, yD, yF) :
 def defaultGamma(N) :
     return [mapR(j, 0, N-1, -0.29, 0.19) for j in range(N)]
      
-@dataclass # TODO is it still needed or how should it be used ?
-           # yes, see for example goLivret and goLivretVar in go.py
+@dataclass
 class MappedGammaParameter(object) :
 
     def __init__(self,
@@ -29,7 +28,7 @@ class MappedGammaParameter(object) :
 
                  # functionToMap can be used to build the initial value and successive values
                  #  using setNextValue in a loop (see for ex. go.goLivretVar() )
-                 functionToMap: Callable = None
+                 functionToMap: Callable = None,
 
                 ):
 
@@ -109,8 +108,6 @@ def MGPpentavilleVariation(N):
         initialShift = 1.07,
         deltaShift = 0.08,
         functionToMap = lambda s, j : math.sin(j*math.pi/N) + j/N + s) 
-
-
 
 
     # for livret #2 (avec DIAGONALS) with N=5

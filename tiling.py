@@ -3,13 +3,13 @@ from pathlib import Path
 
 import numpy as np
 import math
-
-import tqdm   # un truc pour indiquer à la console l'avancement du calcul
+import tqdm   # to show computation progress on console
 
 from parameters import Parameters
 from outputs import display_rhombus
 
-###################################################  tiling computation following deBruijn paper
+
+###################################################  tiling computation, following deBruijn paper
 
 def get_cos_sin(N):
     ANGLE = 2 * math.pi / N
@@ -33,12 +33,12 @@ def interGrid(r, s, kr, ks, COS, SIN, GAMMA):
     return inter(a, b, c, a1, b1, c1)
 
 # de Bruijn (5.1)
-def point(k, COS, SIN, N):
+def point(Kvect, COS, SIN, N):
     """ Point associated to [ k_0, ... k_(N-1) ] """
     x, y = 0.0, 0.0
     for j in range(N):
-        x += k[j] * COS[j]
-        y += k[j] * SIN[j]
+        x += Kvect[j] * COS[j]
+        y += Kvect[j] * SIN[j]
     return (x, y)
 
 def tiling(params: Parameters):
@@ -48,18 +48,17 @@ def tiling(params: Parameters):
     GAMMA = params.GAMMA.getValue()
     COS, SIN = get_cos_sin(N)
 
-    # coordonnees du rhombus courant
+    # coordinates of current rhombus
     x, y = np.zeros(4), np.zeros(4)
     
-    # The index of a vertex could serve as its 'altitude' for a future 3D display
+    # The index of a vertex could serve later as its 'altitude' for a future 3D display
     # (see de Bruijn paper section 6)
     ind = np.zeros(4)
 
-    Kvect = np.zeros(N, dtype=np.int)
-    pre_setKvect = np.zeros((4,N), dtype=np.int)
-    setKvect = set()
+    #  Kvect is the K of deBruijn's paper, a vector of N integers
+    Kvect = np.zeros(N, dtype=int)
 
-    counter = 0
+    counter = 0  # count number of displayed rhombii
 
     # later: compute all combination and TQDM it up
     for r in range(N):  # first grid orientation
@@ -67,35 +66,31 @@ def tiling(params: Parameters):
             for kr in range(-NBL, NBL+1):  # line number on r grid
                 for ks in range(-NBL, NBL+1):  # line number on s grid
 
-                    # We compute the rhombus vertices associated to r,s,kr,ks
+                    # We compute the current rhombus vertices associated to r,s,kr,ks
 
                     # Pentagrid intersection, de Bruijn (4.4). (xp,yp) is the z_0 of de Bruijn
                     (xp, yp) = interGrid(r, s, kr, ks, COS, SIN, GAMMA)
 
-                    #  Kvect is the K of deBruijn, a vector of N integers
-                    # The following seems strange but it works, thanks Zhao Liang (github pywonderland).
-                    # This solves a precision problem : we can prove that (with de Bruijn notation)
+                    # The following solves a precision problem : we can prove that (with de Bruijn notation)
                     # K_r(z) = kr when z is on the line (r,kr), hence it is an integer.
                     # Numerical computation of 'ceil' in Kvect below may incorrectly yield the upper integer.
                     # To prevent this we directly reassign Kvect[r] to kr. Idem for ks.
-
+                    # Thanks to Zhao Liang (github pywonderland) for this feature.
  
                     for j in range(N):
                         if j == r :
                             Kvect[r] = kr
                         elif j == s :
                             Kvect[s] = ks
-                        else : # (4.3)
+                        else : # de Bruijn (4.3)
                             Kvect[j] = math.ceil(xp * COS[j] + yp * SIN[j] + GAMMA[j])
 
+                    # (4.5) computation of the four values of Kvect corresponding
+                    # to the four vertices of the current rhombus
 
                     def setxyind(j):
                         (x[j], y[j]) = point(Kvect, COS, SIN, N)
                         ind[j] = sum(Kvect)
-                        if params.OUTPUT_COORDINATES :
-                            pre_setKvect[j] = Kvect
-
-                    # (4.5) computation of the four values
 
                     setxyind(0)
 
@@ -124,28 +119,14 @@ def tiling(params: Parameters):
                         if d > params.DMAX:
                             continue
 
-                    # possibility to outputs the set of points coordinates in a file
-                    if params.OUTPUT_COORDINATES :
-                        for v in pre_setKvect:
-                            setKvect.add(tuple(v))
-
                     display_rhombus(r, s, kr, ks, x, y, ind, params)
 
                     counter += 1
 
     print(counter, 'rhombuses')
 
-    if params.OUTPUT_COORDINATES :
-        nomfich = params.FILENAME_COORDINATES
-        print('output vertices coordinates in file', nomfich)
-        with open(nomfich, 'w+') as f:
-            for i, v in  enumerate(setKvect):
-                (x,y) = point(v,COS,SIN,N)
-                #f.write(f"{i} {' '.join(map(str, v))} \n")
-                f.write(str(i) + ' ' + str(x) + ' ' + str(y) + '\n')
 
-
-######################################
+###################################### main function
 
 def outputTiling(params: Parameters):
     fn = params.filename()
@@ -154,35 +135,29 @@ def outputTiling(params: Parameters):
     plt.axis('equal')
     plt.axis('off')
 
-    plt.title(params.title(), fontsize=7, y=0, pad=-30.)
-    # ax.set_ylabel(params.side(), rotation=0,  color="white", loc="bottom")
-    # ax.get_xaxis().set_visible(False)
-    # ax.yaxis.set_ticklabels([])
+    plt.title(params.title(), fontsize=7, y=0, pad=-20.)
     print(params.string())
     
-    # les limites du dessin
+    # drawing limits
     c = 0.95
     lim = params.DMAX * c
     xmin, xmax, ymin, ymax = -lim, lim, -lim, lim
     ax.set_xlim([xmin, xmax])
     ax.set_ylim([ymin, ymax])
 
-    # le dessin
+    # drawing
     tiling(params)
 
-    # la bordure carrée
+    # the square line around the picture (hum, not so much elegant, another solution ?)
     b = 0.999
     if params.FRAME and params.SQUARE:
         left, bottom, width, height = -lim*b*1.005, -lim*b, lim*2*b*1.005, lim*2*b*1.00
         p = plt.Rectangle((left, bottom), width, height, fill=False, linewidth=0.5)
         ax.add_patch(p)
 
-
-    # save d'abord et show apres !
+    # save first and show after !
     if params.SAVE:
-
         Path(params.TILINGDIR).mkdir(parents=True, exist_ok=True)
-
         plt.savefig(fn + '.' + params.SAVE_FORMAT, dpi=300) #, bbox_inches="tight")
     if params.SHOW:
          plt.show()
