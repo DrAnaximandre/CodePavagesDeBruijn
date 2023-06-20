@@ -73,8 +73,8 @@ def goLivretVar():
         gamma.setNextValue()
 
 
-############################### Polo's demo
-def goDemo(N=7):
+=========
+def goDemo(N=5):
     """
     goDemo is a demo of the tiling generator.
     It generates white patterns on a black background.
@@ -218,8 +218,7 @@ def goPoloVideo(N=7):
 
 
 
-################################### miscellanous
-
+###################################
 def goCentralSymetry() :
     p = Parameters(GAMMA = gm.MGPcentralSymetry())
     outputTiling(p)
@@ -279,3 +278,16 @@ def goPentavilleVariation() :
         outputTiling(p)
         gamma.setNextValue()
 
+################################ Pour donner à manger au projet ..../Python/Grilles/grilArt2
+
+def forGrilArt():
+    N = 5
+    p = Parameters(
+        #GAMMA=MGPdeBruijnRegular(N),
+        GAMMA = MGPcentralSymetry(N,-0.0001),
+        N=N,
+        DMAX=40,
+        NBL=20,
+        SQUARE = True,
+        OUTPUT_COORDINATES=True)
+    outputTiling(p)

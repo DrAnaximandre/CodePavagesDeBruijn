@@ -17,6 +17,7 @@ from utils import ParallelProcessor
 #P.add(goDemo)
 #P.run([3, 4, 5, 7, 9])
 
+
 gamma = gm.MappedGammaParameter(
     N=5,
     initialShift=0,

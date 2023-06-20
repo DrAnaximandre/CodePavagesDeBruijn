@@ -1,5 +1,5 @@
 from pathlib import Path
-
+import inspect
 import matplotlib.pyplot as plt
 from time import localtime, strftime
 from matplotlib import style
@@ -35,6 +35,7 @@ class Parameters(object):
                  SIDES: bool = True,
                  RECTANGLE: bool = False,
                  DIAGONAL: bool = False,
+                 SCALE_LINEWIDTH: int = 8,
                  BACKGROUND: str = 'w',
                  STROKECOLOR: str = 'k',
                  COLORING: int = 0,
@@ -61,9 +62,6 @@ class Parameters(object):
 
         
         self.GAMMA = GAMMA if GAMMA else MappedGammaParameter(N=N)
-
-        # self.INITIALSHIFT = 0.03  # should not be integer
-        # self.DELTASHIFT = 0.1
 
         self.SCALE_LINEWIDTH = SCALE_LINEWIDTH
         self.LINEWIDTH = self.SCALE_LINEWIDTH / self.DMAX
@@ -176,7 +174,7 @@ class Parameters(object):
         return name
 
     def title(self):
-        sG = str(self.N) + ' $d_{max}$=' + str(self.DMAX) + ' i=' + str(self.i)
+        sG = "\n\n\n\n\n" + str(self.N) + ' $d_{max}$=' + str(self.DMAX) + ' i=' + str(self.i)
         if self.RECTANGLE:
             sG += ' R=' + str(self.R)
         if self.DIAGONAL:
