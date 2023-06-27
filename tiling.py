@@ -57,6 +57,9 @@ def tiling(params: Parameters):
     #  Kvect is the K of deBruijn's paper, a vector of N integers
     Kvect = np.zeros(N, dtype=int)
 
+    pre_setKvect = np.zeros((4,N), dtype=np.int)
+    setKvect = set()
+
     counter = 0  # count number of displayed rhombii
 
     # later: compute all combination and TQDM it up
@@ -122,11 +125,23 @@ def tiling(params: Parameters):
                         if d > params.DMAX:
                             continue
 
+                    if params.OUTPUT_COORDINATES:
+                        for v in pre_setKvect:
+                            setKvect.add(tuple(v))
+
                     display_rhombus(r, s, kr, ks, x, y, ind, params)
 
                     counter += 1
 
     print(counter, 'rhombuses')
+
+    if params.OUTPUT_COORDINATES:
+        nomfich = params.filename_coordinates()
+        print('output vertices coordinates in file', nomfich)
+        with open(nomfich, 'w+') as f:
+            for i, v in enumerate(setKvect):
+                (x, y) = point(v, COS, SIN, N)
+                f.write(str(i) + ' ' + str(x) + ' ' + str(y) + '\n')
 
 
 ###################################### main function
@@ -138,7 +153,8 @@ def outputTiling(params: Parameters):
     plt.axis('equal')
     plt.axis('off')
 
-    plt.title(params.title(), fontsize=7, y=0, pad=-20.)
+    if params.TITLE:
+        plt.title(params.title(), fontsize=7, y=0, pad=-20.)
     print(params.string())
     
     # drawing limits
