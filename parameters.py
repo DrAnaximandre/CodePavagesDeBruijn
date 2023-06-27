@@ -46,6 +46,7 @@ class Parameters(object):
                  QUANTUM_COLOR: bool = False,  # should color be quantized
                  TILINGDIR: str = "../Pavages/DefaultTilingDir", # where to output the tilings,
                  OUTPUT_COORDINATES: bool = False,
+                 TITLE: bool = True,
                  i: int = 0,
                      ) :
         
@@ -160,7 +161,11 @@ class Parameters(object):
         if self.BACKGROUND == BLACK:
             style.use('dark_background')
 
+        self.TITLE = TITLE
 
+    def filename_coordinates(self):
+        filename_with_coordinates = self.filename() + "_coordinates.txt"
+        return filename_with_coordinates
 
     def side(self):
         fn = self.filename()
