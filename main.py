@@ -19,22 +19,30 @@ from utils import ParallelProcessor
 
 
 gamma = gm.MappedGammaParameter(
-    N=5,
-    initialShift=0,
-    functionToMap=lambda s, j: s+j*0.7
+    N=12,
+    initialShift=np.pi,
+    functionToMap=lambda s, j: s+j/8
 )
 
 p = Parameters(GAMMA=gamma,
                R=1,
+               N = gamma.N,
+               NBL=12,
+               DMAX=15,
                COLORING=2,
                BACKGROUND='k',
-               STROKECOLOR='w',
-               SCALE_LINEWIDTH=20,
+               STROKECOLOR='r',
+               SCALE_LINEWIDTH=10,
                RECTANGLE=True,
                DIAGONAL=False,
                SIDES=False,
                SAVE=True,
-               TILINGDIR="./results/repro-18-juin")
+               SQUARE=True,
+               SAVE_FORMAT='png',
+               TITLE=False,
+               FRAME=True,
+               OUTPUT_COORDINATES=True,
+               TILINGDIR="./results/27-juin")
 outputTiling(p)
 
 
