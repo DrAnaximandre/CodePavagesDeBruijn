@@ -1,8 +1,8 @@
 from pathlib import Path
 import inspect
 import matplotlib.pyplot as plt
-from matplotlib import style
 from time import localtime, strftime
+from matplotlib import style
 from PIL import Image
 import numpy as np
 
@@ -35,7 +35,7 @@ class Parameters(object):
                  SIDES: bool = True,
                  RECTANGLE: bool = False,
                  DIAGONAL: bool = False,
-                 SCALE_LINEWIDTH: int= 8,
+                 SCALE_LINEWIDTH: int = 8,
                  BACKGROUND: str = 'w',
                  STROKECOLOR: str = 'k',
                  COLORING: int = 0,
@@ -44,7 +44,9 @@ class Parameters(object):
                  AUGMENTED_COLORS: bool = False,  # Should the colors be tilted a bit
                  IMAGEPATH: str = "lego.jpg",  # used only for coloring 16, 17, 18
                  QUANTUM_COLOR: bool = False,  # should color be quantized
-                 TILINGDIR: str = "../Pavages/DefaultTilingDir", # where to output the tilings
+                 TILINGDIR: str = "../Pavages/DefaultTilingDir", # where to output the tilings,
+                 OUTPUT_COORDINATES: bool = False,
+                 TITLE: bool = True,
                  i: int = 0,
                      ) :
         
@@ -151,13 +153,19 @@ class Parameters(object):
         self.i = i
         self.FILLWITHCIRCLE = False
 
+        self.OUTPUT_COORDINATES = OUTPUT_COORDINATES
+
         # if self.BACKGROUND == self.STROKECOLOR :
         #     print("WARNING : BACKGROUND == STROKECOLOR !!!")
 
         if self.BACKGROUND == BLACK:
             style.use('dark_background')
 
+        self.TITLE = TITLE
 
+    def filename_coordinates(self):
+        filename_with_coordinates = self.filename() + "_coordinates.txt"
+        return filename_with_coordinates
 
     def side(self):
         fn = self.filename()

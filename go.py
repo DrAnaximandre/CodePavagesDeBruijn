@@ -10,10 +10,12 @@ def goAllDefaults():
     p = Parameters()
     outputTiling(p)
 
+    
 #################################### a very small tiling
 def goVerySmall():
     outputTiling(Parameters(N=5,DMAX=2,NBL=0))
 
+    
 ###################################### with a fixed and initial GAMMA value
 
 SEQUENCE_LIVRET = [(4,3), (8,6), (15, 8), (30, 16), (60, 33), (100, 55)]
@@ -43,6 +45,7 @@ def goLivret():
 
             
 ###################################### with a varying GAMMA value
+
 def goLivretVar():
     N = 5
     initialshift = 0.03
@@ -69,7 +72,8 @@ def goLivretVar():
 
         gamma.setNextValue()
 
-def goDemo(N=7):
+
+def goDemo(N=5):
     """
     goDemo is a demo of the tiling generator.
     It generates white patterns on a black background.
@@ -96,7 +100,7 @@ def goDemo(N=7):
         TILINGDIR = "./results/demo",
         BACKGROUND = 'k',
         STROKECOLOR = 'w',
-        SCALE_LINEWIDTH = 18.5
+        SCALE_LINEWIDTH = 20
     )
     outputTiling(p)
 
