@@ -175,8 +175,7 @@ class Parameters(object):
         return filename_with_lines
 
     def side(self):
-        fn = self.filename()
-        return "\n".join([chr(ord(ch) + 2) for ch in fn])
+        return "\n".join([chr(ord(ch) + 2) for ch in self.fn])
 
     def updateDMAX(self, dmax):
         self.DMAX = dmax
