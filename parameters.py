@@ -199,7 +199,11 @@ class Parameters(object):
         sG += f"\n quantum = {self.QUANTUM_COLOR}"
 
         # the code that is in the lambda called functionToMap is displayed here
-        sG += f" {inspect.getsourcelines(self.GAMMA.functionToMap)[0][0]}"
+        try:
+            sG += f" {inspect.getsourcelines(self.GAMMA.functionToMap)[0][0]}"
+        except:
+            # case where we use the default gamma function to map
+            pass
         return sG
 
     def string(self):
