@@ -167,7 +167,7 @@ class Parameters(object):
         print(self.fn)
 
     def filename_coordinates(self):
-        filename_with_coordinates = self.filename() + "_coordinates.txt"
+        filename_with_coordinates = self.fn + "_coordinates.txt"
         return filename_with_coordinates
 
     def side(self):
