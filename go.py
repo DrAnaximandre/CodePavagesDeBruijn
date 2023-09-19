@@ -104,37 +104,6 @@ def goDemo(N=5):
     )
     outputTiling(p)
 
-def goPolo3D(N=4, shift=1, i=1234, dmax=5, nbl=5):
-    gamma = gm.MappedGammaParameter(
-        N=N,
-        initialShift=shift,
-        functionToMap=lambda s, j : s*np.sin((1+j)/5)) #/(1+j))
-    p = Parameters(
-        GAMMA=gamma,
-        N=gamma.N,
-        RECTANGLE=False,
-        R=3,
-        DIAGONAL=False,
-        SIDES=True,
-        COLORING=0,
-        BACKGROUND = 'k',
-        STROKECOLOR= 'k',
-        SAVE=True,
-        SHOW=True,
-        IMAGEPATH="start/fleurs.jpg",
-        DESTRUCTURED=False,
-        FISHEYE=False,
-        AUGMENTED_COLORS=False,
-        TILINGDIR="./results",
-        QUANTUM_COLOR=False,
-        i=i,
-    )
-
-    p.magic = shift
-    p.NBL = nbl
-    p.updateDMAX(dmax)
-    outputTiling(p)
-
 
 ######################################
 def goPolo(N=4):
