@@ -199,11 +199,11 @@ class Parameters(object):
         sG += f"\n quantum = {self.QUANTUM_COLOR}"
 
         # the code that is in the lambda called functionToMap is displayed here
-        try:
+        if self.GAMMA.functionToMap is not None:
             sG += f" {inspect.getsourcelines(self.GAMMA.functionToMap)[0][0]}"
-        except:
+        else:
             # case where we use the default gamma function to map
-            pass
+            sG += " None"
         return sG
 
     def string(self):
