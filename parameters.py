@@ -163,6 +163,9 @@ class Parameters(object):
 
         self.TITLE = TITLE
 
+        self.fn = self.filename()
+        print(self.fn)
+
     def filename_coordinates(self):
         filename_with_coordinates = self.filename() + "_coordinates.txt"
         return filename_with_coordinates
