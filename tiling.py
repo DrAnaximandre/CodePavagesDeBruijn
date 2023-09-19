@@ -154,7 +154,7 @@ def outputTiling(params: Parameters):
     plt.axis('off')
 
     if params.TITLE:
-        plt.title(params.title(), fontsize=7, y=0, pad=-20.)
+        plt.title(params.title(), fontsize=7, y=0, pad=-50.)
     print(params.string())
     
     # drawing limits
