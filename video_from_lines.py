@@ -48,7 +48,11 @@ def get_list_of_indices_at_which_plot_image(MAX,
     if kind == "v1":
         # linear interpolation
         result = [int(i * MAX / duration / fps) for i in range(duration * fps)]
-        result.append(MAX - 1)
+        result.append(MAX-1)
+
+
+    # remove duplicates
+    result = list(dict.fromkeys(result))
 
     return result
 
@@ -198,16 +202,16 @@ if __name__ == '__main__':
     folder = f'./results/{today}/'
 
     gamma = gm.MappedGammaParameter(
-        N=7,
+        N=5,
         initialShift=0.345,
-        functionToMap=lambda s, j: 1 + j / 9 - s if j % 3 == 0 else 0.165,
+        functionToMap=lambda s, j: 1 + j / 9 - s if j % 3 == 0 else 1,
     )
 
     p = Parameters(GAMMA=gamma,
                    R=1,
                    N=gamma.N,
-                   NBL=4,
-                   DMAX=5,
+                   NBL=8,
+                   DMAX=12,
                    COLORING=2,
                    BACKGROUND='k',
                    STROKECOLOR='w',
@@ -228,8 +232,8 @@ if __name__ == '__main__':
 
     video_from_lines(filename,
                     folder=folder,
-                    dmax=5,
+                    dmax=10,
                     dpi=300,
                     size=1000,
                     initial_color=[1, 0, 0, 1],
-                    duration=5)
+                    duration=9)
