@@ -170,6 +170,10 @@ class Parameters(object):
         filename_with_coordinates = self.fn + "_coordinates.txt"
         return filename_with_coordinates
 
+    def filename_lines(self):
+        filename_with_lines = self.fn + "_lines.txt"
+        return filename_with_lines
+
     def side(self):
         fn = self.filename()
         return "\n".join([chr(ord(ch) + 2) for ch in fn])
