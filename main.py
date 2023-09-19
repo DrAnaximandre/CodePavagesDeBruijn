@@ -1,19 +1,20 @@
 ###########################################################################
 #  Comments and suggestions are welcome. Mail to :  mike.lembitre@gmail.com
 ###########################################################################
-
+import numpy as np
 
 from go import *
 from utils import ParallelProcessor
 
 ###########  Polo's
 
-#goDemo()
-#goPolo()
+# goDemo()
+# goPolo()
+goPoloCubes(17)
 #
 # P = ParallelProcessor()
-# P.add(goDemo)
-# P.run([3, 4, 5, 7, 9])
+# P.add(goPoloCubes)
+# P.run(np.arange(14, 19, 0.5))
 
 ########## Mike's
 #
