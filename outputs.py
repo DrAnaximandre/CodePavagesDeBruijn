@@ -9,14 +9,17 @@ from parameters import Parameters
 
 ################################################## draws the rhombus with matplotlib
 
-def mplot(x,y,params) :
+def mplot(x,y,params):
     plt.plot(x,y,
              linewidth=params.LINEWIDTH,
              color=params.STROKECOLOR,
              #alpha=0.7,
              solid_joinstyle='round',
              solid_capstyle='projecting')   # end of lines
-
+    if params.OUTPUT_COORDINATES:
+        with open(params.filename_lines(), 'a+') as f:
+            for j in range(len(x)):
+                f.write(f"{x[(0+j)%len(x)]} {y[(0+j)%len(x)]} {x[(1+j)%len(x)]} {y[(1+j)%len(x)]}\n")
 
 def sides(x,y, params):
     xc, yc = np.append(x,x[0]), np.append(y,y[0])

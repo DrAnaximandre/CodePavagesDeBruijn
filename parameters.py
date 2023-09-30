@@ -163,13 +163,19 @@ class Parameters(object):
 
         self.TITLE = TITLE
 
+        self.fn = self.filename()
+        print(self.fn)
+
     def filename_coordinates(self):
-        filename_with_coordinates = self.filename() + "_coordinates.txt"
+        filename_with_coordinates = self.fn + "_coordinates.txt"
         return filename_with_coordinates
 
+    def filename_lines(self):
+        filename_with_lines = self.fn + "_lines.txt"
+        return filename_with_lines
+
     def side(self):
-        fn = self.filename()
-        return "\n".join([chr(ord(ch) + 2) for ch in fn])
+        return "\n".join([chr(ord(ch) + 2) for ch in self.fn])
 
     def updateDMAX(self, dmax):
         self.DMAX = dmax
@@ -193,7 +199,11 @@ class Parameters(object):
         sG += f"\n quantum = {self.QUANTUM_COLOR}"
 
         # the code that is in the lambda called functionToMap is displayed here
-        sG += f" {inspect.getsourcelines(self.GAMMA.functionToMap)[0][0]}"
+        if self.GAMMA.functionToMap is not None:
+            sG += f" {inspect.getsourcelines(self.GAMMA.functionToMap)[0][0]}"
+        else:
+            # case where we use the default gamma function to map
+            sG += " None"
         return sG
 
     def string(self):

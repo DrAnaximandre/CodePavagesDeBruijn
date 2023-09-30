@@ -96,7 +96,7 @@ def goDemo(N=5):
         i=0,
         SAVE=True,
         SHOW=False,
-        SAVE_FORMAT='pdf',
+        SAVE_FORMAT='png',
         TILINGDIR = "./results/demo",
         BACKGROUND = 'k',
         STROKECOLOR = 'w',
@@ -104,35 +104,34 @@ def goDemo(N=5):
     )
     outputTiling(p)
 
-def goPolo3D(N=4, shift=1, i=1234, dmax=5, nbl=5):
+
+######################################
+def goPoloCubes(s =1):
+    """
+    Go Polo! Cubes. Makes colorful cubes.
+    """
     gamma = gm.MappedGammaParameter(
-        N=N,
-        initialShift=shift,
-        functionToMap=lambda s, j : s*np.sin((1+j)/5)) #/(1+j))
+        N=6,
+        initialShift=s,
+        functionToMap=lambda s, j:  s if j%2 == 0 else -1.001 * j
+    )
     p = Parameters(
         GAMMA=gamma,
         N=gamma.N,
         RECTANGLE=False,
         R=3,
+        FRAME=False,
         DIAGONAL=False,
         SIDES=True,
-        COLORING=0,
+        DMAX=20,
+        NBL=12,
+        COLORING=13,  # 16 uses a photo and "tiles" it, doesn't always work ...
         BACKGROUND = 'k',
         STROKECOLOR= 'k',
+        SCALE_LINEWIDTH= 20,
         SAVE=True,
-        SHOW=True,
-        IMAGEPATH="start/fleurs.jpg",
-        DESTRUCTURED=False,
-        FISHEYE=False,
-        AUGMENTED_COLORS=False,
-        TILINGDIR="./results",
-        QUANTUM_COLOR=False,
-        i=i,
+        TILINGDIR="./results/cubes",
     )
-
-    p.magic = shift
-    p.NBL = nbl
-    p.updateDMAX(dmax)
     outputTiling(p)
 
 
@@ -168,53 +167,6 @@ def goPolo(N=4):
         i=123,
     )
     outputTiling(p)
-
-def goPoloVideo(N=7):
-    """
-    goPoloVideo is a demo of the tiling generator.
-    It generates white patterns on a black background.
-
-    """
-    def ftm(k, s, j):
-        """
-        Function to map.
-        """
-        g = np.sin(s-(1 + j) / 7) + 0.1 * j /7 + np.cos(j)/7
-        if j==0:
-            g *= np.cos(k/3)
-        elif j==1:
-            g += np.cos(k/20)
-        elif j==2:
-            g *= np.cos(k/5) + np.cos(k/7)
-        elif j==4:
-            g += 3*np.sin(k/5)
-        return g
-
-
-    gamma = gm.MappedGammaParameter(
-        N=5,
-        initialShift=1.2345,
-        functionToMap = lambda s, j : ftm(N, s, j)
-    )
-    p = Parameters(
-        GAMMA=gamma,
-        N=gamma.N,
-        RECTANGLE=True,
-        SIDES=False,
-        R=1,
-        DMAX=15,
-        NBL=8,
-        COLORING=0,
-        i=N,
-        SAVE=True,
-        SHOW=False,
-        SAVE_FORMAT='png',
-        TILINGDIR="./results/testf",
-        BACKGROUND="k",
-        STROKECOLOR="w"
-    )
-    outputTiling(p)
-
 
 
 ###################################
