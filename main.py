@@ -8,9 +8,9 @@ from utils import ParallelProcessor
 
 ###########  Polo's
 
-# goDemo()
-# goPolo()
-goPoloCubes(17)
+#goDemo()
+goPolo(5)
+# goPoloCubes(17)
 #
 # P = ParallelProcessor()
 # P.add(goPoloCubes)
