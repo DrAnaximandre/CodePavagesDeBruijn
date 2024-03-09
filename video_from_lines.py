@@ -38,7 +38,7 @@ def read_lines(filename):
 def get_list_of_indices_at_which_plot_image(MAX,
                                             duration=10,
                                             fps=30,
-                                            kind="v1"):
+                                            kind="old"):
 
     if kind == "old":
         # this  kinda works but not too well
@@ -49,7 +49,6 @@ def get_list_of_indices_at_which_plot_image(MAX,
         # linear interpolation
         result = [int(i * MAX / duration / fps) for i in range(duration * fps)]
         result.append(MAX-1)
-
 
     # remove duplicates
     result = list(dict.fromkeys(result))
@@ -70,6 +69,29 @@ def video_from_lines(
 
     fdv, index = create_folder_with_increment(folder)
     MAX, x1, y1, x2, y2 = read_lines(filename)
+
+
+    # sort by proximity to the center
+    x1 = np.array(x1)
+    y1 = np.array(y1)
+    x2 = np.array(x2)
+    y2 = np.array(y2)
+    d = np.sqrt(x1**2 + y1**2)
+    idx = np.argsort(d)
+
+    # # flip x1 and y1
+    # x1, y1 = -np.array(x1), -np.array(y1)
+    # # flip x2 and y2
+    # x2, y2 = -np.array(x2), -np.array(y2)
+
+    # # get index of x1, low to high
+    # idx = np.argsort(x1)
+
+    x1 = x1[idx]
+    y1 = y1[idx]
+    x2 = x2[idx]
+    y2 = y2[idx]
+
     result = get_list_of_indices_at_which_plot_image(MAX, duration = duration)
 
     minx = -dmax
@@ -89,16 +111,18 @@ def video_from_lines(
     accx = []
     accy = []
 
+    dvtc = {i : np.array([]) for i in range(1, 11)}
     for i in tqdm.tqdm(range(MAX)):
         x = [x1[i], x2[i]]
         y = [y1[i], y2[i]]
         accx.append(x)
         accy.append(y)
+
         if i in result:
 
-            initial_color[0] = np.sqrt(x1[i]**2 + y1[i]**2) / (10+dmax)
-            initial_color[1] = 1 / 2 + 0.4495 * np.cos(x1[i]/2)
-            initial_color[2] = 1 / 2 + 0.4495 * np.cos(y1[i]/2)
+            # initial_color[0] = np.sqrt(x1[i]**2 + y1[i]**2) / (10+dmax)
+            # initial_color[1] = 1 / 2 + 0.4495 * np.cos(x1[i]/2)
+            # initial_color[2] = 1 / 2 + 0.4495 * np.cos(y1[i]/2)
 
 
             if i !=0:
@@ -107,18 +131,18 @@ def video_from_lines(
                 image = plt.imread(io.BytesIO(image_data))
 
                 # # select all point where there is somewhat some red
-                # image_red_index = image[:, :, 0] > 0.96
+                image_red_index = image[:, :, 0] > 0.96
                 #
-                # pr = 0.001
-                # pg = 0.01
-                # pb = 0
+                pr = 0
+                pg = 0
+                pb = 0
+
+                cr = 0.9568
+                cg = 0.949
+                cb = 1
                 #
-                # cr = 0.995
-                # cg = 0.99
-                # cb = 0.99
-                #
-                # image[image_red_index,:] += [pr,pg,pb,0]
-                # image *= [cr, cg, cb, 1]
+                image[image_red_index,:] += [pr,pg,pb,0]
+                image *= [cr, cg, cb, 1]
 
                 fig = plt.figure(figsize=(size / dpi, size / dpi), dpi=dpi, frameon=True)
                 ax = fig.add_subplot(111)
@@ -136,11 +160,13 @@ def video_from_lines(
                         'o-',
                         color=initial_color,
                         markersize=1,
-                        linewidth=1.3,
+                        linewidth=0.35,
                         solid_joinstyle='round',
                         solid_capstyle='round',
                         markeredgecolor='none'
                         )
+
+
             accx = []
             accy = []
 
@@ -158,8 +184,8 @@ def video_from_lines(
         bob = plt.imread(io.BytesIO(image_data))
 
         # chang
-        bob_not_black_index = (bob[:, :, 0] > 0.01) & (bob[:, :, 1] > 0.01) & (bob[:, :, 2] > 0.01)
-        bob[bob_not_black_index] += [0.025, 0.025, 0.025, 1]
+        bob_not_black_index = (bob[:, :, 0] > 0.01)
+        bob[bob_not_black_index] *= [0.935, 1, 1, 1]
         # clip
         bob[bob > 1] = 1
 
@@ -202,23 +228,23 @@ if __name__ == '__main__':
     folder = f'./results/{today}/'
 
     gamma = gm.MappedGammaParameter(
-        N=5,
-        initialShift=0.345,
-        functionToMap=lambda s, j: 1 + j / 9 - s if j % 3 == 0 else 1,
+        N=8,
+        initialShift=12.345,
+        functionToMap=lambda s, j: 1 + j / 9 * s if j % 2 != 0 else -1,
     )
 
     p = Parameters(GAMMA=gamma,
-                   R=1,
+                   R=7,
                    N=gamma.N,
-                   NBL=8,
-                   DMAX=12,
+                   NBL=5,
+                   DMAX=25,
                    COLORING=2,
                    BACKGROUND='k',
                    STROKECOLOR='w',
                    SCALE_LINEWIDTH=10,
                    RECTANGLE=True,
-                   DIAGONAL=False,
-                   SIDES=False,
+                   DIAGONAL=True,
+                   SIDES=True,
                    SAVE=True,
                    SQUARE=True,
                    SAVE_FORMAT='png',
@@ -232,8 +258,8 @@ if __name__ == '__main__':
 
     video_from_lines(filename,
                     folder=folder,
-                    dmax=10,
+                    dmax=25,
                     dpi=300,
                     size=1000,
                     initial_color=[1, 0, 0, 1],
-                    duration=9)
+                    duration=5)
