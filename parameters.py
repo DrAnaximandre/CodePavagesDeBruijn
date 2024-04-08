@@ -1,8 +1,7 @@
 from pathlib import Path
-import inspect
 import matplotlib.pyplot as plt
-from time import localtime, strftime
 from matplotlib import style
+from time import localtime, strftime
 from PIL import Image
 import numpy as np
 
@@ -11,8 +10,6 @@ from sklearn.cluster import KMeans
 
 ######################################################
 
-WHITE = 'w'
-BLACK = 'k'
 
 # plt.rcParams['savefig.facecolor'] = "0.8"
 plt.rcParams['figure.figsize'] = 8., 8.  # for small screen
@@ -21,34 +18,52 @@ plt.rcParams['figure.figsize'] = 8., 8.  # for small screen
 class Parameters(object):
 
     def __init__(self,
-                 # GAMMA actual value defined later because of N dependancy
-                 GAMMA: MappedGammaParameter = None, 
+
+                 ## main parameters
+                 
                  N: int = 5,
                  DMAX: int = 8,
                  NBL: int = 5,
-                 R: int = 0,
+                 # GAMMA actual value defined later because of N dependancy
+                 GAMMA: MappedGammaParameter = None, 
+  
+                 ## save and show parameters 
                  SAVE: bool = False,
                  SHOW: bool = True,
-                 SAVE_FORMAT: str = 'png',
-                 SQUARE: bool = True,
+                 SAVE_FORMAT: str = 'pdf',
+
+                 ## the frame (doesn't work well)
+                 SQUARE: bool = True,  
                  FRAME: bool = False,
-                 SIDES: bool = True,
-                 RECTANGLE: bool = False,
+
+                 ## additional string to be added to the output title
+                 TITLEREF = '',
+                 ## prefix to the outpu file name
+                 PREFIX = 0,
+                 
+                 SIDES: bool = True, # to see rhombi sides
+                 
+                 RECTANGLE: bool = False,  # see below
                  DIAGONAL: bool = False,
-                 SCALE_LINEWIDTH: int = 8,
-                 BACKGROUND: str = 'w',
-                 STROKECOLOR: str = 'k',
+                 R: int = 0,
+
+                 SCALE_LINEWIDTH: int= 8,
+                 BACKGROUND: str = 'w', # WHITE
+                 STROKECOLOR: str = 'k',  # BLACK
                  COLORING: int = 0,
                  DESTRUCTURED: bool = False,  # Should noise be applied to the coordinates of the rhombi
                  FISHEYE: bool = False,  # another kind of transformation
                  AUGMENTED_COLORS: bool = False,  # Should the colors be tilted a bit
+                 
+                 IMAGEDIR: str = '',
                  IMAGEPATH: str = "lego.jpg",  # used only for coloring 16, 17, 18
+                 
+                 
                  QUANTUM_COLOR: bool = False,  # should color be quantized
-                 TILINGDIR: str = "../Pavages/DefaultTilingDir", # where to output the tilings,
-                 OUTPUT_COORDINATES: bool = False,
-                 TITLE: bool = True,
-                 i: int = 0,
-                     ) :
+                 TILINGDIR: str = "../Results/DefaultDir", # where to output the tilings
+
+                 k: int = 0,
+                 PLOT_TITLE: bool = True) :
         
         # Must be 4 or higher
         # Set N = 5 for pentagrids. It works also for 7, 9, 11 ....
@@ -85,12 +100,18 @@ class Parameters(object):
         # ============== draws a frame at the limits of drawings
         self.FRAME = FRAME
 
-        ##################### DRAWINGS
+        self.TITLEREF = TITLEREF
 
-        # ---- Controls for drawing rombi
-        self.SIDES = SIDES  # draws the sides (contours) ?
-        self.DIAGONAL = DIAGONAL  # draws a diagonal ?
-        self.RECTANGLE = RECTANGLE  # draws (part of) rectangle inside the rhombus ?
+        ##################### DRAWINGS LINES
+
+        # ---- Controls for drawing 
+        self.SIDES = SIDES  # draws the sides (contours) of rhombi
+        
+        self.DIAGONAL = DIAGONAL  # draws one or two diagonal inside rhombi
+        self.RECTANGLE = RECTANGLE
+            # draws the shortest rombi diagonal, according to
+            # the rombus shape (specific for N=5 but works for any N)
+            # draws (part of) rectangle inside the rhombus 
         self.R = R
         # self.R = 0 #  rectangles and only rectangles
         # self.R = 1 # only opposite sides of rectangles
@@ -103,7 +124,7 @@ class Parameters(object):
 
         # ---- Directory where to write the tilings
         self.TILINGDIR = TILINGDIR
-        # create the directory
+        # create the directory if necessary
         Path(self.TILINGDIR).mkdir(parents=True, exist_ok=True)
 
         # =============== COLORS
@@ -114,32 +135,18 @@ class Parameters(object):
         # -- for filling
         # if False, no filling for shapes
         self.FILL = True
-        self.COLORING = COLORING  # different coloring styles (if FILL==True), see the colors module
+        # different coloring styles (if FILL==True), see the colors module
+        self.COLORING = COLORING 
         # -- for contours
         self.STROKECOLOR = STROKECOLOR
 
+        #self.IMAGEDIR = IMAGEDIR
         self.IMAGEPATH = IMAGEPATH
+        
         self.QUANTUM_COLOR = QUANTUM_COLOR
 
         if self.COLORING in [16,17,18]:
-            # very crude, can be demanding for the CPU if the input image is large
-
-            img = Image.open(self.IMAGEPATH)
-            img.load()
-            # passe-passe pour loader l'image dans le bon sens
-            self.image = np.asarray(img, dtype="int32")
-            self.image = np.swapaxes(self.image, 0, 1)
-            self.image = np.flip(self.image, 1)
-            X = self.image.reshape(self.image.shape[0] * self.image.shape[1], self.image.shape[2])
-            # resize si trop grand
-            print("fitting kmeans")
-            if self.QUANTUM_COLOR:
-                color_model = KMeans(n_clusters=15,
-                                     random_state=0,
-                                     max_iter=100,
-                                     init = 'random',
-                                     tol=1e-1).fit(X) # Todo, parameterise the number of clusters
-                self.QUANTUM_COLOR = color_model
+            self.set_image(self.IMAGEPATH)
         else:
             if self.QUANTUM_COLOR:
                 print('inappropriate parameters, overriding QC ')
@@ -150,61 +157,65 @@ class Parameters(object):
         self.AUGMENTED_COLORS = AUGMENTED_COLORS
 
         self.magic = 0.5
-        self.i = i
+        self.PREFIX = PREFIX  #  used as a prefix in the output file name
         self.FILLWITHCIRCLE = False
 
-        self.OUTPUT_COORDINATES = OUTPUT_COORDINATES
+        #if self.BACKGROUND == self.STROKECOLOR :
+        #    print("WARNING : BACKGROUND == STROKECOLOR !!!")
 
-        # if self.BACKGROUND == self.STROKECOLOR :
-        #     print("WARNING : BACKGROUND == STROKECOLOR !!!")
-
-        if self.BACKGROUND == BLACK:
+        if self.BACKGROUND == 'k':  # BLACK
             style.use('dark_background')
 
-        self.TITLE = TITLE
+        self.k = k
+        self.PLOT_TITLE = PLOT_TITLE
 
-        self.fn = self.filename()
-        print(self.fn)
+    def set_image(self, path) :
+        # very crude, can be demanding for the CPU if the input image is large
 
-    def filename_coordinates(self):
-        filename_with_coordinates = self.fn + "_coordinates.txt"
-        return filename_with_coordinates
-
-    def filename_lines(self):
-        filename_with_lines = self.fn + "_lines.txt"
-        return filename_with_lines
+        #img = Image.open(self.IMAGEPATH)
+        img = Image.open(path)
+        img.load()
+        # passe-passe pour loader l'image dans le bon sens
+        self.image = np.asarray(img, dtype="int32")
+        self.image = np.swapaxes(self.image, 0, 1)
+        self.image = np.flip(self.image, 1)
+        X = self.image.reshape(self.image.shape[0] * self.image.shape[1], self.image.shape[2])
+        print(f'image.shape= {self.image.shape}')
+        # resize si trop grand
+        print("fitting kmeans")
+        if self.QUANTUM_COLOR:
+            color_model = KMeans(n_clusters=15, random_state=self.i).fit(X)
+            # Todo, parameterise the number of clusters
+            self.QUANTUM_COLOR = color_model
+    
 
     def side(self):
-        return "\n".join([chr(ord(ch) + 2) for ch in self.fn])
+        fn = self.filename()
+        return "\n".join([chr(ord(ch) + 2) for ch in fn])
 
     def updateDMAX(self, dmax):
         self.DMAX = dmax
         self.LINEWIDTH = self.SCALE_LINEWIDTH / self.DMAX
 
     def filename(self):
-        stts = str(strftime("%Y-%m-%d_%H-%M-%S", localtime()))
-        name = f"{self.TILINGDIR}/{self.i:03}_{self.N}_{stts}_{self.DMAX}_{self.NBL}_{self.GAMMA.string()}"
+        stts = str(strftime("%Y-%m-%d_%H-%M-%S-%ms", localtime()))
+        name = f"{self.TILINGDIR}/{self.PREFIX:03}_{stts}_{self.GAMMA.string()}"
         name = name[:100]
+        name += f"{self.k*100}"
         return name
 
     def title(self):
-        sG = "\n\n\n\n\n" + str(self.N) + ' $d_{max}$=' + str(self.DMAX) + ' i=' + str(self.i)
+        sG = 'N=' + str(self.N) + ' $d_{max}$=' + str(self.DMAX) + ' NBL=' + str(self.NBL)
         if self.RECTANGLE:
-            sG += ' R=' + str(self.R)
+            sG += ' R=' + str(self.R) 
         if self.DIAGONAL:
             sG += ' D'
-
-        sG += self.GAMMA.string()[:50]
-
-        sG += f"\n quantum = {self.QUANTUM_COLOR}"
-
-        # the code that is in the lambda called functionToMap is displayed here
-        if self.GAMMA.functionToMap is not None:
-            sG += f" {inspect.getsourcelines(self.GAMMA.functionToMap)[0][0]}"
+        sG += ' ' + self.GAMMA.string()[:70]
+        sG += ' ' + self.TITLEREF
+        if self.PLOT_TITLE:
+            return sG
         else:
-            # case where we use the default gamma function to map
-            sG += " None"
-        return sG
+            return ''
 
     def string(self):
         sG = self.GAMMA.string() + ' DMAX=' + str(self.DMAX) + ' NBL=' + str(self.NBL)
@@ -212,5 +223,5 @@ class Parameters(object):
             sG += ' R=' + str(self.R)
         if self.DIAGONAL:
             sG += ' D'
-        return sG
 
+        return sG
