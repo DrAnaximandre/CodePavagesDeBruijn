@@ -1,6 +1,9 @@
 from typing import Iterable
 from joblib import Parallel,delayed
+import numpy as np
+import math
 
+##########################################
 class ParallelProcessor:
     """ This is a class to run several go functions in parallel.
 
@@ -27,3 +30,21 @@ class ParallelProcessor:
         """
         delayed_gos = (delayed(g)(k) for g in self.gos for k in kappa)
         Parallel(n_jobs=self.n_jobs)(delayed_gos)
+###########################################
+
+
+# returns the y coordinates corresponding to the given x,
+# so that the point (x,y) is on the DF line (linear interpolation)
+def mapR(x, xD, xF, yD, yF) :
+    return yD + (yF-yD)/(xF-xD)*(x-xD)
+
+def linearPoint(A,B,k):
+    xA,yA = A
+    xB,yB = B
+    xC = xA + (xB-xA)*k
+    yC = yA + (yB-yA)*k
+    return (xC,yC)
+    
+    
+
+        
