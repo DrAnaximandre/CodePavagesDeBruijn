@@ -263,6 +263,34 @@ def PoloVideo(N=7):
     )
     outputs.output(p)
 
+######################################
+def goPoloCubes(s =1):
+    """
+    Go Polo! Cubes. Makes colorful cubes.
+    """
+    gamma = gm.MappedGammaParameter(
+        N=6,
+        initialShift=s,
+        functionToMap=lambda s, j:  s if j%2 == 0 else -1.001 * j
+    )
+    p = Parameters(
+        GAMMA=gamma,
+        N=gamma.N,
+        RECTANGLE=False,
+        R=3,
+        FRAME=False,
+        DIAGONAL=False,
+        SIDES=True,
+        DMAX=20,
+        NBL=12,
+        COLORING=13,  # 16 uses a photo and "tiles" it, doesn't always work ...
+        BACKGROUND = 'k',
+        STROKECOLOR= 'k',
+        SCALE_LINEWIDTH= 20,
+        SAVE=True,
+        TILINGDIR="./results/cubes",
+    )
+    outputs.output(p)
 
 
 ################################### miscellanous
