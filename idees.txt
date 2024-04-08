@@ -1,38 +1,41 @@
 
-- dilatations / r�tractions des coordonn�es des sommets des losanges
+- dilatations / rétractions des coordonnées des sommets des losanges
   selon par exemple de la distance au centre
 
 - choix des segments qui joignent les milieux des cotes des losanges :
-    . al�atoire
+    . aléatoire
     . selon les indices (altitude) des sommets voisins (cf article de DeBruijn)
-         par exemple choisir des segments � altitude constante
+         par exemple choisir des segments à altitude constante
 
 - idee du graphe biparti (utiliser les indices d'altitude)
 
 - travailler les couleurs pour les pavages autres que les losanges
-  (n�cessite de reconstituer les polygones r�sultants)
+  (nécessite de reconstituer les polygones résultants, à retrouver à partir du graphe)
 
-- d'autres r�seaux
-    . segments qui joignent les 1/3 et 2/3 des c�t�s des losanges,
+- d'autres réseaux
+    . segments qui joignent les 1/3 et 2/3 des côtés des losanges,
       ou 1/3, 1/2, 3/4 ...
+    .  autres façons de créer des lignes que joindre les milieux des ar^tes des rhombi
+       faire une recherche plus systématique
+
 
 - entrelas (faisable avec R=61 ou 62)
 
-- autres fa�ons de joindre les sommets, les milieux des sommets,
-    faire une recherche plus syst�matique
+- joindre les projets "Gril'Art' et 'Pavages', TSP et MST -> en cours dans cette nouvelle version
 
-- joindre les projets "Gril'Art' et 'Pavages'
+- lisser les courbes brisées
 
-- lisser les courbes bris�es
+- courbes � la place des lignes
+
+- mettre des trous (rhombi absents)
+
 
 Implementation:
     
-- refaire ce fichier en .md  (c'est quoi ?)
-
 - trouver une bonne solution robuste pour dessiner la bordure (FRAME)
 
 - parametrer l epaisseur de ligne (cf SCALE_LINEWIDTH dans parameters)
 
-- les segments se raccordent pas bien : pb de précision ?
-       
 - attraper erreur si N=0
+
+
