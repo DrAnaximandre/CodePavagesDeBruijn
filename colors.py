@@ -4,15 +4,12 @@ from matplotlib import path
 import numpy as np
 from itertools import combinations
 
-from parameters import WHITE
+import utils
 
+WHITE = 'w'
+BLACK = 'k'
 
 #######################################
-
-# returns the y coordinates corresponding to the given x,
-# so that the point (x,y) is on the DF line (linear interpolation)
-def mapR(x, xD, xF, yD, yF) :
-    return yD + (yF-yD)/(xF-xD)*(x-xD)
 
 def shape_rhombus(r, s, params):
     """ the shape_rhombus of a rhombus corresponds to its 'thickness'
@@ -42,8 +39,7 @@ C = list(map(rgb, [C3, C2, C4, C5, C1]))
 
 ######### the main function for coloring ##########
 
-def kolor(r, s, kr, ks, d, params, x, y):
-
+def kolor(r,s,kr,ks,ind,x,y,d,params) :
     
     NBF = math.floor(params.N / 2)  # number of different shapes
 
@@ -54,7 +50,7 @@ def kolor(r, s, kr, ks, d, params, x, y):
 
     elif params.COLORING == 2:
         """ black tiles """
-        return (0,0,0)
+        return BLACK
 
     else:
 
@@ -69,14 +65,14 @@ def kolor(r, s, kr, ks, d, params, x, y):
         # colors depending only on the distance to the origin (center of
         # screen)
         elif params.COLORING == 3:
-            h = mapR(d, 0, params.DMAX, 120, 220)
+            h = utils.mapR(d, 0, params.DMAX, 120, 220)
             return rgb((h, 80, 70))
 
         # color depending on shape_rhombus and distance
         elif params.COLORING == 4:
-            h = mapR(f, -1, NBF - 1, 110, 225)
-            s = 100 - mapR(d, 0, params.DMAX, 0, 20)
-            b = 100 - mapR(d, 0, params.DMAX, 0, 70)
+            h = utils.mapR(f, -1, NBF - 1, 110, 225)
+            s = 100 - utils.mapR(d, 0, params.DMAX, 0, 20)
+            b = 100 - utils.mapR(d, 0, params.DMAX, 0, 70)
             return rgb((h, s, b))
 
         # specific colors
@@ -90,8 +86,8 @@ def kolor(r, s, kr, ks, d, params, x, y):
             sat = 0
             if s > 0:
                 sat = 60 + np.cos((r * 20 + kr * 10 - ks * 5+s) * 2) * 40
-
-
+            #v = 100
+            v = 80
             return rgb((h, sat, v))
 
         elif params.COLORING == 11:
@@ -119,27 +115,16 @@ def kolor(r, s, kr, ks, d, params, x, y):
 
         elif params.COLORING == 13:
             """ Joli rond coloré partant du rouge au centre"""
-            # h = 500 * d / params.DMAX - 100
-            # h += 12 * s - 3*ks
-            # h= h%360
-            # sat = 45
-            # sat += np.cos((s * 20 + kr * 10 + ks * 15 - d)) * 29 + np.sin(2 * (s * 20 + kr * 10 + ks * 15 - d)) * 24
-            # sat = sat%100
-            # if sat < 30:
-            #     sat = 95
-            #
-            # v  = 50 + np.cos((s * 2 + kr * 15 + ks * 10 - d)) * 24 + np.sin(2 * (s * 20 + kr * 10 + ks * 15 - d)) * 24
-
-            h = 500 * d / params.DMAX - 100
-            h += 12 * s
+            h = 500 * d / params.DMAX -100
+            h += 12 * s - 3*ks
             h= h%360
+            sat = 45
+            sat += np.cos((s * 20 + kr * 10 + ks * 15 - d)) * 29 + np.sin(2 * (s * 20 + kr * 10 + ks * 15 - d)) * 24
+            sat = sat%100
+            if sat < 30:
+                sat = 95
 
-            sat = 55
-            sat += np.cos((s * 20 + kr * 10 + ks * 15 - s)) * 30 + np.sin(2 * (s * 30 + kr * 13 + ks * 11 - r)) * 24
-            sat = 100 -sat % 100
-
-            v = 50
-            v += 20 * np.cos(r+s*s+kr*ks) + 19 * np.sin(s + kr + ks)
+            v  = 50 + np.cos((s * 2 + kr * 15 + ks * 10 - d)) * 24 + np.sin(2 * (s * 20 + kr * 10 + ks * 15 - d)) * 24
 
             return rgb((h, sat, v))
 
@@ -172,7 +157,7 @@ def kolor(r, s, kr, ks, d, params, x, y):
         elif params.COLORING == 15:
             """???"""
 
-            dp = 1-np.mean(x*y)/2
+            dp = 1-np.mean(np.array(x)*np.array(y))/2
 
             h = (ks+s+r+200-kr)%360
             s = (int(np.sin(dp*5) * 125) + 126)/2.6
@@ -225,7 +210,7 @@ def kolor(r, s, kr, ks, d, params, x, y):
             xv, yv = np.meshgrid(np.arange(image_bloc.shape[0]), np.arange(image_bloc.shape[1]))
             p = path.Path([ bob for bob in zip(xm_c, ym_c)])
             flags = p.contains_points(np.hstack((xv.flatten()[:, np.newaxis], yv.flatten()[:, np.newaxis])))
-            print(flags.shape)
+            
             col_at_pix = image_bloc.mean(0).mean(0)/255
             return col_at_pix
 
