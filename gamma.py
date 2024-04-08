@@ -3,16 +3,14 @@ import math
 from dataclasses import dataclass
 from typing import Callable
 
+import utils
+
 ##########################################
 
-# returns the y coordinates corresponding to the given x,
-# so that the point (x,y) is on the DF line (linear interpolation)
-def mapR(x, xD, xF, yD, yF) :
-    return yD + (yF-yD)/(xF-xD)*(x-xD)
 
 # a good value
 def defaultGamma(N) :
-    return [mapR(j, 0, N-1, -0.29, 0.19) for j in range(N)]
+    return [utils.mapR(j, 0, N-1, -0.29, 0.19) for j in range(N)]
      
 @dataclass
 class MappedGammaParameter(object) :
@@ -57,7 +55,7 @@ class MappedGammaParameter(object) :
         return s
 
     def stringTex(self) :
-        g = getValue()
+        g = self.getValue()
         s = "$\gamma=[" + ("%+.3f" % g[0]) 
         for i in range(1, self.N):
             s += (",%+.3f" % g[i])
@@ -86,7 +84,7 @@ def MGPnotExactSymetry(N=5) :
 def MGPdeBruijnRegular(N) :
     return MappedGammaParameter(
         N=N,
-        functionToMap=lambda s, j: mapR(j, 0, N-1, -0.29 + s, 0.19 - s))
+        functionToMap=lambda s, j: utils.mapR(j, 0, N-1, -0.29 + s, 0.19 - s))
 
     # special "Pentaville" (best for N=5, large DMAX, screen entirely filled)
     # -- always gives the same tilling ! (does not depend on SHIFT)
