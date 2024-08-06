@@ -180,9 +180,10 @@ def goPolo(N=4):
 
 
 ###################################
-def goCentralSymetry() :
-    p = Parameters(GAMMA = gm.MGPcentralSymetry())
-    outputTiling(p)
+def goCentralSymetry(config=None):
+    params = config.get('Parameters', {})
+    params.update({'GAMMA': gm.MGPcentralSymetry()})
+    outputTiling(Parameters(**params))
 
 def goNotExactSymetry() :
     p = Parameters(GAMMA = gm.MGPnotExactSymetry())

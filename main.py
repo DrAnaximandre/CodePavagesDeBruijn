@@ -28,12 +28,12 @@ config = config.get('Polo')
 ########## Mike's
 #
 #goAllDefaults(config) # uses all config defaults
-goVerySmall(config)
+#goVerySmall(config)
 #
-goLivret(config) # does not display but saves according to the config
+#goLivret(config) # does not display but saves according to the config
 #goLivretVar(config) # does not display but saves according to the config, and runs forever
 #
-# goCentralSymetry()
+goCentralSymetry(config)
 # goNotExactSymetry()
 # goDeBruijnRegular(6)
 # goPentaville()
