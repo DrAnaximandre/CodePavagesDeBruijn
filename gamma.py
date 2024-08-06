@@ -57,7 +57,7 @@ class MappedGammaParameter(object) :
         return s
 
     def stringTex(self) :
-        g = getValue()
+        g = self.getValue()
         s = "$\gamma=[" + ("%+.3f" % g[0]) 
         for i in range(1, self.N):
             s += (",%+.3f" % g[i])

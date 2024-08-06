@@ -10,3 +10,12 @@ See also
   but with a different display style.
 
  Another valuable site : https://www.mathpages.com/home/kmath621/kmath621.htm
+
+
+#
+
+```
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+

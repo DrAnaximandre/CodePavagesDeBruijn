@@ -1,0 +1,13 @@
+{ 
+    "Polo": {
+        "Parameters":{
+            "output_format": "png",
+            "save": "True",
+            "tilingdir": "./tiling"
+        }
+    },
+    "Mike": {
+        "output_format": "pdf"
+    }
+
+}
