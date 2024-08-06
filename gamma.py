@@ -24,7 +24,7 @@ class MappedGammaParameter(object) :
                  initialGammaValue : np.ndarray = None,
                  
                  initialShift : float = 2.01,
-                 deltaShift: float = 0.025,
+                 deltaShift: float = 0.25,
 
                  # functionToMap can be used to build the initial value and successive values
                  #  using setNextValue in a loop (see for ex. go.goLivretVar() )

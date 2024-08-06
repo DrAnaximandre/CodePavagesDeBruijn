@@ -22,23 +22,28 @@ def goVerySmall(config=None):
 
 SEQUENCE_LIVRET = [(4,3), (8,6), (15, 8), (30, 16), (60, 33), (100, 55)]
 
-def goLivret():
+def goLivret(config=None):
+    """
+    Generates a tiling with a fixed and initial GAMMA value.
+    """
     N = 5
+    initial_gamma_values = [-0.260, -0.155, -0.050, 0.055, 0.160]
     gamma = gm.MappedGammaParameter(
-        N=N,  # Size
-        initialGammaValue = np.array([-0.260, -0.155, -0.050, 0.055, 0.160]),
+        N=N, 
+        initialGammaValue=np.array(initial_gamma_values),
     )
-    p = Parameters(
-        GAMMA=gamma,
-        N=N,
-        SIDES = False,
-        RECTANGLE = True,
-        R=62,
-        FRAME = True,
-        SAVE=True,
-        SAVE_FORMAT = 'pdf',
-        SHOW=False
-    )
+
+    params = config.get('Parameters', {})
+    params.update({
+        "GAMMA":gamma,
+        "N":N,
+        "SIDES":False,
+        "RECTANGLE":True,
+        "R":62,
+        "FRAME":True,
+        "SHOW":False
+    })
+    p = Parameters(**params)
 
     for (d, nbl) in SEQUENCE_LIVRET[:4]:
         p.NBL = nbl
@@ -48,25 +53,27 @@ def goLivret():
             
 ###################################### with a varying GAMMA value
 
-def goLivretVar():
+def goLivretVar(config=None):
     N = 5
-    initialshift = 0.03
+    
     gamma = gm.MappedGammaParameter(
         N=N,  
         functionToMap=lambda s, j : s - 0.05 * j
     )
-    p = Parameters(
-        GAMMA=gamma,
-        N=N,
-        FRAME = True,
-        DIAGONAL = True,
-        SIDES = False,
-        SHOW = False,
-        SAVE=True,
-        SAVE_FORMAT = 'pdf'
-    )
+    params = config.get('Parameters', {})
+    params.update({
+        "GAMMA":gamma,
+        "N":N,
+        "SIDES":False,
+        "FRAME" : True,
+        "DIAGONAL": True,
+        "SIDES": False,
+        "SHOW": False
+    })
 
-    for i in range(4):
+    p = Parameters(**params)
+
+    for _ in range(4):
         for (d, nbl) in SEQUENCE_LIVRET[:4]:
             p.NBL = nbl
             p.updateDMAX(d)

@@ -7,7 +7,10 @@
         }
     },
     "Mike": {
-        "output_format": "pdf"
+        "Parameters":{
+            "output_format": "pdf",
+            "save": "True",
+            "tilingdir": "../Pavages/DefaultTilingDir"
+        }
     }
-
 }

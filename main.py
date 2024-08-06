@@ -27,11 +27,11 @@ config = config.get('Polo')
 
 ########## Mike's
 #
-goAllDefaults(config=config)# uses all config defaults
-# goVerySmall()
+#goAllDefaults(config) # uses all config defaults
+goVerySmall(config)
 #
-# goLivret() # does not display but saves pdf
-# goLivretVar() # does not display but saves pdf, and does not quit
+goLivret(config) # does not display but saves according to the config
+#goLivretVar(config) # does not display but saves according to the config, and runs forever
 #
 # goCentralSymetry()
 # goNotExactSymetry()
