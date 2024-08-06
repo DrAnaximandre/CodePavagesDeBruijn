@@ -29,8 +29,8 @@ python main.py -c <config_file_path> -g <function_name>
 ```
 
 ### Arguments
-`-c`, `--config`: Path to the configuration file (default: `configs/config_polo.json`).
-`-g`, `--go`: Name of the function to run (default: `goAllDefaults`).
+- `-c`, `--config`: Path to the configuration file (default: `configs/config_polo.json`).
+- `-g`, `--go`: Name of the function to run (default: `goAllDefaults`).
 
 ### Example
 
