@@ -34,8 +34,8 @@ config = config.get('Polo')
 #goLivretVar(config) # does not display but saves according to the config, and runs forever
 #
 goCentralSymetry(config)
-# goNotExactSymetry()
+goNotExactSymetry(config)
 # goDeBruijnRegular(6)
 # goPentaville()
-# goPentavilleS()
+#goPentavilleS()
 # goPentavilleVariation()

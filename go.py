@@ -185,9 +185,10 @@ def goCentralSymetry(config=None):
     params.update({'GAMMA': gm.MGPcentralSymetry()})
     outputTiling(Parameters(**params))
 
-def goNotExactSymetry() :
-    p = Parameters(GAMMA = gm.MGPnotExactSymetry())
-    outputTiling(p)
+def goNotExactSymetry(config=None):
+    params = config.get('Parameters', {})
+    params.update({'GAMMA': gm.MGPnotExactSymetry()})
+    outputTiling(Parameters(**params))
  
 def goDeBruijnRegular(N = 5):
     p = Parameters(
