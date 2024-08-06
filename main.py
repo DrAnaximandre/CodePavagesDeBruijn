@@ -38,12 +38,14 @@ go_functions = {
     'goDeBruijnRegular': goDeBruijnRegular,
 }
 
-# Get the go function to run
+# Get the go function 
 try:
     go_function = go_functions[args.go]
-    go_function(config)
 except KeyError:
     print(f"Function {args.go} not found.")
+
+# Run the go function
+go_function(config)
 
 ###########  Polo's
 
