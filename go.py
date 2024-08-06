@@ -6,14 +6,16 @@ import gamma as gm
 
 
 #################################### uses all default parameters
-def goAllDefaults():
-    p = Parameters()
+def goAllDefaults(config=None):
+    p = Parameters(**config.get('Parameters', {}))
     outputTiling(p)
 
     
 #################################### a very small tiling
-def goVerySmall():
-    outputTiling(Parameters(N=5,DMAX=2,NBL=0))
+def goVerySmall(config=None):
+    params = config.get('Parameters', {})
+    params.update({'N': 5, 'DMAX': 2, 'NBL': 0})
+    outputTiling(Parameters(**params))
 
     
 ###################################### with a fixed and initial GAMMA value
@@ -236,7 +238,7 @@ def forGrilArt():
     N = 5
     p = Parameters(
         #GAMMA=MGPdeBruijnRegular(N),
-        GAMMA = MGPcentralSymetry(N,-0.0001),
+        GAMMA = gm.MGPcentralSymetry(N,-0.0001),
         N=N,
         DMAX=40,
         NBL=20,

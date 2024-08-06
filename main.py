@@ -2,14 +2,23 @@
 #  Comments and suggestions are welcome. Mail to :  mike.lembitre@gmail.com
 ###########################################################################
 import numpy as np
-
+import matplotlib
+matplotlib.use('Qt5Agg')
 from go import *
 from utils import ParallelProcessor
+import json
+
+# Load the configuration file
+with open('config.json', 'r') as config_file:
+    config = json.load(config_file)
+
+# Accessing the configuration
+config = config.get('Polo')
 
 ###########  Polo's
 
 #goDemo()
-goPolo(5)
+#goPolo(5, config_file=config)
 # goPoloCubes(17)
 #
 # P = ParallelProcessor()
@@ -18,7 +27,7 @@ goPolo(5)
 
 ########## Mike's
 #
-# goAllDefaults() # uses all defaults
+goAllDefaults(config=config)# uses all config defaults
 # goVerySmall()
 #
 # goLivret() # does not display but saves pdf
