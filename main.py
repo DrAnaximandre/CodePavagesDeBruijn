@@ -7,18 +7,48 @@ matplotlib.use('Qt5Agg')
 from go import *
 from utils import ParallelProcessor
 import json
+import argparse
+
+# Create the argument parser
+parser = argparse.ArgumentParser(description='Process configuration file.')
+
+# Add the argument for the config file
+parser.add_argument('-c', '--config', type=str, default='configs/config_polo.json',
+                    help='Path to the configuration file')
+
+# Add the argument for the go function
+parser.add_argument('-g', '--go', type=str, default='goAllDefaults',
+                    help='Name of the go function to run')
+
+# Parse the command line arguments
+args = parser.parse_args()
 
 # Load the configuration file
-with open('config.json', 'r') as config_file:
+with open(args.config, 'r') as config_file:
     config = json.load(config_file)
 
-# Accessing the configuration
-config = config.get('Polo')
+# Map function names to actual functions
+go_functions = {
+    'goAllDefaults': goAllDefaults,
+    'goVerySmall': goVerySmall,
+    'goLivret': goLivret,
+    'goLivretVar': goLivretVar,
+    'goCentralSymetry': goCentralSymetry,
+    'goNotExactSymetry': goNotExactSymetry,
+    'goDeBruijnRegular': goDeBruijnRegular,
+}
+
+# Get the go function to run
+try:
+    go_function = go_functions[args.go]
+    go_function(config)
+except KeyError:
+    print(f"Function {args.go} not found.")
 
 ###########  Polo's
 
-#goDemo()
-#goPolo(5, config_file=config)
+# goDemo()
+# goPolo(N=5)
 # goPoloCubes(17)
 #
 # P = ParallelProcessor()
@@ -26,16 +56,7 @@ config = config.get('Polo')
 # P.run(np.arange(14, 19, 0.5))
 
 ########## Mike's
-#
-#goAllDefaults(config) # uses all config defaults
-#goVerySmall(config)
-#
-#goLivret(config) # does not display but saves according to the config
-#goLivretVar(config) # does not display but saves according to the config, and runs forever
-#
-goCentralSymetry(config)
-goNotExactSymetry(config)
-# goDeBruijnRegular(6)
+
 # goPentaville()
 #goPentavilleS()
 # goPentavilleVariation()

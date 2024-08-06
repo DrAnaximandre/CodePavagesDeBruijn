@@ -190,11 +190,11 @@ def goNotExactSymetry(config=None):
     params.update({'GAMMA': gm.MGPnotExactSymetry()})
     outputTiling(Parameters(**params))
  
-def goDeBruijnRegular(N = 5):
-    p = Parameters(
-        GAMMA = gm.MGPdeBruijnRegular(N),
-        N=N)
-    outputTiling(p)
+def goDeBruijnRegular(config=None):
+    N = 5
+    params = config.get('Parameters', {})
+    params.update({'GAMMA': gm.MGPdeBruijnRegular(N), 'N': N})
+    outputTiling(Parameters(**params))
 
 def goPentaville() :
     N = 5
