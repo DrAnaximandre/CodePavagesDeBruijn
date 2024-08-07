@@ -168,10 +168,10 @@ def outputTiling(params: Parameters):
     tiling(params)
 
     # the square line around the picture (hum, not so much elegant, another solution ?)
-    b = 0.999
+    b = 0.998
     if params.FRAME and params.SQUARE:
         left, bottom, width, height = -lim*b*1.005, -lim*b, lim*2*b*1.005, lim*2*b*1.00
-        p = plt.Rectangle((left, bottom), width, height, fill=False, linewidth=0.5)
+        p = plt.Rectangle((left, bottom), width, height, fill=False, linewidth=1)
         ax.add_patch(p)
 
     # save first and show after !
