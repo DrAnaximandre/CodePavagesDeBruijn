@@ -196,18 +196,17 @@ def goDeBruijnRegular(config=None):
     params.update({'GAMMA': gm.MGPdeBruijnRegular(N), 'N': N})
     outputTiling(Parameters(**params))
 
-def goPentaville() :
+def goPentaville(config=None) :
     N = 5
-    gamma = gm.MGPpentaville(N)
-    p = Parameters(
-        N = N,
-        GAMMA = gamma,
-        DMAX = 12,
-        SIDES = False,
-        RECTANGLE = True,
-        R = 2,
-        FRAME = True)
-    outputTiling(p)
+    params = config.get('Parameters', {})
+    params.update({'GAMMA': gm.MGPpentaville(N),
+                    'N': N, 
+                    'DMAX': 12, 
+                    'SIDES': False, 
+                    'RECTANGLE': True, 
+                    'R': 2, 
+                    'FRAME': True})
+    outputTiling(Parameters(**params))
  
 def goPentavilleS() :
     N = 5

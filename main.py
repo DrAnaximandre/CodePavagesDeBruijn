@@ -1,11 +1,9 @@
 ###########################################################################
 #  Comments and suggestions are welcome. Mail to :  mike.lembitre@gmail.com
 ###########################################################################
-import numpy as np
 import matplotlib
 matplotlib.use('Qt5Agg')
 from go import *
-from utils import ParallelProcessor
 import json
 import argparse
 
@@ -36,6 +34,7 @@ go_functions = {
     'goCentralSymetry': goCentralSymetry,
     'goNotExactSymetry': goNotExactSymetry,
     'goDeBruijnRegular': goDeBruijnRegular,
+    'goPentaville': goPentaville
 }
 
 # Get the go function 
@@ -59,6 +58,6 @@ go_function(config)
 
 ########## Mike's
 
-# goPentaville()
+
 #goPentavilleS()
 # goPentavilleVariation()
