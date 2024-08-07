@@ -35,7 +35,8 @@ go_functions = {
     'goNotExactSymetry': goNotExactSymetry,
     'goDeBruijnRegular': goDeBruijnRegular,
     'goPentaville': goPentaville,
-    'goPentavilleS': goPentavilleS
+    'goPentavilleS': goPentavilleS,
+    'goPentavilleVariation': goPentavilleVariation
 }
 
 # Get the go function 

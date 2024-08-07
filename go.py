@@ -227,28 +227,31 @@ def goPentavilleS(config) :
         p = Parameters(**params)
 
         
-def goPentavilleVariation() :
+def goPentavilleVariation(config) :
     N = 5
+    params = config.get('Parameters', {})
     gamma = gm.MGPpentavilleVariation(N)
-    p = Parameters(
-        N = N,
-        GAMMA = gamma,
-        DMAX = 12,
-        NBL = 8,
-        SIDES = False,
-        RECTANGLE = True,
-        R = 2,
-        FRAME = True)
-    for i in range(4) :
+    params.update({'GAMMA': gamma,
+                    'N': N, 
+                    'DMAX': 12, 
+                    'NBL': 8,
+                    'SIDES': False, 
+                    'RECTANGLE': True, 
+                    'R': 2, 
+                    'FRAME': True})
+    p = Parameters(**params)
+    for _ in range(4) :
         outputTiling(p)
         gamma.setNextValue()
+        params.update({'GAMMA': gamma,})
+        p = Parameters(**params)
+
 
 ################################ Pour donner à manger au projet ..../Python/Grilles/grilArt2
 
 def forGrilArt():
     N = 5
     p = Parameters(
-        #GAMMA=MGPdeBruijnRegular(N),
         GAMMA = gm.MGPcentralSymetry(N,-0.0001),
         N=N,
         DMAX=40,
