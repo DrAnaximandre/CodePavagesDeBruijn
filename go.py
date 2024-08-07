@@ -143,13 +143,8 @@ def goPentavilleVariation(config) :
                     'R': 2, 
                     'FRAME': True})
     p = Parameters(**params)
-    for _ in range(4) :
-        outputTiling(p)
-        gamma.setNextValue()
-        params.update({'GAMMA': gamma,})
-        p = Parameters(**params)
-
-
+    outputTiling(p)
+        
 
 def goDemo(config=None):
     """
