@@ -82,103 +82,6 @@ def goLivretVar(config=None):
         gamma.setNextValue()
 
 
-def goDemo(N=5):
-    """
-    goDemo is a demo of the tiling generator.
-    It generates white patterns on a black background.
-
-    """
-    gamma = gm.MappedGammaParameter(
-        N=N,
-        initialShift=1.2345,
-        functionToMap=lambda s, j:  2*np.sin(s-(1 + j) / N) + 0.1 * j /N + np.cos(j)/N
-    )
-    p = Parameters(
-        GAMMA=gamma,
-        N=gamma.N,
-        RECTANGLE=True,
-        SIDES=False,
-        R=1,
-        DMAX=25,
-        NBL=25,
-        COLORING=2,
-        i=0,
-        SAVE=True,
-        SHOW=False,
-        SAVE_FORMAT='png',
-        TILINGDIR = "./results/demo",
-        BACKGROUND = 'k',
-        STROKECOLOR = 'w',
-        SCALE_LINEWIDTH = 20
-    )
-    outputTiling(p)
-
-
-######################################
-def goPoloCubes(s =1):
-    """
-    Go Polo! Cubes. Makes colorful cubes.
-    """
-    gamma = gm.MappedGammaParameter(
-        N=6,
-        initialShift=s,
-        functionToMap=lambda s, j:  s if j%2 == 0 else -1.001 * j
-    )
-    p = Parameters(
-        GAMMA=gamma,
-        N=gamma.N,
-        RECTANGLE=False,
-        R=3,
-        FRAME=False,
-        DIAGONAL=False,
-        SIDES=True,
-        DMAX=20,
-        NBL=12,
-        COLORING=13,  # 16 uses a photo and "tiles" it, doesn't always work ...
-        BACKGROUND = 'k',
-        STROKECOLOR= 'k',
-        SCALE_LINEWIDTH= 20,
-        SAVE=True,
-        TILINGDIR="./results/cubes",
-    )
-    outputTiling(p)
-
-
-######################################
-def goPolo(N=4):
-    """
-    Go Polo! Go Polo!
-    Generate and save pretty images.
-    This is a test function, not a demo.
-    """
-    gamma = gm.MGPpentavilleVariation(N)
-    p = Parameters(
-        GAMMA=gamma,
-        N=gamma.N,
-        RECTANGLE=False,
-        R=4,
-        FRAME=False,
-        DIAGONAL=False,
-        SIDES=True,
-        DMAX=20,
-        NBL=10,
-        COLORING=13,  # 16 uses a photo and "tiles" it, doesn't always work ...
-        BACKGROUND = 'k',
-        STROKECOLOR= 'w',
-        SCALE_LINEWIDTH= 12,
-        SAVE=True,
-        SHOW=True,
-        IMAGEPATH="catinspace.png",
-        DESTRUCTURED=False,
-        FISHEYE=False,
-        AUGMENTED_COLORS=False,
-        TILINGDIR="./results",
-        QUANTUM_COLOR=False, # very slow, much AI, consider small images
-        i=123,
-    )
-    outputTiling(p)
-
-
 ###################################
 def goCentralSymetry(config=None):
     params = config.get('Parameters', {})
@@ -246,6 +149,95 @@ def goPentavilleVariation(config) :
         params.update({'GAMMA': gamma,})
         p = Parameters(**params)
 
+
+
+def goDemo(config=None):
+    """
+    goDemo is a demo of the tiling generator.
+    It generates white patterns on a black background.
+
+    """
+    N = 5
+    params = config.get('Parameters', {})
+    gamma = gm.MappedGammaParameter(
+        N=N,
+        initialShift=1.2345,
+        functionToMap=lambda s, j:  2*np.sin(s-(1 + j) / N) + 0.1 * j /N + np.cos(j)/N
+    )
+
+    params.update({'GAMMA': gamma,
+                    'N': N, 
+                    'DMAX': 25,
+                    'NBL': 25,
+                    'SIDES': False,
+                    'RECTANGLE': True,
+                    'R': 1,
+                    'COLORING': 2,
+                    'FRAME': False,
+                    'BACKGROUND': 'k',
+                    'STROKECOLOR': 'w',
+                    'SCALE_LINEWIDTH': 20,
+                    })
+    outputTiling(Parameters(**params))
+
+######################################
+def goPoloCubes(config=None):
+    """
+    Go Polo! Cubes. Makes colorful cubes.
+    """
+    N = 6
+    params = config.get('Parameters', {})
+
+    gamma = gm.MappedGammaParameter(
+        N=N,
+        initialShift=0.1,
+        functionToMap=lambda s, j:  s if j%2 == 0 else -1.001 * j
+    )
+
+    params.update({'GAMMA': gamma,
+                    'N': N, 
+                    'DMAX': 20, 
+                    'NBL': 12,
+                    'SIDES': True, 
+                    'RECTANGLE': False, 
+                    'R': 3, 
+                    'FRAME': False,
+                    'DIAGONAL': False,
+                    'COLORING': 13,
+                    'BACKGROUND': 'k',
+                    'STROKECOLOR': 'k',
+                    'SCALE_LINEWIDTH': 20,
+                    'SHOW': True,
+                    })
+    outputTiling(Parameters(**params))
+
+
+######################################
+def goPolo(config=None):
+    """
+    Go Polo! Go Polo!
+    Generate and save pretty images.
+    """
+    N = 5
+    params = config.get('Parameters', {})
+    params.update({'GAMMA': gm.MGPpentavilleVariation(N),
+                    'N': N, 
+                    'DMAX': 20, 
+                    'NBL': 10,
+                    'SIDES': False, 
+                    'RECTANGLE': False, 
+                    'R': 4, 
+                    'FRAME': False,
+                    'DIAGONAL': False,
+                    'COLORING': 13,
+                    'BACKGROUND': 'k',
+                    'STROKECOLOR': 'w',
+                    'SCALE_LINEWIDTH': 12,
+                    'SHOW': False,
+                    })
+    outputTiling(Parameters(**params))
+
+       
 
 ################################ Pour donner à manger au projet ..../Python/Grilles/grilArt2
 

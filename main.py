@@ -36,7 +36,10 @@ go_functions = {
     'goDeBruijnRegular': goDeBruijnRegular,
     'goPentaville': goPentaville,
     'goPentavilleS': goPentavilleS,
-    'goPentavilleVariation': goPentavilleVariation
+    'goPentavilleVariation': goPentavilleVariation,
+    'goPolo': goPolo,
+    'goPoloCubes': goPoloCubes,
+    'goDemo': goDemo
 }
 
 # Get the go function 
@@ -47,19 +50,3 @@ except KeyError:
 
 # Run the go function
 go_function(config)
-
-###########  Polo's
-
-# goDemo()
-# goPolo(N=5)
-# goPoloCubes(17)
-#
-# P = ParallelProcessor()
-# P.add(goPoloCubes)
-# P.run(np.arange(14, 19, 0.5))
-
-########## Mike's
-
-
-#goPentavilleS()
-# goPentavilleVariation()
