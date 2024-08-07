@@ -208,20 +208,23 @@ def goPentaville(config=None) :
                     'FRAME': True})
     outputTiling(Parameters(**params))
  
-def goPentavilleS() :
+def goPentavilleS(config) :
     N = 5
+    params = config.get('Parameters', {})
     gamma = gm.MGPpentavilleS(N)
-    p = Parameters(
-        N = N,
-        GAMMA = gamma,
-        DMAX = 12,
-        SIDES = False,
-        RECTANGLE = True,
-        R = 2,
-        FRAME = True)
-    for i in range(4) :
+    params.update({'GAMMA': gamma,
+                    'N': N, 
+                    'DMAX': 12, 
+                    'SIDES': False, 
+                    'RECTANGLE': True, 
+                    'R': 2, 
+                    'FRAME': True})
+    p = Parameters(**params)
+    for _ in range(4) :
         outputTiling(p)
         gamma.setNextValue()
+        params.update({'GAMMA': gamma})
+        p = Parameters(**params)
 
         
 def goPentavilleVariation() :
