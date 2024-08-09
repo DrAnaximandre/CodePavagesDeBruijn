@@ -10,3 +10,32 @@ See also
   but with a different display style.
 
  Another valuable site : https://www.mathpages.com/home/kmath621/kmath621.htm
+
+
+## Preferred installation 
+
+```
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+
+## Usage
+
+To run the script, use the following command:
+
+```sh
+python main.py -c <config_file_path> -g <function_name>
+```
+
+### Arguments
+- `-c`, `--config`: Path to the configuration file (default: `configs/config_polo.json`).
+- `-g`, `--go`: Name of the function to run (default: `goAllDefaults`).
+
+### Example
+
+To run the script with a different configuration file and function, use the following command:
+
+```sh
+python main.py -c configs/config_mike.json -g goVerySmall
+```

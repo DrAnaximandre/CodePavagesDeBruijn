@@ -27,9 +27,9 @@ class Parameters(object):
                  DMAX: int = 8,
                  NBL: int = 5,
                  R: int = 0,
-                 SAVE: bool = False,
+                 save: bool = False,
                  SHOW: bool = True,
-                 SAVE_FORMAT: str = 'png',
+                 output_format: str = 'png',
                  SQUARE: bool = True,
                  FRAME: bool = False,
                  SIDES: bool = True,
@@ -44,7 +44,7 @@ class Parameters(object):
                  AUGMENTED_COLORS: bool = False,  # Should the colors be tilted a bit
                  IMAGEPATH: str = "lego.jpg",  # used only for coloring 16, 17, 18
                  QUANTUM_COLOR: bool = False,  # should color be quantized
-                 TILINGDIR: str = "../Pavages/DefaultTilingDir", # where to output the tilings,
+                 tilingdir: str = "../Pavages/DefaultTilingDir", # where to output the tilings,
                  OUTPUT_COORDINATES: bool = False,
                  TITLE: bool = True,
                  i: int = 0,
@@ -68,8 +68,8 @@ class Parameters(object):
         self.SCALE_LINEWIDTH = SCALE_LINEWIDTH
         self.LINEWIDTH = self.SCALE_LINEWIDTH / self.DMAX
 
-        self.SAVE = SAVE  # save to a file ?
-        self.SAVE_FORMAT = SAVE_FORMAT  # file format for saving, for example pdf, jpeg, png ...
+        self.SAVE = save  # save to a file ?
+        self.SAVE_FORMAT = output_format  # file format for saving, for example pdf, jpeg, png ...
         self.SHOW = SHOW  # show the tiling on the screen ?
 
         # =============== overall display shape
@@ -102,7 +102,7 @@ class Parameters(object):
         # self.R = 62  # like 61, the other way
 
         # ---- Directory where to write the tilings
-        self.TILINGDIR = TILINGDIR
+        self.TILINGDIR = tilingdir
         # create the directory
         Path(self.TILINGDIR).mkdir(parents=True, exist_ok=True)
 

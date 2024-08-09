@@ -4,3 +4,4 @@ Pillow~=9.0.1
 joblib
 matplotlib
 scikit-learn
+PyQt5 # This is a backend for matplotlib

@@ -24,7 +24,7 @@ class MappedGammaParameter(object) :
                  initialGammaValue : np.ndarray = None,
                  
                  initialShift : float = 2.01,
-                 deltaShift: float = 0.025,
+                 deltaShift: float = 0.25,
 
                  # functionToMap can be used to build the initial value and successive values
                  #  using setNextValue in a loop (see for ex. go.goLivretVar() )
@@ -57,7 +57,7 @@ class MappedGammaParameter(object) :
         return s
 
     def stringTex(self) :
-        g = getValue()
+        g = self.getValue()
         s = "$\gamma=[" + ("%+.3f" % g[0]) 
         for i in range(1, self.N):
             s += (",%+.3f" % g[i])
