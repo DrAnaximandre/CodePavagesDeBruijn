@@ -183,8 +183,7 @@ def goDemo(config=None):
         functionToMap=lambda s, j:  2*np.sin(s-(1 + j) / params['N']) + 0.1 * j /params['N'] + np.cos(j)/params['N']
     )
 
-    params.update({'GAMMA': gamma,
-                    'N': params['N'], 
+    params.update({'GAMMA': gamma, 
                     'DMAX': 25,
                     'NBL': 25,
                     'SIDES': False,
@@ -203,17 +202,15 @@ def goPoloCubes(config=None):
     """
     Go Polo! Cubes. Makes colorful cubes.
     """
-    N = 6
     params = config.get('Parameters', {})
 
     gamma = gm.MappedGammaParameter(
-        N=N,
+        N=params['N'],
         initialShift=0.1,
         functionToMap=lambda s, j:  s if j%2 == 0 else -1.001 * j
     )
 
-    params.update({'GAMMA': gamma,
-                    'N': N, 
+    params.update({'GAMMA': gamma, 
                     'DMAX': 20, 
                     'NBL': 12,
                     'SIDES': True, 
@@ -236,10 +233,8 @@ def goPolo(config=None):
     Go Polo! Go Polo!
     Generate and save pretty images.
     """
-    N = 5
     params = config.get('Parameters', {})
-    params.update({'GAMMA': gm.MGPpentavilleVariation(N),
-                    'N': N, 
+    params.update({'GAMMA': gm.MGPpentavilleVariation(params['N']),
                     'DMAX': 20, 
                     'NBL': 10,
                     'SIDES': False, 
