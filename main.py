@@ -18,12 +18,18 @@ parser.add_argument('-c', '--config', type=str, default='configs/config_polo.jso
 parser.add_argument('-g', '--go', type=str, default='goAllDefaults',
                     help='Name of the go function to run')
 
+parser.add_argument('-N', '--N', type=int, default=5,
+                    help='N: lenght of gamma')
+
 # Parse the command line arguments
 args = parser.parse_args()
 
 # Load the configuration file
 with open(args.config, 'r') as config_file:
     config = json.load(config_file)
+
+# Update the configuration with the command line arguments
+config['Parameters']['N'] = args.N
 
 # Map function names to actual functions
 go_functions = {

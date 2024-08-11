@@ -14,7 +14,7 @@ def goAllDefaults(config=None):
 #################################### a very small tiling
 def goVerySmall(config=None):
     params = config.get('Parameters', {})
-    params.update({'N': 5, 'DMAX': 2, 'NBL': 0})
+    params.update({'DMAX': 2, 'NBL': 0})
     outputTiling(Parameters(**params))
 
     
@@ -34,6 +34,10 @@ def goLivret(config=None):
     )
 
     params = config.get('Parameters', {})
+
+    if 'N' in params:
+        print("N is provided in the config file but this go function is designed for N=5 ")
+
     params.update({
         "GAMMA":gamma,
         "N":N,
@@ -61,6 +65,10 @@ def goLivretVar(config=None):
         functionToMap=lambda s, j : s - 0.05 * j
     )
     params = config.get('Parameters', {})
+
+    if 'N' in params:
+        print("N is provided in the config file but this go function is designed for N=5 ")
+
     params.update({
         "GAMMA":gamma,
         "N":N,
@@ -96,12 +104,20 @@ def goNotExactSymetry(config=None):
 def goDeBruijnRegular(config=None):
     N = 5
     params = config.get('Parameters', {})
+
+    if 'N' in params:
+        print("N is provided in the config file but this go function is designed for N=5 ")
+
     params.update({'GAMMA': gm.MGPdeBruijnRegular(N), 'N': N})
     outputTiling(Parameters(**params))
 
 def goPentaville(config=None) :
     N = 5
     params = config.get('Parameters', {})
+
+    if 'N' in params:
+        print("N is provided in the config file but this go function is designed for N=5 ")
+
     params.update({'GAMMA': gm.MGPpentaville(N),
                     'N': N, 
                     'DMAX': 12, 
@@ -115,6 +131,10 @@ def goPentavilleS(config) :
     N = 5
     params = config.get('Parameters', {})
     gamma = gm.MGPpentavilleS(N)
+
+    if 'N' in params:
+        print("N is provided in the config file but this go function is designed for N=5 ")
+
     params.update({'GAMMA': gamma,
                     'N': N, 
                     'DMAX': 12, 
@@ -133,6 +153,10 @@ def goPentavilleS(config) :
 def goPentavilleVariation(config) :
     N = 5
     params = config.get('Parameters', {})
+
+    if 'N' in params:
+        print("N is provided in the config file but this go function is designed for N=5 ")
+
     gamma = gm.MGPpentavilleVariation(N)
     params.update({'GAMMA': gamma,
                     'N': N, 
@@ -152,16 +176,15 @@ def goDemo(config=None):
     It generates white patterns on a black background.
 
     """
-    N = 5
     params = config.get('Parameters', {})
     gamma = gm.MappedGammaParameter(
-        N=N,
+        N=params['N'],
         initialShift=1.2345,
-        functionToMap=lambda s, j:  2*np.sin(s-(1 + j) / N) + 0.1 * j /N + np.cos(j)/N
+        functionToMap=lambda s, j:  2*np.sin(s-(1 + j) / params['N']) + 0.1 * j /params['N'] + np.cos(j)/params['N']
     )
 
     params.update({'GAMMA': gamma,
-                    'N': N, 
+                    'N': params['N'], 
                     'DMAX': 25,
                     'NBL': 25,
                     'SIDES': False,
