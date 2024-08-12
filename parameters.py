@@ -27,7 +27,6 @@ class Parameters(object):
                  DMAX: int = 8,
                  NBL: int = 5,
                  R: int = 0,
-                 save: bool = False,
                  SHOW: bool = True,
                  output_format: str = 'png',
                  SQUARE: bool = True,
@@ -68,7 +67,6 @@ class Parameters(object):
         self.SCALE_LINEWIDTH = SCALE_LINEWIDTH
         self.LINEWIDTH = self.SCALE_LINEWIDTH / self.DMAX
 
-        self.SAVE = save  # save to a file ?
         self.SAVE_FORMAT = output_format  # file format for saving, for example pdf, jpeg, png ...
         self.SHOW = SHOW  # show the tiling on the screen ?
 

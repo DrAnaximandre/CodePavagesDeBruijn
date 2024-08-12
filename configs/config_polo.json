@@ -1,7 +1,6 @@
 {
     "Parameters": {
         "output_format": "png",
-        "save": "True",
         "tilingdir": "./tiling"
     }
     

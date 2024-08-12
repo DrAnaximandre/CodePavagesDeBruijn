@@ -1,7 +1,6 @@
 {
     "Parameters":{
         "output_format": "pdf",
-        "save": "True",
         "tilingdir": "../Pavages/DefaultTilingDir"
     }
 }
