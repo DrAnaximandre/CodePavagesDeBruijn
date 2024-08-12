@@ -19,6 +19,11 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+**Optional**: install development requirements for testing and coverage
+
+```
+pip install -r requirements_dev.txt 
+```
 
 ## Usage
 
