@@ -1,0 +1,8 @@
+{
+    "Parameters": {
+        "output_format": "png",
+        "tilingdir": "./test/tilings",
+        "N":5
+    }
+  
+}

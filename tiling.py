@@ -8,6 +8,8 @@ import tqdm   # to show computation progress on console
 from parameters import Parameters
 from outputs import display_rhombus
 
+import hashlib
+
 ###################################################  tiling computation following deBruijn paper
 
 def get_cos_sin(N):
@@ -57,7 +59,7 @@ def tiling(params: Parameters):
     #  Kvect is the K of deBruijn's paper, a vector of N integers
     Kvect = np.zeros(N, dtype=int)
 
-    pre_setKvect = np.zeros((4,N), dtype=np.int)
+    pre_setKvect = np.zeros((4,N), dtype=np.int32)
     setKvect = set()
 
     counter = 0  # count number of displayed rhombii
@@ -174,13 +176,22 @@ def outputTiling(params: Parameters):
         p = plt.Rectangle((left, bottom), width, height, fill=False, linewidth=1)
         ax.add_patch(p)
 
+
     # save first and show after !
-    if params.SAVE:
-        Path(params.TILINGDIR).mkdir(parents=True, exist_ok=True)
-        plt.savefig(fn + '.' + params.SAVE_FORMAT, dpi=300) #, bbox_inches="tight")
+    Path(params.TILINGDIR).mkdir(parents=True, exist_ok=True)
+    plt.savefig(fn + '.' + params.SAVE_FORMAT, dpi=300) #, bbox_inches="tight")
+    print('output in file', fn + '.' + params.SAVE_FORMAT)
     if params.SHOW:
          plt.show()
 
     plt.close()
+
+    # compute hash of the file
+    h = hashlib.md5()
+    with open(fn + '.' + params.SAVE_FORMAT, 'rb') as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            h.update(chunk)
+    print('hash of the file', h.hexdigest())
+    return h.hexdigest()
 
 

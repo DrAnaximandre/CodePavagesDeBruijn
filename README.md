@@ -45,3 +45,9 @@ To run the script with a different configuration file and function, use the foll
 ```sh
 python main.py -c configs/config_mike.json -g goVerySmall
 ```
+
+## Running the tests
+
+```
+coverage run -m pytest test/test.py  && coverage report
+```

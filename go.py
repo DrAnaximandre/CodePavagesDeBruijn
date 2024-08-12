@@ -248,7 +248,7 @@ def goPolo(config=None):
                     'SCALE_LINEWIDTH': 12,
                     'SHOW': False,
                     })
-    outputTiling(Parameters(**params))
+    return outputTiling(Parameters(**params))
 
        
 
