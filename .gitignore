@@ -5,3 +5,4 @@ __pycache__
 results/
 tiling/
 .venv
+.png
