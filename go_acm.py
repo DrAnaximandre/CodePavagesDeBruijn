@@ -5,100 +5,183 @@ import tiling
 import acm_kruskal
 import outputs
 from gamma import MappedGammaParameter
-
-def glyphs(memory_prefix = 1, 
-             offset_boundaries=0.3, 
-             offset_n=3,
-             ny = 5,
-             nx = 7,
-             offset_edge=3,
-             offset_j=0,
-             set_lims=True,
-             offset_color=lambda j,i: i**2+np.sqrt(1.5*j),
-             NBL=5,
-             nsb=False,
-             ):
+from dataclasses import dataclass
+from functools import partial
 
 
-    final_fig, final_ax = plt.subplots(nx,ny-offset_j)
-    if nsb:
+@dataclass
+class GlyphsColorsParameters:
+    offset_color: callable=lambda j,i: i**2+np.sqrt(1.5*j)
+    memory_prefix: int = 1
+    nsb: bool = False
+
+@dataclass
+class GlyphsFigureParameters:
+    offset_boundaries: float = 0.3
+    offset_n: int = 3
+    nx: int = 7
+    ny: int = 5
+    offset_j: int = 0
+    offset_edge: int = 3
+    set_lims: bool = True
+
+@dataclass
+class GlyphsParametersParameters:
+    NBL: int = 5
+    functionToMapN: callable=lambda s, j, n: j/n + s**2
+    SQUARE: bool = True
+    SCALE_LINEWIDTH: int = 20
+    DMAX: int = 6
+
+@dataclass
+class GlyphsParameters:
+    cp: GlyphsColorsParameters
+    fp: GlyphsFigureParameters
+    pp: GlyphsParametersParameters
+
+
+
+def create_figure(fp: GlyphsFigureParameters):
+    final_fig, final_ax = plt.subplots(fp.nx,fp.ny-fp.offset_j)
+    return final_fig, final_ax
+
+
+def set_background_color(final_fig, cp: GlyphsColorsParameters):
+    if cp.nsb:
         final_fig.set_facecolor((1,1,1))
     else:
         final_fig.set_facecolor((0,0,0))
 
-    for i in range(0,nx):
 
-        n = offset_n+i
+def get_gamma(n, pp: GlyphsParametersParameters):
+    return MappedGammaParameter(
+        N=n,
+        functionToMap=partial(pp.functionToMapN, n=n)
+    )
 
-        gamma = MappedGammaParameter(
-            N=n,
-            #functionToMap=lambda s, j : 20*np.sin(2*j*np.pi/n) + j**2/n**3 + s**2)
-            functionToMap=lambda s, j : j/n  + s**2)
+
+def get_parameters(n, pp: GlyphsParametersParameters):
+    return Parameters(N=n, 
+                    DMAX=pp.DMAX, 
+                    NBL=pp.NBL,
+                    GAMMA=get_gamma(n, pp),
+                    SQUARE=pp.SQUARE,
+                    SCALE_LINEWIDTH=pp.SCALE_LINEWIDTH,                         
+                    output_format="png")
+
+
+def change_color(params, cp: GlyphsColorsParameters):
+     params.STROKECOLOR="k" if cp.nsb else "w"
+
+def set_prefix(params, cp: GlyphsColorsParameters):
+    if cp.memory_prefix==1:
+        params.PREFIX = 1
+
+def get_xs_ys(graph):
+    vs = graph.get_vertices()
+    xys = [graph.get_xy(v) for v in vs]
+    xs, ys = zip(*xys)
+    return xs, ys
+
+def update_xy_limits(x_min, x_max, y_min, y_max, xi, xj, yi, yj):
+    x_min = min(x_min, xi, xj)
+    x_max = max(x_max, xi, xj)
+    y_min = min(y_min, yi, yj)
+    y_max = max(y_max, yi, yj)
+    return x_min, x_max, y_min, y_max
+
+
+def a(ax, i,j, edgesAccepted, xs, ys, gp, params):
+
+    x_min, x_max = float('inf'), float('-inf')
+    y_min, y_max = float('inf'), float('-inf')
         
+    ax[i,j-gp.fp.offset_j].axis('off')
 
-        params = Parameters(N=gamma.N, 
-                            DMAX=6, 
-                            NBL=NBL,
-                            GAMMA=gamma,
-                            SQUARE=False,
-                            SCALE_LINEWIDTH=20,
-                            STROKECOLOR="k" if nsb else "w",                          
-                            output_format="png")
+    number_of_edges = int((j+1)*gp.fp.offset_edge**2)
 
-        if memory_prefix==1:
-            params.PREFIX = memory_prefix
+    edgesAcceptedLocal = edgesAccepted[:number_of_edges]
+
+
+    for (t,h) in edgesAcceptedLocal:
+        xi, xj, yi, yj = xs[t], xs[h], ys[t], ys[h]
+        outputs.fancy_mplot([xi,xj], 
+                            [yi,yj],
+                            alpha=1 if gp.cp.nsb else 0.8, 
+                            params=params, 
+                            ax=ax[i,j-gp.fp.offset_j], 
+                            center=[gp.fp.nx/2,j/2], 
+                            offset_color=gp.cp.offset_color(i,j))
+        
+        x_min, x_max, y_min, y_max = update_xy_limits(x_min, 
+                            x_max, 
+                            y_min, 
+                            y_max, 
+                            xi, 
+                            xj, 
+                            yi, 
+                            yj)
+
+    ax[i,j-gp.fp.offset_j].set_xlim(x_min-gp.fp.offset_boundaries, x_max+gp.fp.offset_boundaries)
+    ax[i,j-gp.fp.offset_j].set_ylim(y_min-gp.fp.offset_boundaries, y_max+gp.fp.offset_boundaries)
+
+
+def adapt_lims(ax, gp: GlyphsParameters):
+    if gp.fp.set_lims:
+        for i in range(gp.fp.nx):
+            x_lims = ax[i, gp.fp.ny-gp.fp.offset_j-1].get_xlim()
+            y_lims = ax[i, gp.fp.ny-gp.fp.offset_j-1].get_ylim()
+            for j in range(gp.fp.ny-gp.fp.offset_j):
+                ax[i, j].set_xlim(x_lims)
+                ax[i, j].set_ylim(y_lims)
+
+
+def glyphs(gp: GlyphsParameters):
+    
+    """ This function generates a grid of glyphs. 
+    The glyphs are generated by computing the minimum spanning tree of a graph and then plotting
+    the edges of the tree. The glyphs are generated for a range of values of N in the vertical axis, 
+    and an increasing number of edges in the horizontal axis. 
+    
+
+    """
+    final_fig, final_ax = create_figure(gp.fp)
+    set_background_color(final_fig, gp.cp)
+
+    for i in range(0,gp.fp.nx):
+
+        n = gp.fp.offset_n+i
+        params = get_parameters(n, gp.pp)
+        change_color(params, gp.cp)
+        set_prefix(params, gp.cp)
 
         graph, _ = tiling.compute(params)
+        xs, ys = get_xs_ys(graph)
 
+        edgesAccepted = acm_kruskal.compute(graph, 
+                                            [0,0])
 
-        vs = graph.get_vertices()
-        xys = [graph.get_xy(v) for v in vs]
-        xs, ys = zip(*xys)
+        for j in range(gp.fp.offset_j,gp.fp.ny):
 
-        for j in range(offset_j,ny):
-
-            final_ax[i,j-offset_j].axis('off')
-
-            edgesAccepted = acm_kruskal.compute(graph, [0,0], invert_distance=False)
-            edgesAccepted = edgesAccepted[:int((j+1)*offset_edge**2.1)]
-
-            x_min, x_max = float('inf'), float('-inf')
-            y_min, y_max = float('inf'), float('-inf')
-
-            for (t,h) in edgesAccepted:
-                xi, xj, yi, yj = xs[t], xs[h], ys[t], ys[h]
-                outputs.mplot([xi,xj], [yi,yj], 1 if nsb else 0.8, params, final_ax[i,j-offset_j], center=[nx/2,j/2], offset_color=offset_color(j,i))
-                
-                x_min = min(x_min, xi, xj)
-                x_max = max(x_max, xi, xj)
-                y_min = min(y_min, yi, yj)
-                y_max = max(y_max, yi, yj)
-
-            final_ax[i,j-offset_j].set_xlim(x_min-offset_boundaries, x_max+offset_boundaries)
-            final_ax[i,j-offset_j].set_ylim(y_min-offset_boundaries, y_max+offset_boundaries)
-
-    if set_lims:
-        for i in range(nx):
-            x_lims = final_ax[i, ny-offset_j-1].get_xlim()
-            y_lims = final_ax[i, ny-offset_j-1].get_ylim()
-            for j in range(ny-offset_j):
-                final_ax[i, j].set_xlim(x_lims)
-                final_ax[i, j].set_ylim(y_lims)
-
-    final_fig.set_size_inches(ny-offset_j, nx)
+            a(final_ax, i,j, edgesAccepted, xs, ys, gp, params)
+            
+  
+    adapt_lims(final_ax, gp)
+    final_fig.set_size_inches(gp.fp.ny-gp.fp.offset_j, gp.fp.nx)
     plt.show()
-    fig_name = f'glyphs3_{ny}_nx{nx}_offset_edge{offset_edge}_offset_j{offset_j}_NBL{NBL}.png'
+   # fig_name = f'glyphs3_{ny}_nx{nx}_offset_edge{offset_edge}_offset_j{offset_j}_NBL{NBL}.png'
+    fig_name = "glyphs.png"
     final_fig.savefig(fig_name, dpi=300)
 
 if __name__ == "__main__":
 
-    glyphs(ny=4, 
-           nx=4, 
-           offset_edge=2,
-           offset_boundaries=0.5,
-           offset_j=0, 
-           offset_n=3,
-           memory_prefix=1, 
-           NBL=6, 
-           nsb=False,
-           offset_color = lambda j,i: 0.5+i/8+j/np.pi)
+    gp = GlyphsParameters(GlyphsColorsParameters(offset_color=lambda i,j: 0.5+i+j/10),
+                          GlyphsFigureParameters(ny=4, 
+                                                 nx=4, 
+                                                 offset_edge=2, 
+                                                 offset_boundaries=0.5, 
+                                                 offset_j=0, 
+                                                 offset_n=3, 
+                                                 set_lims=True),
+                          GlyphsParametersParameters())
+    glyphs(gp)

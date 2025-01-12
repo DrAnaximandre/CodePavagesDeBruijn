@@ -250,41 +250,40 @@ def fill(x, y, c, alpha):
     ax.add_patch(p)
 
 
-def mplot(x,y,alpha,params,ax=None, center=[0,0],diagonal=False, rectangle=False, offset_color=0) :
- 
-    if hasattr(params, 'PREFIX'):
+def fancy_mplot(x,y,alpha,params,ax, center=[0,0],offset_color=0) :
 
-        # trying something to change the color of the stroke depending on the distance to the center
+    if hasattr(params, 'PREFIX'):
+        # Adjust stroke color based on distance to the center
         X = np.mean(x)
         Y = np.mean(y)
 
-        dc = np.sqrt((X-center[0])**2 + (Y-center[1])**2)
+        distance_to_center = np.sqrt((X - center[0])**2 + (Y - center[1])**2)
+        max_distance = params.DMAX * 2
+        ratio = np.sqrt(distance_to_center / max_distance)
+        ratio = np.clip(ratio, 0.1, 0.99)
 
-        DC = params.DMAX * 2
-        ratio = np.sqrt(dc / DC)
-        ratio = np.min((ratio, 0.99))
-        ratio = np.max((ratio, 0.1))
-
-        color = (1-(0.5+np.cos(offset_color*ratio**3)/2), 0.5+np.sin(offset_color*2*ratio)/2, 1 - ratio**2)
-
+        color = (1 - (0.5 + np.cos(offset_color * ratio**3) / 2), 
+                 0.5 + np.sin(offset_color * 2 * ratio) / 2, 
+                 1 - ratio**2)
     else:
-        
         color = params.STROKECOLOR
 
-    if ax==None:
-        plt.plot(x,y,
-                 linewidth=params.LINEWIDTH,
-                 color=color,
-                 alpha=alpha,
-                 solid_joinstyle='round',
-                 solid_capstyle='round')   # end of lines
-    else:
-        ax.plot(x,y,
-                 linewidth=params.LINEWIDTH,
-                 color=color,
-                 alpha=alpha,
-                 solid_joinstyle='round',
-                 solid_capstyle='round')
+    ax.plot(x,y,
+                linewidth=params.LINEWIDTH,
+                color=color,
+                alpha=alpha,
+                solid_joinstyle='round',
+                solid_capstyle='round')
+
+
+def mplot(x,y,alpha,params):
+ 
+    plt.plot(x,y,
+            linewidth=params.LINEWIDTH,
+            color=params.STROKECOLOR,
+            alpha=alpha,
+            solid_joinstyle='round',
+            solid_capstyle='round')
 
 
 
