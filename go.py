@@ -1,21 +1,21 @@
 import numpy as np
 
 from parameters import Parameters
-from tiling import outputTiling
+import outputs
 import gamma as gm
 
 
 #################################### uses all default parameters
 def goAllDefaults(config=None):
     p = Parameters(**config.get('Parameters', {}))
-    outputTiling(p)
+    outputs.output(p)
 
     
 #################################### a very small tiling
 def goVerySmall(config=None):
     params = config.get('Parameters', {})
     params.update({'DMAX': 2, 'NBL': 0})
-    outputTiling(Parameters(**params))
+    outputs.output(Parameters(**params))
 
     
 ###################################### with a fixed and initial GAMMA value
@@ -52,7 +52,7 @@ def goLivret(config=None):
     for (d, nbl) in SEQUENCE_LIVRET[:4]:
         p.NBL = nbl
         p.updateDMAX(d)
-        outputTiling(p)
+        outputs.output(p)
 
             
 ###################################### with a varying GAMMA value
@@ -85,7 +85,7 @@ def goLivretVar(config=None):
         for (d, nbl) in SEQUENCE_LIVRET[:4]:
             p.NBL = nbl
             p.updateDMAX(d)
-            outputTiling(p)
+            outputs.output(p)
 
         gamma.setNextValue()
 
@@ -94,12 +94,12 @@ def goLivretVar(config=None):
 def goCentralSymetry(config=None):
     params = config.get('Parameters', {})
     params.update({'GAMMA': gm.MGPcentralSymetry()})
-    outputTiling(Parameters(**params))
+    outputs.output(Parameters(**params))
 
 def goNotExactSymetry(config=None):
     params = config.get('Parameters', {})
     params.update({'GAMMA': gm.MGPnotExactSymetry()})
-    outputTiling(Parameters(**params))
+    outputs.output(Parameters(**params))
  
 def goDeBruijnRegular(config=None):
     N = 5
@@ -109,7 +109,7 @@ def goDeBruijnRegular(config=None):
         print("N is provided in the config file but this go function is designed for N=5 ")
 
     params.update({'GAMMA': gm.MGPdeBruijnRegular(N), 'N': N})
-    outputTiling(Parameters(**params))
+    outputs.output(Parameters(**params))
 
 def goPentaville(config=None) :
     N = 5
@@ -125,7 +125,7 @@ def goPentaville(config=None) :
                     'RECTANGLE': True, 
                     'R': 2, 
                     'FRAME': True})
-    outputTiling(Parameters(**params))
+    outputs.output(Parameters(**params))
  
 def goPentavilleS(config) :
     N = 5
@@ -144,7 +144,7 @@ def goPentavilleS(config) :
                     'FRAME': True})
     p = Parameters(**params)
     for _ in range(4) :
-        outputTiling(p)
+        outputs.output(p)
         gamma.setNextValue()
         params.update({'GAMMA': gamma})
         p = Parameters(**params)
@@ -167,7 +167,7 @@ def goPentavilleVariation(config) :
                     'R': 2, 
                     'FRAME': True})
     p = Parameters(**params)
-    outputTiling(p)
+    outputs.output(p)
         
 
 def goDemo(config=None):
@@ -195,7 +195,7 @@ def goDemo(config=None):
                     'STROKECOLOR': 'w',
                     'SCALE_LINEWIDTH': 20,
                     })
-    outputTiling(Parameters(**params))
+    outputs.output(Parameters(**params))
 
 ######################################
 def goPoloCubes(config=None):
@@ -224,7 +224,7 @@ def goPoloCubes(config=None):
                     'SCALE_LINEWIDTH': 20,
                     'SHOW': True,
                     })
-    outputTiling(Parameters(**params))
+    outputs.output(Parameters(**params))
 
 
 ######################################
@@ -248,7 +248,7 @@ def goPolo(config=None):
                     'SCALE_LINEWIDTH': 12,
                     'SHOW': False,
                     })
-    outputTiling(Parameters(**params))
+    outputs.output(Parameters(**params))
 
        
 
@@ -263,4 +263,4 @@ def forGrilArt():
         NBL=20,
         SQUARE = True,
         OUTPUT_COORDINATES=True)
-    outputTiling(p)
+    outputs.output(p)
