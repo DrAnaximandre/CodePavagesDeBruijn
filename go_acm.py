@@ -7,13 +7,15 @@ import outputs
 from gamma import MappedGammaParameter
 from dataclasses import dataclass
 from functools import partial
+import hashlib
+import json
 
 
 @dataclass
 class GlyphsColorsParameters:
     offset_color: callable=lambda j,i: i**2+np.sqrt(1.5*j)
-    memory_prefix: int = 1
-    nsb: bool = False
+    colored_edges: bool = True
+    white_bg: bool = False
 
 @dataclass
 class GlyphsFigureParameters:
@@ -40,6 +42,27 @@ class GlyphsParameters:
     pp: GlyphsParametersParameters
 
 
+    def hash_name(self):
+        """generate a hash name for the parameters"""
+        
+        def serialize_callable(obj):
+            """serialize a callable object 
+            note that the lambda functions will all be called lambda"""
+            if callable(obj):
+                return obj.__name__
+            return obj
+         
+        params_dict = {
+            "cp": self.cp.__dict__,
+            "fp": self.fp.__dict__,
+            "pp": self.pp.__dict__
+        }
+
+        params_str = json.dumps(params_dict, default=serialize_callable, sort_keys=True)
+
+        return hashlib.md5(params_str.encode('utf-8')).hexdigest()
+
+
 
 def create_figure(fp: GlyphsFigureParameters):
     final_fig, final_ax = plt.subplots(fp.nx,fp.ny-fp.offset_j)
@@ -47,7 +70,7 @@ def create_figure(fp: GlyphsFigureParameters):
 
 
 def set_background_color(final_fig, cp: GlyphsColorsParameters):
-    if cp.nsb:
+    if cp.white_bg:
         final_fig.set_facecolor((1,1,1))
     else:
         final_fig.set_facecolor((0,0,0))
@@ -71,10 +94,10 @@ def get_parameters(n, pp: GlyphsParametersParameters):
 
 
 def change_color(params, cp: GlyphsColorsParameters):
-     params.STROKECOLOR="k" if cp.nsb else "w"
+     params.STROKECOLOR="k" if cp.white_bg else "w"
 
 def set_prefix(params, cp: GlyphsColorsParameters):
-    if cp.memory_prefix==1:
+    if cp.colored_edges:
         params.PREFIX = 1
 
 def get_xs_ys(graph):
@@ -91,7 +114,7 @@ def update_xy_limits(x_min, x_max, y_min, y_max, xi, xj, yi, yj):
     return x_min, x_max, y_min, y_max
 
 
-def a(ax, i,j, edgesAccepted, xs, ys, gp, params):
+def plot_one_glyph(ax, i,j, edgesAccepted, xs, ys, gp, params):
 
     x_min, x_max = float('inf'), float('-inf')
     y_min, y_max = float('inf'), float('-inf')
@@ -107,7 +130,7 @@ def a(ax, i,j, edgesAccepted, xs, ys, gp, params):
         xi, xj, yi, yj = xs[t], xs[h], ys[t], ys[h]
         outputs.fancy_mplot([xi,xj], 
                             [yi,yj],
-                            alpha=1 if gp.cp.nsb else 0.8, 
+                            alpha=1 if gp.cp.white_bg else 0.8, 
                             params=params, 
                             ax=ax[i,j-gp.fp.offset_j], 
                             center=[gp.fp.nx/2,j/2], 
@@ -163,25 +186,39 @@ def glyphs(gp: GlyphsParameters):
 
         for j in range(gp.fp.offset_j,gp.fp.ny):
 
-            a(final_ax, i,j, edgesAccepted, xs, ys, gp, params)
+            plot_one_glyph(final_ax, i,j, edgesAccepted, xs, ys, gp, params)
             
   
     adapt_lims(final_ax, gp)
     final_fig.set_size_inches(gp.fp.ny-gp.fp.offset_j, gp.fp.nx)
     plt.show()
-   # fig_name = f'glyphs3_{ny}_nx{nx}_offset_edge{offset_edge}_offset_j{offset_j}_NBL{NBL}.png'
-    fig_name = "glyphs.png"
+    fig_name = f'glyphs_{gp.hash_name()}.png'
     final_fig.savefig(fig_name, dpi=300)
 
 if __name__ == "__main__":
 
-    gp = GlyphsParameters(GlyphsColorsParameters(offset_color=lambda i,j: 0.5+i+j/10),
+    gp = GlyphsParameters(GlyphsColorsParameters(offset_color=lambda i,j: 0.5+i+j/10,
+                                                 white_bg=True,
+                                                 colored_edges=False),
                           GlyphsFigureParameters(ny=4, 
                                                  nx=4, 
                                                  offset_edge=2, 
-                                                 offset_boundaries=0.5, 
+                                                 offset_boundaries=0.7, 
                                                  offset_j=0, 
                                                  offset_n=3, 
                                                  set_lims=True),
-                          GlyphsParametersParameters())
+                          GlyphsParametersParameters(functionToMapN=lambda s, j, n: j**2/n**2 + s**2,))
+    glyphs(gp)
+
+    gp = GlyphsParameters(GlyphsColorsParameters(offset_color=lambda i,j: 0.5+i+j/10,
+                                            white_bg=True,
+                                            colored_edges=False),
+                          GlyphsFigureParameters(ny=4, 
+                                            nx=4, 
+                                            offset_edge=2, 
+                                            offset_boundaries=0.7, 
+                                            offset_j=0, 
+                                            offset_n=3, 
+                                                 set_lims=True),
+                          GlyphsParametersParameters(functionToMapN=lambda s, j, n: j/n**3 + s**2,))
     glyphs(gp)
