@@ -39,6 +39,7 @@ class Parameters(object):
                  BACKGROUND: str = 'w',
                  STROKECOLOR: str = 'k',
                  COLORING: int = 0,
+                 ORIENTED: bool = True,
                  DESTRUCTURED: bool = False,  # Should noise be applied to the coordinates of the rhombi
                  FISHEYE: bool = False,  # another kind of transformation
                  AUGMENTED_COLORS: bool = False,  # Should the colors be tilted a bit
@@ -61,7 +62,6 @@ class Parameters(object):
 
         # Half the number of lines in the pentagrid for a fixed angle.
         self.NBL = NBL
-
         
         self.GAMMA = GAMMA if GAMMA else MappedGammaParameter(N=N)
 
@@ -71,6 +71,11 @@ class Parameters(object):
         self.SAVE = save  # save to a file ?
         self.SAVE_FORMAT = output_format  # file format for saving, for example pdf, jpeg, png ...
         self.SHOW = SHOW  # show the tiling on the screen ?
+
+        # should the constructed graph be oriented or not
+        # if True, edges are in one direction  ex: a->b
+        # if False, edges are in both directions ex : a->b AND b->a
+        self.ORIENTED = ORIENTED
 
         # =============== overall display shape
         # Let C be the center of a rhombus.
