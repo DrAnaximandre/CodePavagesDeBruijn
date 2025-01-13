@@ -40,3 +40,29 @@ To run the script with a different configuration file and function, use the foll
 ```sh
 python main.py -c configs/config_mike.json -g goVerySmall
 ```
+
+## The demo
+
+The following code:
+```sh
+python main.py -g goDemo
+``` 
+returns the following graph:
+
+
+![Example Glyph](images/go_demo.png)
+
+
+## Glyphs
+
+An example of function calling is:
+
+```sh
+python main.py -g go_glyph
+```
+
+This will read the default config file. With a little trial and error, one can get this kind of graphs:
+
+
+![Example Glyph](images/example_glyphs_2.png)
+![Example Glyph](images/example_glyphs_1.png)
