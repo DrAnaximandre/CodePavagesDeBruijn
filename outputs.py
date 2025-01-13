@@ -156,12 +156,12 @@ def rhombi_loop(rhombi,params):
             sh = shape_rhombus(r, s, params)
 
             if sh == 2:
-                l02(x,y,params, diagonal=True)
+                l02(x,y,params)
             elif sh == 1:
-                l13(x,y,params,diagonal=True)
+                l13(x,y,params)
             else:
                 # shortest diagonal ??
-                l02(x,y,params,diagonal=True)
+                l02(x,y,params)
 
 
             
@@ -174,17 +174,17 @@ def drawer_rectangle(r,s,kr,ks,ind,x,y,d, params) :
     x23, y23 = middle(x[2], y[2], x[3], y[3])
     x30, y30 = middle(x[0], y[0], x[3], y[3])
 
-    def l01_12(diagonal=False, rectangle=False):
-        line(x01, y01, x12, y12,params, diagonal, rectangle)
+    def l01_12():
+        line(x01, y01, x12, y12,params)
         
-    def l12_23(diagonal=False, rectangle=False):
-        line(x12, y12, x23, y23,params, diagonal, rectangle)
+    def l12_23():
+        line(x12, y12, x23, y23,params)
 
-    def l23_30(diagonal=False, rectangle=False):
-        line(x23, y23, x30, y30,params, diagonal, rectangle)
+    def l23_30():
+        line(x23, y23, x30, y30,params)
 
-    def l30_01(diagonal=False, rectangle=False):
-        line(x30, y30, x01, y01, params, diagonal, rectangle)
+    def l30_01():
+        line(x30, y30, x01, y01, params)
 
     sh = shape_rhombus(r,s,params)
 
@@ -193,49 +193,49 @@ def drawer_rectangle(r,s,kr,ks,ind,x,y,d, params) :
         polygon_sides(x1,y1,1,params)
             
     elif params.R == 1: # only opposite sides of rectangles
-        l01_12(rectangle=True)
-        l23_30(rectangle=True)
+        l01_12()
+        l23_30()
         
     elif params.R == 2: # "Pentaville", other sides of rectangles
-        l12_23(rectangle=True)
-        l30_01(rectangle=True)
+        l12_23()
+        l30_01()
         
     elif params.R == 3:  # pseudo-diagonals (join middle of rombi sides)
-        line(x12, y12, x30, y30, params, rectangle=True)
-        line(x23, y23, x01, y01, params, rectangle=True)
+        line(x12, y12, x30, y30, params)
+        line(x23, y23, x01, y01, params)
         
     elif params.R == 4:  # specific for N=5 but works for any N
         # like R=1 or R=2 according to the rhombi shape
         if sh == 2:
-            l01_12(rectangle=True)
-            l23_30(rectangle=True)
+            l01_12()
+            l23_30()
         else:
-            l12_23(rectangle=True)
-            l30_01(rectangle=True)
+            l12_23()
+            l30_01()
             
     elif params.R == 5: # same as R=4 but inverse shapes 
         if sh == 1:
-            l01_12(rectangle=True)
-            l23_30(rectangle=True)
+            l01_12()
+            l23_30()
         else:
-            l12_23(rectangle=True)
-            l30_01(rectangle=True)
+            l12_23()
+            l30_01()
              
     elif params.R == 6 : # mix
         if sh == 1: # côté du rectangle
-            l01_12(rectangle=True)
-            l23_30(rectangle=True)
+            l01_12()
+            l23_30()
         else: # pseudo-diags
-            line(x12, y12, x30, y30, params,rectangle=True)
-            line(x23, y23, x01, y01, params,rectangle=True)
+            line(x12, y12, x30, y30, params)
+            line(x23, y23, x01, y01, params)
             
     elif params.R == 7 : # mix
         if sh == 1 : # pseudo-diags
-            line(x12, y12, x30, y30, params, rectangle=True)
-            line(x23, y23, x01, y01, params, rectangle=True)
+            line(x12, y12, x30, y30, params)
+            line(x23, y23, x01, y01, params)
         else: # side of rectangle
-            l01_12(rectangle=True)
-            l23_30(rectangle=True)
+            l01_12()
+            l23_30()
     
             
 def polygon_sides(x,y,alpha, params):
@@ -290,15 +290,15 @@ def mplot(x,y,alpha,params):
 def middle(x1, y1, x2, y2):
     return((x1 + x2) / 2.0, (y1 + y2) / 2.0)
 
-def line(xA,yA,xB,yB, params, diagonal=False, rectangle=False) :
+def line(xA,yA,xB,yB, params) :
     x, y = [xA,xB], [yA,yB]
-    mplot(x,y, 1, params, diagonal=diagonal, rectangle=rectangle)
+    mplot(x,y, 1, params)
 
-def l02(x,y,params, diagonal=False, rectangle=False):
-    line(x[0], y[0], x[2], y[2], params, diagonal, rectangle)
+def l02(x,y,params):
+    line(x[0], y[0], x[2], y[2], params)
 
-def l13(x,y,params, diagonal=False, rectangle=False):
-    line(x[1], y[1], x[3], y[3], params, diagonal,rectangle)
+def l13(x,y,params):
+    line(x[1], y[1], x[3], y[3], params)
 
 
 def shape_rhombus(r, s, params):
