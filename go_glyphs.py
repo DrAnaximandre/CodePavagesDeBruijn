@@ -46,6 +46,8 @@ class GlyphsParametersParameters:
     SQUARE: bool = True
     SCALE_LINEWIDTH: int = 20
     DMAX: int = 6
+    output_format: str = "png"
+    tilingdir: str = "./tiling"
 
 @dataclass
 class GlyphsParameters:
@@ -102,7 +104,8 @@ def get_parameters(n, pp: GlyphsParametersParameters):
                     GAMMA=get_gamma(n, pp),
                     SQUARE=pp.SQUARE,
                     SCALE_LINEWIDTH=pp.SCALE_LINEWIDTH,                         
-                    output_format="png")
+                    output_format=pp.output_format,
+                    tilingdir=pp.tilingdir)
 
 
 def change_color(params, cp: GlyphsColorsParameters):
@@ -207,11 +210,36 @@ def glyphs(gp: GlyphsParameters):
     adapt_lims(final_ax, gp)
     final_fig.set_size_inches(gp.fp.ny-gp.fp.offset_j, gp.fp.nx)
     plt.show()
-    fig_name = f'glyphs_{gp.hash_name()}.png'
+    fig_name = f'{params.TILINGDIR}/glyphs_{gp.hash_name()}.png'
     final_fig.savefig(fig_name, dpi=300)
 
 
+def go_glyphs(config):
+
+    gp = GlyphsParameters(GlyphsColorsParameters(offset_color=default_offset_color,
+                                                 white_bg=False,
+                                                 colored_edges=True),
+                          GlyphsFigureParameters(ny=4, 
+                                                 nx=4, 
+                                                 offset_edge=2, 
+                                                 offset_boundaries=0.7, 
+                                                 offset_j=0, 
+                                                 offset_n=3, 
+                                                 set_lims=True),
+                          GlyphsParametersParameters(functionToMapN=default_functionToMapN,
+                                                    NBL=5,
+                                                    SQUARE=True,
+                                                    SCALE_LINEWIDTH=20,
+                                                    DMAX=6,
+                                                    output_format=config['Parameters']['output_format'],
+                                                    tilingdir=config['Parameters']['tilingdir']))
+    
+    glyphs(gp)
+
+
 if __name__ == "__main__":
+
+    print("Running go_glyphs.py")
 
     gp = GlyphsParameters(GlyphsColorsParameters(offset_color=default_offset_color,
                                                  white_bg=False,
