@@ -1,26 +1,44 @@
 import matplotlib.pyplot as plt
 from pathlib import Path
-
 import numpy as np
 import math
-import tqdm   # to show computation progress on console
+
 
 from parameters import Parameters
-from outputs import display_rhombus
+from graph import Graph
 
-###################################################  tiling computation following deBruijn paper
 
-def get_cos_sin(N):
-    ANGLE = 2 * math.pi / N
-    COS = np.array([np.cos(j * ANGLE) for j in range(N)])
-    SIN = np.array([np.sin(j * ANGLE) for j in range(N)])
-    return COS, SIN
+############### utilities
 
 def inter(a1, b1, c1, a2, b2, c2):
     """ solution of a1 x + b1 y + c1 = 0  and  a2 x + b2 y + c2 = 0 """
     d = a1 * b2 - a2 * b1 
     x = (b1 * c2 - b2 * c1) / d
     y = (a2 * c1 - a1 * c2) / d
+    return (x, y)
+
+def get_cos_sin(N):
+    """ cos(2 * i * pi / N) for i = 0, ... N-1, and sin idem """
+    ANGLE = 2 * math.pi / N
+    COS = np.array([np.cos(j * ANGLE) for j in range(N)])
+    SIN = np.array([np.sin(j * ANGLE) for j in range(N)])
+    return COS, SIN
+
+
+
+###################################  tiling computation, following deBruijn paper
+
+
+# de Bruijn (5.1)
+def point(Kvect, COS, SIN, N):
+    """ Point associated to [ k_0, ... k_(N-1) ].
+        Kvect can be considered as the coordinates of a point in a N dimensional space.
+        This function computes the projection of the considered point is the 2-dim ordinary space.
+    """
+    x, y = 0.0, 0.0
+    for j in range(N):
+        x += Kvect[j] * COS[j]
+        y += Kvect[j] * SIN[j]
     return (x, y)
 
 # de Bruijn (4.4)
@@ -31,36 +49,36 @@ def interGrid(r, s, kr, ks, COS, SIN, GAMMA):
     a1, b1, c1 = COS[s], SIN[s], GAMMA[s] - ks
     return inter(a, b, c, a1, b1, c1)
 
-# de Bruijn (5.1)
-def point(Kvect, COS, SIN, N):
-    """ Point associated to [ k_0, ... k_(N-1) ] """
-    x, y = 0.0, 0.0
-    for j in range(N):
-        x += Kvect[j] * COS[j]
-        y += Kvect[j] * SIN[j]
-    return (x, y)
+def compute(params: Parameters):
+    """ Computes all rhombi determined by N, GAMMA and NBL.
+        Returns the rhombi and the corresponding graph of rhombi's vertices and edges
+    """
 
-def tiling(params: Parameters):
-    """ Computes (and possibly draws) all rombi determined by N, GAMMA and NBL """
+    print('Calcul du pavage, avec les paramètres ' + params.string())
     N = params.N
     NBL = params.NBL
     GAMMA = params.GAMMA.getValue()
     COS, SIN = get_cos_sin(N)
 
-    # coordinates of current rhombus
+    # coordinates of current rhombus 
     x, y = np.zeros(4), np.zeros(4)
     
     # The index of a vertex could serve later as its 'altitude' for a future 3D display
     # (see de Bruijn paper section 6)
     ind = np.zeros(4)
 
-    #  Kvect is the K of deBruijn's paper, a vector of N integers
+    #  Kvect is the K of deBruijn's paper, a vector of N integers,
     Kvect = np.zeros(N, dtype=int)
 
-    pre_setKvect = np.zeros((4,N), dtype=np.int)
-    setKvect = set()
+    counter = 0  # count number of computed rhombi
 
-    counter = 0  # count number of displayed rhombii
+    # for collecting the graph vertices / edges of rhombi
+    rhombus_Kvect = np.zeros((4,N), dtype=int)
+    graph = Graph(params.ORIENTED)
+
+    # for collecting rhombi
+    rhombi = [] # a list    
+
 
     # later: compute all combination and TQDM it up
     for r in range(N):  # first grid orientation
@@ -73,9 +91,11 @@ def tiling(params: Parameters):
                     # Pentagrid intersection, de Bruijn (4.4). (xp,yp) is the z_0 of de Bruijn
                     (xp, yp) = interGrid(r, s, kr, ks, COS, SIN, GAMMA)
 
-                    # The following solves a precision problem : we can prove that (with de Bruijn notation)
+                    # The following solves a precision problem :
+                    # we can prove that (with de Bruijn notation)
                     # K_r(z) = kr when z is on the line (r,kr), hence it is an integer.
-                    # Numerical computation of 'ceil' in Kvect below may incorrectly yield the upper integer.
+                    # Numerical computation of 'ceil' in Kvect below
+                    # may incorrectly yield the upper integer.
                     # To prevent this we directly reassign Kvect[r] to kr. Idem for ks.
                     # Thanks to Zhao Liang (github pywonderland) for this feature.
  
@@ -91,12 +111,9 @@ def tiling(params: Parameters):
                     # to the four vertices of the current rhombus
 
                     def setxyind(j):
-                        (x[j], y[j]) = point(Kvect, COS, SIN, N)
                         ind[j] = sum(Kvect)
-                        if params.OUTPUT_COORDINATES :
-                            pre_setKvect[j] = Kvect
-
-                    # (4.5) computation of the four values
+                        (x[j], y[j]) = point(Kvect, COS, SIN, N)
+                        rhombus_Kvect[j] = Kvect
 
                     setxyind(0)
 
@@ -110,9 +127,14 @@ def tiling(params: Parameters):
                     setxyind(3)
 
                     # here we keep the rhombus or not, according to its distance from origin
-
                     xm, ym = sum(x) / 4.0, sum(y) / 4.0
                     d = math.sqrt(xm * xm + ym * ym)  # distance from the rhombus center to (0,0)
+
+                    # if params.magic > 0:
+                    #     if xm < 0 and ym < 0:
+                    #         continue
+
+
 
                     # we do not consider the rhombus
                     # if it is not in the square (or the circle) centered in the origin
@@ -125,62 +147,31 @@ def tiling(params: Parameters):
                         if d > params.DMAX:
                             continue
 
-                    if params.OUTPUT_COORDINATES:
-                        for v in pre_setKvect:
-                            setKvect.add(tuple(v))
+                    #display_rhombus(r, s, kr, ks, x, y, ind, params)
 
-                    display_rhombus(r, s, kr, ks, x, y, ind, params)
+                    # Here we collect the graph of connected rhombi vertices.
+                    # Kvect, converted to tuple, is convenient as a key in the graph dictionnary.
+                    # This is the reason why we keep Kvect in the graph.
+                    
+                    vs =  [ 0 for i in range(4) ]
+                    
+                    for i in range(4) :
+                        vs[i] = tuple(map(int,rhombus_Kvect[i]))
+                        graph.add_vertice(vs[i],x[i],y[i])
+                    
+                    graph.add_edge(vs[0],vs[1])
+                    graph.add_edge(vs[1],vs[2])
+                    graph.add_edge(vs[2],vs[3])
+                    graph.add_edge(vs[3],vs[0])
+
+                    # We collect the current rhombus by its coordinates
+                    rhombi.append((r,s,kr,ks,tuple(ind),tuple(x),tuple(y),d))
 
                     counter += 1
 
-    print(counter, 'rhombuses')
-
-    if params.OUTPUT_COORDINATES:
-        nomfich = params.filename_coordinates()
-        print('output vertices coordinates in file', nomfich)
-        with open(nomfich, 'w+') as f:
-            for i, v in enumerate(setKvect):
-                (x, y) = point(v, COS, SIN, N)
-                f.write(str(i) + ' ' + str(x) + ' ' + str(y) + '\n')
-
-
-###################################### main function
-
-def outputTiling(params: Parameters):
-    fn = params.filename()
-
-    fig, ax = plt.subplots()
-    plt.axis('equal')
-    plt.axis('off')
-
-    if params.TITLE:
-        plt.title(params.title(), fontsize=7, y=0, pad=-50.)
-    print(params.string())
+    print(counter, 'rhombi')
+    print(graph.get_order(), 'points (vertices)')
     
-    # drawing limits
-    c = 0.95
-    lim = params.DMAX * c
-    xmin, xmax, ymin, ymax = -lim, lim, -lim, lim
-    ax.set_xlim([xmin, xmax])
-    ax.set_ylim([ymin, ymax])
+    return graph, rhombi
 
-    # drawing
-    tiling(params)
-
-    # the square line around the picture (hum, not so much elegant, another solution ?)
-    b = 0.998
-    if params.FRAME and params.SQUARE:
-        left, bottom, width, height = -lim*b*1.005, -lim*b, lim*2*b*1.005, lim*2*b*1.00
-        p = plt.Rectangle((left, bottom), width, height, fill=False, linewidth=1)
-        ax.add_patch(p)
-
-    # save first and show after !
-    if params.SAVE:
-        Path(params.TILINGDIR).mkdir(parents=True, exist_ok=True)
-        plt.savefig(fn + '.' + params.SAVE_FORMAT, dpi=300) #, bbox_inches="tight")
-    if params.SHOW:
-         plt.show()
-
-    plt.close()
-
-
+       

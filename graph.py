@@ -1,158 +1,119 @@
-from collections import OrderedDict
+from dataclasses import dataclass
 
-class Graph(object):
+@dataclass
+class VerticeValue :
+    neighbours : set
+    x : float
+    y : float
+    index : int
+
+def orientation(s,t) :
+    """ gives the orientation of the edge s -> t
+        For this, we use the specific knowledge that this is an
+        edge of a rhombi, computed in tiling.py, and that t is
+        a 'Kvect' (see the De Buijn paper).
+        In short, from s to t, only one coordinate changes (r),
+        by one unit plus or minus.
+        The result j corresponds to the orientation PI*j/N,
+        with j in the range 0..2*N-1  """
+
+    N = len(s)
+    for r, tr in enumerate(t) :
+        if tr > s[r] :
+            return 2*r
+        elif tr < s[r] :
+            return (2*r + N) % (2*N)
+    exit(0)
+
+
+class Graph :
+
     """ This structure stores the graph of all vertices and edges
     of a tiling (rhombi).
     It is specific to this application. """
-
-    def __init__(self):
-
-        #self.vertices = {}  # dictionary. Keys are the 'Kvect' of the vertices.
-        # vertices as an ordered dict
-        self.vertices = {}
+    
+    def __init__(self, oriented:bool) :
+        self.vertices = {} # dictionary. Keys are the 'Kvect' of the vertices. Values are instances of VerticeValue
         self.edges = set()
+        self.n = 0 # number of vertices in the graph
+        self.oriented = oriented  # if oriented edges ( a -> b ) or not ( a <-> b )
 
-    def add_vertice(self, s, x, y):
-        if s not in self.vertices:
-            self.vertices[s] = [set(), x, y]  # set() : set of future neighbours
+    def add_vertice(self,s,x,y) :
+        if s not in self.vertices :
+            self.vertices[s] = VerticeValue(set(), x,y, self.n) 
+            self.n += 1
 
-    def add_edge(self, u, v):
-        """ add v in the set of u neighbours, and u in the set of v neighbours  """
+    def add_edge(self, s, e) :
+        """ add e in the set of s neighbours, and s in the set of e neighbours  """
+        self.vertices[s].neighbours.add(e)
+        self.vertices[e].neighbours.add(s)
+        # add (s,e) or (e,s) or both in the set of edges depending on oriented
+        if ( not (self.oriented)  ) :
+             self.edges.add((s,e))
+             self.edges.add((e,s))
+        else :
+            if s < e :
+                self.edges.add((s,e))
+            else :
+                self.edges.add((e,s))
 
-        self.vertices[u][0].add(v)
-        self.vertices[v][0].add(u)
-        # add (u,v) or (v,u) in the set of edges (add both ?)
-        if u < v:
-            self.edges.add((u, v))
-        else:
-            self.edges.add((v, u))
-
-    def get_xy(self, s):
+    def get_xy(self,s) :
         v = self.vertices[s]
-        return v[1], v[2]
+        return v.x, v.y
 
-    def get_x(self, s):
+    def get_x(self,s) :
         v = self.vertices[s]
-        return v[1]
+        return v.x
 
-    def get_y(self, s):
+    def get_y(self,s) :
         v = self.vertices[s]
-        return v[2]
+        return v.y
 
-    def exist_edge(self, s, e):
-        return e in self.vertices[s]
+    def get_vertice_index(self,s) :
+        v = self.vertices[s]
+        return v.index
 
-    def get_edges(self):
+    def exist_edge(self, s, e) :
+        """ is there an edge from s to e ? """
+        v = self.vertices[s]
+        return e in v.neighbours
+
+    def get_edges(self) :
         return self.edges
 
-    def get_vertices(self):
+    def get_vertices(self) :
         return list(self.vertices.keys())
 
-    def get_order(self):
-        return len(self.vertices.keys())
+    def get_order(self) :
+        return self.n # len(self.vertices.keys())
 
-    def get_degree(self, s):
+    def get_degree(self, s) :
         return len(self.vertices[s])
 
-    def get_neighbours(self, s):
+    def get_neighbours(self,s) :
         """ warning : returns a set """
-        l = self.vertices[s]
-        return l[0]
+        v = self.vertices[s]
+        return v.neighbours
 
-    def get_sorted_neighbours(self, s):
-        """ neighbours sorted by orientation """
-        N = len(s)
 
-        def orientation(v):
-            """ gives the orientation of the edge s -> v
-            For this, we use the specific knowledge that this is an
-            edge of a rhombi, computed in tiling.py, and that v is
-            a 'Kvect' (see the De Buijn paper).
-            In short, from s to v, only one coordinate changes (r),
-            by one unit plus or minus.
-            The result j corresponds to the orientation PI*j/N,
-            with j in the range 0..2*N-1  """
-            for r, vr in enumerate(v):
-                if vr > s[r]:
-                    return 2 * r
-                elif vr < s[r]:
-                    return (2 * r + N) % (2 * N)
-            exit(0)
+    def get_sorted_neighbours(self,s):
+        """ neighbours sorted by orientation 
+            This is useful for taking neighbours in order around the vertice s"""
 
-        return sorted(self.get_neighbours(s), key=orientation)
+        def f(t) :
+            return orientation(s,t)
 
-    def __repr__(self):
+        return sorted(self.get_neighbours(s), key = f)
+        
+    def __repr__(self) :
         rep = ""
-        for s in self.get_vertices():
-            rep += f"{s} :\n"
-            for t in self.vertice[s]:
-                rep += f"   ->{t}\n"
+        for s in self.get_vertices() :
+            i = self.get_vertice_index(s)
+            rep += f"{s} [{i}]:\n"
+            for t in self.get_neighbours(s) :
+                j = self.get_vertice_index(t)
+                rep += f"   ->{t} [{j}]\n"
         return rep
 
-    # The main function to construct MST
-    # using Kruskal's algorithm
-
-    def mst(self):
-        def find(parent, i):
-            if parent[i] == i:
-                return i
-            return find(parent, parent[i])
-
-        def union(parent, rank, x, y):
-            x_root = find(parent, x)
-            y_root = find(parent, y)
-
-            if rank[x_root] < rank[y_root]:
-                parent[x_root] = y_root
-            elif rank[x_root] > rank[y_root]:
-                parent[y_root] = x_root
-            else:
-                parent[y_root] = x_root
-                rank[x_root] += 1
-
-        edges = sorted(list(self.edges), key=lambda x: self.get_distance(x[0], x[1]))
-
-        result_edges = set()
-        result_vertices = set()
-        parent = {v: v for v in self.get_vertices()}
-        rank = {v: 0 for v in self.get_vertices()}
-
-        for edge in edges:
-            u, v = edge
-            u_root = find(parent, u)
-            v_root = find(parent, v)
-
-            if u_root != v_root:
-                result_edges.add(edge)
-                result_vertices.add(u)
-                result_vertices.add(v)
-                union(parent, rank, u_root, v_root)
 
 
-        result_graph = Graph()
-
-        for vertex in result_vertices:
-            x, y = self.get_xy(vertex)
-            result_graph.add_vertice(vertex, x, y)
-
-        for edge in result_edges:
-
-            result_graph.add_edge(edge[0], edge[1])
-
-        return result_graph
-
-    def get_distance(self, s, e):
-        # Add your distance calculation logic here if needed.
-        # For now, just return the Euclidean distance between vertices s and e.
-        xs, ys = self.get_xy(s)
-        xe, ye = self.get_xy(e)
-        return ((xe - xs) ** 2 + (ye - ys) ** 2) ** 0.5
-
-    #    def output(self, nomfich) :
-#        #print('graph', self)
-#        vsl = self.get_vertices()
-#        with open(nomfich, 'w+', encoding="utf-8") as f:
-#            for i,v in enumerate(vsl) :
-#                voisins = [ vsl.index(w) for w in self.get_neighbours(v) ]
-#                #print('$',i,v,voisins)
-#                json.dump((i,v,voisins), f)
