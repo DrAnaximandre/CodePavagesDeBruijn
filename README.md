@@ -58,7 +58,7 @@ returns the following graph:
 An example of function calling is:
 
 ```sh
-python main.py -g go_glyph
+python main.py -g goGlyphs
 ```
 
 This will read the default config file. With a little trial and error, one can get this kind of graphs:
