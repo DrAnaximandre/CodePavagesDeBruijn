@@ -17,10 +17,13 @@ def default_offset_color(i,j):
     return i**2+np.sqrt(1.5*j)
 
 def alternative_offset_color(i,j):
-    return 0.7+j**2+np.sqrt(i)
+    return 0.7*j**2+np.sqrt(i)
 
 def default_functionToMapN(s, j, n):
     return j/n + s**2
+
+def alternative_functionToMapN(s, j, n):
+    return 0.7*np.sin(j/n) + s**2
 
 @dataclass
 class GlyphsColorsParameters:
@@ -242,22 +245,21 @@ if __name__ == "__main__":
     print("Running go_glyphs.py")
 
     gp = GlyphsParameters(GlyphsColorsParameters(offset_color=default_offset_color,
-                                                 white_bg=False,
-                                                 colored_edges=True),
-                          GlyphsFigureParameters(ny=4, 
+                                                 white_bg=True,
+                                                 colored_edges=False),
+                          GlyphsFigureParameters(ny=3, 
                                                  nx=4, 
-                                                 offset_edge=2, 
+                                                 offset_edge=2.1, 
                                                  offset_boundaries=0.7, 
                                                  offset_j=0, 
                                                  offset_n=3, 
                                                  set_lims=True),
-                          GlyphsParametersParameters(functionToMapN=default_functionToMapN,))
+                          GlyphsParametersParameters(functionToMapN=alternative_functionToMapN,))
     glyphs(gp)
-
 
 
     gp.cp =  GlyphsColorsParameters(offset_color=alternative_offset_color, 
                                     white_bg=False,
                                     colored_edges=True,
-                                    center = (3,1))
+                                    center = (1,1))
     glyphs(gp)
