@@ -22,7 +22,7 @@ go_functions = {
     'goPolo': goPolo,
     'goPoloCubes': goPoloCubes,
     'goDemo': goDemo,
-    'glyphs': go_glyphs,
+    'goGlyphs': go_glyphs,
 }
 
 if __name__ == "__main__":
