@@ -6,6 +6,7 @@ matplotlib.use('Qt5Agg')
 from go import *
 from config_reader import get_config
 from go_glyphs import go_glyphs
+from go_neighbours import go_neighbours
 
 # Map function names to actual functions
 go_functions = {
@@ -23,6 +24,7 @@ go_functions = {
     'goPoloCubes': goPoloCubes,
     'goDemo': goDemo,
     'goGlyphs': go_glyphs,
+    'goNeighbours': go_neighbours,
 }
 
 if __name__ == "__main__":
