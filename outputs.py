@@ -45,7 +45,7 @@ def prepare_display(params:Parameters):
     ax.yaxis.set_ticklabels([])
     print(params.string())
     
-    ax.set_facecolor(params.BACKGROUND)
+    fig.set_facecolor(params.BACKGROUND)
     
     lim = params.DMAX * params.c
     xmin, xmax, ymin, ymax = -lim, lim, -lim, lim

@@ -114,6 +114,16 @@ class Parameters(object):
 
         # =============== COLORS
 
+        
+        if isinstance(BACKGROUND, str):
+            if BACKGROUND == 'w':
+                BACKGROUND = WHITE
+            elif BACKGROUND == 'k':
+                BACKGROUND = BLACK
+            else:
+                print("WARNING : if BACKGROUND is a str, it should be 'w' or 'k' !")
+                BACKGROUND = WHITE
+        
         self.BACKGROUND = BACKGROUND
 
         # -------- Different color styles,  see the 'colors' module.
@@ -165,8 +175,6 @@ class Parameters(object):
         # if self.BACKGROUND == self.STROKECOLOR :
         #     print("WARNING : BACKGROUND == STROKECOLOR !!!")
 
-        if self.BACKGROUND == BLACK:
-            style.use('dark_background')
 
         self.TITLE = TITLE
 
