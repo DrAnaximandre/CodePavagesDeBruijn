@@ -133,7 +133,7 @@ def rhombi_loop(rhombi,params):
             else:
                 xn, yn = x, y
                 
-                if params.QUANTUM_COLOR:
+                if params.QUANTUM_COLOR:             
                     inc = params.QUANTUM_COLOR.predict(255*np.array(c).reshape(1,-1))
                     nc = params.QUANTUM_COLOR.cluster_centers_[inc][0]/255
                 else:
@@ -143,7 +143,7 @@ def rhombi_loop(rhombi,params):
                     #       yn = np.concatenate(([0],yn[:3]))
                     #       xn = xn[:-1]
                     #       yn = yn[:-1]
-                    fill(xn, yn, nc, alpha = 1)
+                fill(xn, yn, nc, alpha = 1)
 
         if params.RECTANGLE:
             drawer_rectangle(r,s,kr,ks,ind,x,y,d,params)
