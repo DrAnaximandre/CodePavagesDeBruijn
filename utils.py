@@ -1,7 +1,20 @@
 from typing import Iterable
 from joblib import Parallel,delayed
 
-def mapR(x, xD, xF, yD, yF) :
+def mapR(x: float, xD: float, xF: float, yD: float, yF: float) -> float:
+    """
+    Perform linear interpolation to map a value `x` from one range [xD, xF] to another range [yD, yF].
+
+    Args:
+        x (float): The value to map.
+       xD (float): The lower bound of the input range.
+       xF (float): The upper bound of the input range.
+       yD (float): The lower bound of the output range.
+       yF (float): The upper bound of the output range.
+
+    Returns:
+       float: The mapped value in the output range.
+    """
     return yD + (yF-yD)/(xF-xD)*(x-xD)
 
 class ParallelProcessor:
