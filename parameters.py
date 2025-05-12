@@ -2,7 +2,7 @@ from pathlib import Path
 import inspect
 import matplotlib.pyplot as plt
 from time import localtime, strftime
-from matplotlib import style
+
 from PIL import Image
 import numpy as np
 
