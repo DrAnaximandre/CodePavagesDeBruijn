@@ -1,6 +1,9 @@
 from typing import Iterable
 from joblib import Parallel,delayed
 
+def mapR(x, xD, xF, yD, yF) :
+    return yD + (yF-yD)/(xF-xD)*(x-xD)
+
 class ParallelProcessor:
     """ This is a class to run several go functions in parallel.
 
