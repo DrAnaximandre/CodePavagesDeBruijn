@@ -1,6 +1,13 @@
 import json
 import argparse
 
+def cast_to_bool(dictionnary):
+    for key, value in dictionnary.items():
+        if isinstance(value, str):
+            if value.lower() == 'true':
+                dictionnary[key] = True
+            elif value.lower() == 'false':
+                dictionnary[key] = False
 
 def define_parser():
     # Create the argument parser
@@ -27,6 +34,10 @@ def get_config():
     # Load the configuration file
     with open(args.config, 'r') as config_file:
         config = json.load(config_file)
+
+    # Cast string values to boolean
+    cast_to_bool(config)
+    cast_to_bool(config['Parameters'])
 
     # Update the configuration with the command line arguments
     config['Parameters']['N'] = args.N
