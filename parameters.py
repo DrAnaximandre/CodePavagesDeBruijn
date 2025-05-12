@@ -49,6 +49,7 @@ class Parameters(object):
                  OUTPUT_COORDINATES: bool = False,
                  TITLE: bool = True,
                  i: int = 0,
+                 c = 0.95, # for the drawing limits
                      ) :
         
         # Must be 4 or higher

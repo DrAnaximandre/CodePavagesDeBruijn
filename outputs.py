@@ -45,10 +45,9 @@ def prepare_display(params:Parameters):
     ax.yaxis.set_ticklabels([])
     print(params.string())
     
-    # drawing limits
-    #c = 0.95
-    c = 1.05
-    lim = params.DMAX * c
+    ax.set_facecolor(params.BACKGROUND)
+    
+    lim = params.DMAX * params.c
     xmin, xmax, ymin, ymax = -lim, lim, -lim, lim
     ax.set_xlim([xmin, xmax])
     ax.set_ylim([ymin, ymax])
@@ -77,7 +76,7 @@ def finalize_display(params:Parameters, close=False):
     ########## save first and show after !
     if params.SAVE:
         Path(params.TILINGDIR).mkdir(parents=True, exist_ok=True)
-        plt.savefig(fn + '.' + params.SAVE_FORMAT, dpi=300) #, bbox_inches="tight")
+        plt.savefig(fn + '.' + params.SAVE_FORMAT, dpi=300) 
 
         print("output saved in file " + fn + '.' + params.SAVE_FORMAT)
     if params.SHOW:
