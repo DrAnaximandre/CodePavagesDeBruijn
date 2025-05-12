@@ -69,6 +69,12 @@ def kolor(r,s,kr,ks,ind,x,y,d,params) :
         elif params.COLORING == 3:
             h = utils.mapR(d, 0, params.DMAX, 120, 220)
             return rgb((h, 80, 70))
+    
+        elif params.COLORING == 31:
+            h = utils.mapR(d, 0, params.DMAX, 160, 240)
+            s = 80 - (np.cos((kr))+1)/2 * 20
+            b = 100 - (np.cos((r))+1)/2 * 20
+            return rgb((h, s, b))
 
         # color depending on shape_rhombus and distance
         elif params.COLORING == 4:
