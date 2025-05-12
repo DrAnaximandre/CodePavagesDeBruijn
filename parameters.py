@@ -2,7 +2,7 @@ from pathlib import Path
 import inspect
 import matplotlib.pyplot as plt
 from time import localtime, strftime
-from matplotlib import style
+
 from PIL import Image
 import numpy as np
 
@@ -49,6 +49,7 @@ class Parameters(object):
                  OUTPUT_COORDINATES: bool = False,
                  TITLE: bool = True,
                  i: int = 0,
+                 c = 0.95, # for the drawing limits
                      ) :
         
         # Must be 4 or higher
@@ -113,6 +114,16 @@ class Parameters(object):
 
         # =============== COLORS
 
+        
+        if isinstance(BACKGROUND, str):
+            if BACKGROUND == 'w':
+                BACKGROUND = WHITE
+            elif BACKGROUND == 'k':
+                BACKGROUND = BLACK
+            else:
+                print("WARNING : if BACKGROUND is a str, it should be 'w' or 'k' !")
+                BACKGROUND = WHITE
+        
         self.BACKGROUND = BACKGROUND
 
         # -------- Different color styles,  see the 'colors' module.
@@ -156,6 +167,7 @@ class Parameters(object):
 
         self.magic = 0.5
         self.i = i
+        self.c = c
         self.FILLWITHCIRCLE = False
 
         self.OUTPUT_COORDINATES = OUTPUT_COORDINATES
@@ -163,8 +175,6 @@ class Parameters(object):
         # if self.BACKGROUND == self.STROKECOLOR :
         #     print("WARNING : BACKGROUND == STROKECOLOR !!!")
 
-        if self.BACKGROUND == BLACK:
-            style.use('dark_background')
 
         self.TITLE = TITLE
 
