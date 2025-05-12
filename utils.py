@@ -1,6 +1,15 @@
 from typing import Iterable
 from joblib import Parallel,delayed
 
+
+def linearPoint(A,B,k):
+    xA,yA = A
+    xB,yB = B
+    xC = xA + (xB-xA)*k
+    yC = yA + (yB-yA)*k
+    return (xC,yC)
+    
+
 def mapR(x: float, xD: float, xF: float, yD: float, yF: float) -> float:
     """
     Perform linear interpolation to map a value `x` from one range [xD, xF] to another range [yD, yF].
