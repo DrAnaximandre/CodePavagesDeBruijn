@@ -157,6 +157,7 @@ class Parameters(object):
 
         self.magic = 0.5
         self.i = i
+        self.c = c
         self.FILLWITHCIRCLE = False
 
         self.OUTPUT_COORDINATES = OUTPUT_COORDINATES
