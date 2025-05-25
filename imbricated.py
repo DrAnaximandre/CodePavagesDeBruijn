@@ -90,7 +90,7 @@ idxss = find_index(xys1, xys2)
 
 fig, ax = outputs.prepare_display(p2)
 
-p2.PREFIX = 3
-plot_edges(xs1, ys1, edges1, p1, ax, [sx, sy], offset_color=-0.05)
-plot_edges(xs2, ys2, edges2, p2, ax, [sx, sy], idxss, offset_color=0.06)
+
+plot_edges(xs1, ys1, edges1, p1, ax, [sx, sy], offset_color=0)
+plot_edges(xs2, ys2, edges2, p2, ax, [sx, sy], idxss, offset_color=0)
 plt.show()
