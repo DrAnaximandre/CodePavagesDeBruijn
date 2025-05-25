@@ -88,6 +88,11 @@ def find_index(xys1, xys2):
 
 idxss = find_index(xys1, xys2)
 
+
+# p1.PREFIX = 2
+# p2.PREFIX = "bob"
+# p2.BACKGROUND = "k"
+
 fig, ax = outputs.prepare_display(p2)
 
 
