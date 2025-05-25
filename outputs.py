@@ -252,6 +252,7 @@ def fill(x, y, c, alpha):
 def fancy_mplot(x,y,alpha,params,ax, center=[0,0],offset_color=0) :
 
     if hasattr(params, 'PREFIX'):
+  
         # Adjust stroke color based on distance to the center
         X = np.mean(x)
         Y = np.mean(y)
@@ -261,9 +262,22 @@ def fancy_mplot(x,y,alpha,params,ax, center=[0,0],offset_color=0) :
         ratio = np.sqrt(distance_to_center / max_distance)
         ratio = np.clip(ratio, 0.1, 0.99)
 
-        color = (1 - (0.5 + np.cos(offset_color * ratio**3) / 2), 
-                 0.5 + np.sin(offset_color * 2 * ratio) / 2, 
-                 1 - ratio**2)
+        if params.PREFIX == 1:
+            # for glyphs grid:
+            color = (1 - (0.5 + np.cos(offset_color * ratio**3) / 2), 
+                    0.5 + np.sin(offset_color * 2 * ratio) / 2, 
+                    1 - ratio**2)
+        elif params.PREFIX == 2:
+            ratio += offset_color
+            ratio = np.clip(ratio, 0.3, 0.99)
+           
+            color = (ratio**2,0, ratio**8)    
+        else:
+            ratio += offset_color
+            ratio = np.clip(ratio, 0.1, 0.99)
+            
+            color = (1-ratio,0.1, 1-ratio**2)    
+        
     else:
         color = params.STROKECOLOR
 
