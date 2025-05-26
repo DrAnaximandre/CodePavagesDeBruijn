@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import acm_kruskal
 
 N = 8
-NUM_IMBRICATED = 3  # Number of imbricated tilings
+NUM_IMBRICATED = 7  # Number of imbricated tilings
 
 gamma = gm.MappedGammaParameter(
     N=N,
@@ -16,7 +16,7 @@ gamma = gm.MappedGammaParameter(
 )
 
 
-DMAXs = [4, 8, 12, 16, 20]  # Maximum degrees for each imbricated tiling
+DMAXs = [4*(i+1) for i in range(NUM_IMBRICATED)]  # Maximum degrees for each imbricated tiling
 
 
 # Parameter definitions for each imbricated tiling
