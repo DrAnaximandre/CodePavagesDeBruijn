@@ -2,9 +2,11 @@
     "Parameters": {
         "output_format": "png",
         "save": "True",
-        "tilingdir": "./tiling"
+        "tilingdir": "./tiling",
+        "DMAX": 5,
+        "NBL": 4,
+        "N": 3
     },
     "draw_edges": "False",
-    "k": 0.4
-    
+    "k": 0.5
 }

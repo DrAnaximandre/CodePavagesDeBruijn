@@ -100,7 +100,7 @@ def kolor(r,s,kr,ks,ind,x,y,d,params) :
 
         elif params.COLORING == 11:
             """ Joli rond coloré"""
-            h = 200 * d / params.DMAX + 20
+            h = (200 * d / params.DMAX + 20)%360
             h += 10*np.cos((s * 20 + kr*10 + ks*15-d)) + np.sin(2*(s * 20 + kr*10 + ks*15-d)) * 10
             sat = 50
             if d > params.DMAX * 0.8:
@@ -135,6 +135,23 @@ def kolor(r,s,kr,ks,ind,x,y,d,params) :
             v  = 50 + np.cos((s * 2 + kr * 15 + ks * 10 - d)) * 24 + np.sin(2 * (s * 20 + kr * 10 + ks * 15 - d)) * 24
 
             return rgb((h, sat, v))
+        
+
+        elif params.COLORING == 131:
+            """ Joli rond coloré partant du rouge au centre"""
+            h = 500 * d / params.DMAX -100
+            #h += 12 * s - 3*ks
+            h= h%360
+            sat = 45
+            sat += np.cos(d) * 29 + np.sin(2 *d ) * 24
+            sat = sat%100
+            if sat < 30:
+                sat = 95
+
+            v  = 50 + np.cos(d) * 24 + np.sin(2 * d) * 24
+
+            return rgb((h, sat, v))
+
 
         elif params.COLORING == 14:
             """ Rouge noir blanc gris"""

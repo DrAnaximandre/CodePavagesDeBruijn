@@ -4,5 +4,7 @@ __pycache__
 .idea
 results/
 tiling/
+tiling_*/
 .venv
 *.png
+*.tif

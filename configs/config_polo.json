@@ -1,8 +1,7 @@
 {
     "Parameters": {
-        "output_format": "png",
+        "output_format": "pdf",
         "save": "True",
         "tilingdir": "./tiling"
     }
-    
 }

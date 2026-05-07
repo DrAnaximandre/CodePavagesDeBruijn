@@ -1,0 +1,16 @@
+{
+    "Parameters": {
+        "output_format": "png",
+        "save": "True",
+        "tilingdir": "./demo",
+        "DMAX": 50,
+        "NBL": 7,
+        "c": 0.8,
+        "SCALE_LINEWIDTH": 7,
+        "R": 3,
+        "dpi": 200,
+        "TITLE": "False"
+    },
+    "draw_edges": "True",
+    "k": 0.33
+}
