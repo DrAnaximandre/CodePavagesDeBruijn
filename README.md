@@ -123,3 +123,5 @@ The figure is saved at a first `dpi` that can also be high (2000+). Increasing t
 
 The demo be started with `python main.py -g goZoomedNeighbours -N 5 -c configs/config_polo_zoomed_neighbours_demo.json`
 
+![Example zoomed neighbours](images/example_zoomed_neighbours.png)
+
