@@ -58,10 +58,10 @@ class MappedGammaParameter(object) :
 
     def stringTex(self) :
         g = self.getValue()
-        s = "$\gamma=[" + ("%+.3f" % g[0]) 
+        s = "$\gamma$= [" + ("%+.3f" % g[0]) 
         for i in range(1, self.N):
             s += (",%+.3f" % g[i])
-        return s+']$'
+        return s+']'
 
 
 #################### some choices for gammaValue
@@ -109,7 +109,13 @@ def MGPpentavilleVariation(N):
         deltaShift = 0.08,
         functionToMap = lambda s, j : math.sin(j*math.pi/N) + j/N + s) 
 
-
+def MGPNonsense(N):
+    return MappedGammaParameter(
+        N=N,
+        initialShift = 1.07,
+        deltaShift = 0.08,
+        #functionToMap = lambda s, j : s/( 1+j**2)+12* math.cos(1.7612*j**s) - 5*math.sin(1.2*j*math.pi/N) + j/N + s) 
+        functionToMap = lambda s, j : 12*np.sin(np.sin(j+s) - 10*float(j==2) + float(j%2==0) - np.pi*float(j%3==0)))
     # for livret #2 (avec DIAGONALS) with N=5
     # self.GAMMA = [0.0, 0.486, 0.747, 0.645, 0.180]
 
@@ -118,3 +124,15 @@ def MGPpentavilleVariation(N):
 
     # pour livret #4 avec R = 62 et N = 5
     #self.GAMMA = [-0.260, -0.155, -0.050, 0.055, 0.160]
+
+
+def GammaR0(N):
+    v = [-11.3365, -10.0247, -9.568, -9.120, -8.806, -8.576]
+    return MappedGammaParameter(
+        N=N, 
+        initialShift = 0,
+        deltaShift = 0.05,
+        functionToMap = lambda s, j : 15.5*np.cos(s+j/N)
+    )
+        
+    

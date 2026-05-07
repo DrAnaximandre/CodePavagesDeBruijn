@@ -2,6 +2,22 @@ from typing import Iterable
 from joblib import Parallel,delayed
 
 
+def middles(xs, ys):
+
+    res = []
+    for i in range(4):
+        for j in range(4):
+            if i == (j+1)%4 :
+
+                nx = (xs[i] + xs[j])/2
+                ny = (ys[i] + ys[j])/2
+                print(i,j)
+                res.append(nx)
+                res.append(ny)
+
+    return res
+
+
 def linearPoint(A,B,k):
     xA,yA = A
     xB,yB = B

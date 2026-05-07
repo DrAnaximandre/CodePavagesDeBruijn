@@ -103,3 +103,25 @@ python main.py -g goNeighbours -N 6
 ```
 
 ![Example neighbours](images/example_neighbours_2.png)
+
+Supports alpha modification per polygon.
+
+## Splines
+Does not work yet. See `go_splines.py`.
+
+## Zoomed Neighbours
+
+Experimental.
+Generate three files: 
+  - one large png figure inspired by  the Neighbours stream of work above
+  - one other png that represent the first image where some zooming inserts are diplayed
+  - a `.tif` file that can be used to print the second png
+
+
+This stream of work is intented to show a disjoint graph at high DMAX (50+) and potentially high N (10+).
+The figure is saved at a first `dpi` that can also be high (2000+). Increasing that number will lead to a bigger first png, but the second image will not show the pixelisation produced by the demo.
+
+The demo be started with `python main.py -g goZoomedNeighbours -N 5 -c configs/config_polo_zoomed_neighbours_demo.json`
+
+![Example zoomed neighbours](images/example_zoomed_neighbours.png)
+

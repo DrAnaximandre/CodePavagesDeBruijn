@@ -74,7 +74,7 @@ def compute(params: Parameters):
 
     # for collecting the graph vertices / edges of rhombi
     rhombus_Kvect = np.zeros((4,N), dtype=int)
-    graph = Graph(params.ORIENTED)
+    graph = Graph()
 
     # for collecting rhombi
     rhombi = [] # a list    
@@ -146,6 +146,7 @@ def compute(params: Parameters):
                     else :
                         if d > params.DMAX:
                             continue
+                        pass
 
                     #display_rhombus(r, s, kr, ks, x, y, ind, params)
 
@@ -154,15 +155,19 @@ def compute(params: Parameters):
                     # This is the reason why we keep Kvect in the graph.
                     
                     vs =  [ 0 for i in range(4) ]
+                    sto = []
                     
                     for i in range(4) :
                         vs[i] = tuple(map(int,rhombus_Kvect[i]))
-                        graph.add_vertice(vs[i],x[i],y[i])
-                    
-                    graph.add_edge(vs[0],vs[1])
-                    graph.add_edge(vs[1],vs[2])
-                    graph.add_edge(vs[2],vs[3])
-                    graph.add_edge(vs[3],vs[0])
+                        sto.append(graph.add_vertice(vs[i],x[i],y[i]))
+
+                    graph.add_edge(sto[0],sto[1])
+                    graph.add_edge(sto[1],sto[2])
+                    graph.add_edge(sto[2],sto[3])
+                    graph.add_edge(sto[3],sto[0])
+
+
+
 
                     # We collect the current rhombus by its coordinates
                     rhombi.append((r,s,kr,ks,tuple(ind),tuple(x),tuple(y),d))

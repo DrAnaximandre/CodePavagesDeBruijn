@@ -50,6 +50,8 @@ class Parameters(object):
                  TITLE: bool = True,
                  i: int = 0,
                  c = 0.95, # for the drawing limits
+                 dpi = 300, # useful to increase for the first image of go_zoomed_neighbours
+                 shortname=False 
                      ) :
         
         # Must be 4 or higher
@@ -171,12 +173,9 @@ class Parameters(object):
         self.FILLWITHCIRCLE = False
 
         self.OUTPUT_COORDINATES = OUTPUT_COORDINATES
-
-        # if self.BACKGROUND == self.STROKECOLOR :
-        #     print("WARNING : BACKGROUND == STROKECOLOR !!!")
-
-
         self.TITLE = TITLE
+        self.dpi = dpi
+        self.shortname =  shortname
 
         self.fn = self.filename()
         print(self.fn)
@@ -197,25 +196,34 @@ class Parameters(object):
         self.LINEWIDTH = self.SCALE_LINEWIDTH / self.DMAX
 
     def filename(self):
-        stts = str(strftime("%Y-%m-%d_%H-%M-%S", localtime()))
-        name = f"{self.TILINGDIR}/{self.i:03}_{self.N}_{stts}_{self.DMAX}_{self.NBL}_{self.GAMMA.string()}"
-        name = name[:100]
+        if self.shortname:
+            name = f"{self.TILINGDIR}/{self.i:04d}"
+        else:
+            stts = str(strftime("%Y-%m-%d_%H-%M-%S", localtime()))
+            name = f"{self.TILINGDIR}/{self.i:03}_{self.N}_{stts}_{self.DMAX}_{self.NBL}_{self.GAMMA.string()}"
+            name = name[:100]   
         return name
+    
+    def suptitle(self):
+        return f"{self.GAMMA.stringTex()}"
+    
 
     def title(self):
-        sG = "\n\n\n\n\n" + str(self.N) + ' $d_{max}$=' + str(self.DMAX) + ' i=' + str(self.i)
+        sG = "$N$="+ str(self.N) + '  $d_{max}$=' + str(self.DMAX) + '  $i$=' + str(self.i) + " "
         if self.RECTANGLE:
-            sG += ' R=' + str(self.R)
+            sG += '  $R$=' + str(self.R)
         if self.DIAGONAL:
-            sG += ' D'
+            sG += '      D$ '
+        sG += '  $NBL$=' + str(self.NBL)
 
-        sG += self.GAMMA.string()[:50]
+        # sG += self.GAMMA.stringTex()[:150]
 
-        sG += f"\n quantum = {self.QUANTUM_COLOR}"
+        sG += f"   quantum={self.QUANTUM_COLOR}"
+        sG += f"  LINEWIDTH={self.LINEWIDTH:.4f}"
 
         # the code that is in the lambda called functionToMap is displayed here
         if self.GAMMA.functionToMap is not None:
-            sG += f" {inspect.getsourcelines(self.GAMMA.functionToMap)[0][0]}"
+            sG += f"{inspect.getsourcelines(self.GAMMA.functionToMap)[0][0]}"
         else:
             # case where we use the default gamma function to map
             sG += " None"
