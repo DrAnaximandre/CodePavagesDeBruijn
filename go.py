@@ -138,9 +138,11 @@ def goPentavilleS(config) :
     params.update({'GAMMA': gamma,
                     'N': N, 
                     'DMAX': 12, 
+                    'NBL':10,
                     'SIDES': False, 
                     'RECTANGLE': True, 
                     'R': 2, 
+                    'SCALE_LINEWIDTH': 12,
                     'FRAME': True})
     p = Parameters(**params)
     for _ in range(4) :
@@ -222,6 +224,28 @@ def goPoloCubes(config=None):
                     'BACKGROUND': 'k',
                     'STROKECOLOR': 'k',
                     'SCALE_LINEWIDTH': 20,
+                    'SHOW': True,
+                    })
+    outputs.output(Parameters(**params))
+
+######################################
+def goEclat(config=None):
+    """
+    """
+    params = config.get('Parameters', {})
+    params.update({'GAMMA': gm.MGPNonsense(params['N']),
+                    'DMAX': 13, 
+                    'NBL': 4,
+                    'SIDES': True, 
+                    'RECTANGLE': True, 
+                    'SQUARE': False,
+                    'R': 3, 
+                    'FRAME': False,
+                    'DIAGONAL': False,
+                    'COLORING': 11,
+                     'BACKGROUND':'k',
+                    'STROKECOLOR': 'k',
+                    'SCALE_LINEWIDTH': 1,
                     'SHOW': True,
                     })
     outputs.output(Parameters(**params))

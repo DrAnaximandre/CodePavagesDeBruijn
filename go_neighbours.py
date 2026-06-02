@@ -1,10 +1,13 @@
 
 import outputs
-from gamma import MappedGammaParameter
+from gamma import MappedGammaParameter, MGPNonsense
 from parameters import Parameters
 import tiling
 from utils import linearPoint
 import numpy as np
+import matplotlib.colors as clrs
+
+
 
 def go_neighbours(config=None):
     """ For each vertex of the tiling,
@@ -20,29 +23,36 @@ def go_neighbours(config=None):
     else:
         print("Using config file")
         params = config.get('Parameters', {})
+        print(params)
         draw_edges = config.get('draw_edges', True)
         print("draw_edges", draw_edges)
         k = config.get('k', 0.333)
         N = config["Parameters"].get('N', 7)
+        print(config["Parameters"])
+
+    print(N)
 
 
    
     gamma = MappedGammaParameter(
         N=N,
         initialShift=0.23456,
-        functionToMap=lambda s, j:  1.85*(np.sin(2*s-(1 + j) / N) +  j /N + np.cos(j))
+        functionToMap=lambda s, j: float(j%3==0) +  1.85*(np.sin(2*s-(1 + j) / N) +  j /N + np.cos(j))
     )
 
+    # gamma = MGPNonsense(N)
 
+    beige = [0.9,  0.882, 0.792]
     params.update({'N':N, 
                     'GAMMA':gamma, 
-                    'SCALE_LINEWIDTH':8, 
-                    'DMAX':5, 
-                    'BACKGROUND':[0.9,  0.882, 0.792], 
-                    'NBL':3,
+                    'SCALE_LINEWIDTH':5, 
+                    'BACKGROUND':beige, 
                     'STROKECOLOR':'k',
-                    'c': 1.2
+                    'COLORING':11,
+                    'SQUARE': False, 
+                    'c': 1.5
                     })
+   
     params = Parameters(**params)
     
 
@@ -52,17 +62,35 @@ def go_neighbours(config=None):
 
 
     color = (0,0,0)
+    color = beige
+
+    vv = graph.get_vertices()
     
     ## draws a polygon around each vertex and colors it
-    for v0 in graph.get_vertices() :
-        
-        (x0,y0) = graph.get_xy(v0)
-        nbrs = graph.get_sorted_neighbours(v0)
+    for v0 in vv:
+
+
+        (x0,y0) = v0.x, v0.y
+        i = v0.index
+       
+        nbrs = graph.get_sorted_neighbours(i)
+    
         xys = [ graph.get_xy(w) for w in nbrs ]
-        xysp =  [ linearPoint((x0,y0),xy,k) for xy in xys ]
-        xsp,ysp = zip(*xysp)
-        outputs.polygon_sides(xsp,ysp,1,params)
-        outputs.fill(xsp,ysp,color,1)
+        vv = np.log(np.arange(4,0,-0.05))/np.log(10)
+
+
+        
+        for k in vv:
+            xysp =  [ linearPoint((x0,y0),xy,k) for xy in xys ]
+            xsp,ysp = zip(*xysp)
+            outputs.polygon_sides(xsp,ysp,1,params)
+            d = np.mean(np.sqrt(np.array(xysp)**2))
+            Ks = np.array( graph.get_K(i))
+    
+            alpha = np.sin(2 * (Ks[0]* 20 + Ks[1] * 10 + Ks[2] * 15 - d))/2 + 0.5
+
+            outputs.fill(xsp,ysp,color,alpha)
+        
 
     ## draws the central part of each edge
     if draw_edges :
@@ -75,7 +103,7 @@ def go_neighbours(config=None):
             outputs.mplot(x,y,1, params)
 
         
-    outputs.finalize_display(params, close=True)
+    fn = outputs.finalize_display(params, close=True)
 
 
 

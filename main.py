@@ -7,6 +7,7 @@ from go import *
 from config_reader import get_config
 from go_glyphs import go_glyphs
 from go_neighbours import go_neighbours
+from go_zoomed_neighbours import go_zoomed_neighbours
 
 # Map function names to actual functions
 go_functions = {
@@ -25,6 +26,8 @@ go_functions = {
     'goDemo': goDemo,
     'goGlyphs': go_glyphs,
     'goNeighbours': go_neighbours,
+    'goZoomedNeighbours': go_zoomed_neighbours,
+    'goEclat': goEclat
 }
 
 if __name__ == "__main__":
@@ -40,3 +43,6 @@ if __name__ == "__main__":
 
     # Run the go function
     go_function(config)
+
+
+

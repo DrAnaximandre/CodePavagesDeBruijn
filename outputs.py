@@ -8,6 +8,13 @@ import tiling
 import graph as gr
 from colors import kolor
 
+from PIL import Image
+Image.MAX_IMAGE_PIXELS = 19000**3
+
+from mpl_toolkits.axes_grid1.inset_locator import zoomed_inset_axes
+from mpl_toolkits.axes_grid1.inset_locator import mark_inset
+
+
 ################################################################
 #      main output functions
 ################################################################
@@ -20,7 +27,7 @@ def output(params:Parameters) :
 
 def output1(graph:gr.Graph, rhombi, params:Parameters) :
 
-    prepare_display(params)
+    fig, ax = prepare_display(params)
     
     rhombi_loop(rhombi,params)
     edges_loop(graph,params)
@@ -35,10 +42,10 @@ def output1(graph:gr.Graph, rhombi, params:Parameters) :
 def prepare_display(params:Parameters):
     
     fig, ax = plt.subplots()
-    plt.axis('equal')
+    # plt.axis('equal')
     plt.axis('off')
 
-    #plt.title(params.title(), fontsize=7, y=0, pad=-20.)
+    plt.title(params.title(), fontsize=7, y=0, pad=-20.)
 
     ax.set_ylabel(params.side(), rotation=0,  color="white", loc="bottom")
     ax.get_xaxis().set_visible(False)
@@ -51,6 +58,7 @@ def prepare_display(params:Parameters):
     xmin, xmax, ymin, ymax = -lim, lim, -lim, lim
     ax.set_xlim([xmin, xmax])
     ax.set_ylim([ymin, ymax])
+
 
     # a line around the drawing (hum, not so much elegant, another solution ?)
     b = 0.999
@@ -67,6 +75,7 @@ def prepare_display(params:Parameters):
 
 def finalize_display(params:Parameters, close=False):
 
+
     fn = params.filename()
     if not close:
         fn = f'{params.TILINGDIR}/{params.PREFIX:04}'
@@ -76,9 +85,10 @@ def finalize_display(params:Parameters, close=False):
     ########## save first and show after !
     if params.SAVE:
         Path(params.TILINGDIR).mkdir(parents=True, exist_ok=True)
-        plt.savefig(fn + '.' + params.SAVE_FORMAT, dpi=300) 
-
+        plt.savefig(fn + '.' + params.SAVE_FORMAT, dpi=params.dpi) 
+        plt.close()
         print("output saved in file " + fn + '.' + params.SAVE_FORMAT)
+
     if params.SHOW:
          plt.show()
     if close:
@@ -247,7 +257,6 @@ def fill(x, y, c, alpha):
     p = Polygon(xy, facecolor=c, alpha=alpha)
     ax = plt.gca()
     ax.add_patch(p)
-
 
 def fancy_mplot(x,y,alpha,params,ax, center=[0,0],offset_color=0) :
 
