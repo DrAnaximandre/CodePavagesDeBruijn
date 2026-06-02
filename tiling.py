@@ -170,7 +170,9 @@ def compute(params: Parameters):
 
 
                     # We collect the current rhombus by its coordinates
-                    rhombi.append((r,s,kr,ks,tuple(ind),tuple(x),tuple(y),d))
+                    # rhombi.append((r,s,kr,ks,tuple(ind),tuple(x),tuple(y),d))
+                    # changé par mich
+                    rhombi.append((r, s, kr, ks, sto, tuple(x), tuple(y), d))
 
                     counter += 1
 

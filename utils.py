@@ -1,21 +1,33 @@
 from typing import Iterable
 from joblib import Parallel,delayed
 
+#-------------------------- ce bout de code est buggué, je remets le mien en attendant de trouver le bug
+# def middles(xs, ys):
+#
+#     res = []
+#     for i in range(4):
+#         for j in range(4):
+#             if i == (j+1)%4 :
+#
+#                 nx = (xs[i] + xs[j])/2
+#                 ny = (ys[i] + ys[j])/2
+#                 print(i,j)
+#                 res.append(nx)
+#                 res.append(ny)
+#
+#     return res
+
+
+
+def middle(x1, y1, x2, y2):
+    return (x1 + x2) / 2.0, (y1 + y2) / 2.0
 
 def middles(xs, ys):
-
-    res = []
-    for i in range(4):
-        for j in range(4):
-            if i == (j+1)%4 :
-
-                nx = (xs[i] + xs[j])/2
-                ny = (ys[i] + ys[j])/2
-                print(i,j)
-                res.append(nx)
-                res.append(ny)
-
-    return res
+    x01, y01 = middle(xs[0], ys[0], xs[1], ys[1])
+    x12, y12 = middle(xs[1], ys[1], xs[2], ys[2])
+    x23, y23 = middle(xs[2], ys[2], xs[3], ys[3])
+    x30, y30 = middle(xs[0], ys[0], xs[3], ys[3])
+    return x01, y01, x12, y12, x23, y23, x30, y30
 
 
 def linearPoint(A,B,k):

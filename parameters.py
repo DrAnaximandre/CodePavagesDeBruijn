@@ -51,7 +51,9 @@ class Parameters(object):
                  i: int = 0,
                  c = 0.95, # for the drawing limits
                  dpi = 300, # useful to increase for the first image of go_zoomed_neighbours
-                 shortname=False 
+                 shortname=False,
+                 ### ajouté par mich
+                 PARAMS_SPLINES=None,
                      ) :
         
         # Must be 4 or higher
@@ -179,6 +181,9 @@ class Parameters(object):
 
         self.fn = self.filename()
         print(self.fn)
+
+        ### ajouté par mich
+        self.PARAMS_SPLINES = PARAMS_SPLINES
 
     def filename_coordinates(self):
         filename_with_coordinates = self.fn + "_coordinates.txt"

@@ -34,34 +34,39 @@ import seaborn as sns
   
 """
 
+
+# un dictionnaire de colormaps / palettes
+DIC_PALETTES = {}
+
+def add(nom, cmap) : DIC_PALETTES[nom] = cmap
+
+def get(nom) : return DIC_PALETTES[nom]
+
+
+
 ############################################  nos matplotlib colormaps ##################
 
-TWILIGHT = plt.get_cmap('twilight')
-TWILIGHT.name = 'TWILIGHT'
+add('TWILIGHT', plt.get_cmap('twilight'))
 
-HSV = plt.get_cmap('hsv')
-HSV.name = 'HSV'
+add('HSV', plt.get_cmap('hsv'))
+
 
 ############################################# nos seaborn palettes #####################
 
-CUBELIX = sns.cubehelix_palette(as_cmap=True)
-CUBELIX.name = 'CUBELIX'
+add('CUBELIX', sns.cubehelix_palette(as_cmap=True))
+add('CUBELIX1', sns.cubehelix_palette(as_cmap=True, n_colors=4,
+                                      start=2.5, rot=-2, dark=.8, light=.4, gamma=1.5, hue=1))
+add('CUBELIX2', sns.cubehelix_palette(as_cmap=True, start=.2, rot=.65,  dark=.3, light=.7, ))
 
-CUBELIX1 = sns.cubehelix_palette(as_cmap=True, n_colors=4, start=2.5, rot=-2, dark=.8, light=.4, gamma=1.5, hue=1)
-CUBELIX1.name = 'CUBELIX1'
+add('HLS', sns.color_palette('hls', as_cmap=True))
+add('HUSL', sns.husl_palette(as_cmap=True))
 
-CUBELIX2 = sns.cubehelix_palette(as_cmap=True, start=.2, rot=.65,  dark=.3, light=.7, )
-CUBELIX2.name = 'CUBELIX2'
+#######################################################
 
-HLS = sns.color_palette('hls', as_cmap=True)
+NOMS_PALETTES = DIC_PALETTES.keys()
+PALETTES = DIC_PALETTES.values()
 
-HUSL = sns.husl_palette(as_cmap=True)
-
-PALETTES = [ TWILIGHT, HSV, HLS, HUSL,
-             CUBELIX, CUBELIX1, CUBELIX2,
-             ]
-
-
+#print('nos palettes : ' , NOMS_PALETTES)
 
 
 ###########################################################
@@ -72,32 +77,33 @@ def str_color(color) :
     return '    color = ' + '  '.join([ f'{x:.4f}' for x in color ])
 
 def nos_palettes_RGBA() :
-    for cmap in PALETTES :
-        print(f'{cmap.name=}')
+    for (nom, cmap) in DIC_PALETTES.items() :
+        print(f'{nom=}')
         for index in [0.0, 0.3, 0.5, 0.9, 1.0] :
             print(f'       {index=} ' +  str_color(cmap(index)))
 
-#nos_palettes_RGBA()
+# nos_palettes_RGBA()
 
-
-########## utilitaire pour voir les colormaps (d'après la doc de matplotlib)
+############################################################################################
+########## utilitaire pour visualiser nos palettes / colormaps (d'après la doc de matplotlib)
+############################################################################################
 
 gradient = numpy.linspace(0, 1, 256)
 gradient = numpy.vstack((gradient, gradient))
 
-def plot_color_gradients(category, cmap_list):
+def plot_color_gradients():
     # Create figure and adjust figure height to number of colormaps
-    nrows = len(cmap_list)
+    nrows = len(DIC_PALETTES)
     figh = 0.35 + 0.15 + (nrows + (nrows - 1) * 0.1) * 0.22
     fig, axs = plt.subplots(nrows=nrows + 1, figsize=(6.4, figh))
     fig.subplots_adjust(top=1 - 0.35 / figh, bottom=0.15 / figh,
                         left=0.2, right=0.99)
-    axs[0].set_title(f'{category} colormaps', fontsize=14)
+    axs[0].set_title(f'nos colormaps/palettes', fontsize=14)
 
-    for ax, cmap in zip(axs, cmap_list):
-        ax.imshow(gradient, aspect='auto', cmap=cmap)
-        name = cmap if type(cmap) is str else cmap.name
-        ax.text(-0.01, 0.5, name, va='center', ha='right', fontsize=10,
+    for ax, nom in zip(axs, NOMS_PALETTES):
+        ax.imshow(gradient, aspect='auto', cmap=DIC_PALETTES[nom])
+        #name = cmap if type(cmap) is str else cmap.name
+        ax.text(-0.01, 0.5, nom, va='center', ha='right', fontsize=10,
                 transform=ax.transAxes)
 
     # Turn off *all* ticks & spines, not just the ones with colormaps.
@@ -106,23 +112,17 @@ def plot_color_gradients(category, cmap_list):
 
     plt.show()
 
-
-###########################################################
-####          nos palettes               ##################
-###########################################################
-
-#plot_color_gradients('nos palettes', PALETTES)
-
+# plot_color_gradients()
 
 
 ###########################################################
-####   seaborn palettes prédéfinies  ######################    # TODO a finir
-############################################################
+####   Les palettes prédéfinies de seaborn ################   # TODO a finir
+###########################################################
 
 
 
 ###########################################################################
-################  Les colormaps déjà définies de matplotlib  ##############
+########  Pour info, les colormaps déjà définies de matplotlib  ###########
 ###########################################################################
 
 
@@ -148,10 +148,10 @@ def plot_color_gradients_matplotlib(category, cmap_list):
 
 
 def plot_colors_matplotlib() :
-    plot_color_gradients('Perceptually Uniform Sequential',
+    plot_color_gradients_matplotlib('Perceptually Uniform Sequential',
                                     ['viridis', 'plasma', 'inferno', 'magma', 'cividis'])
 
-    plot_color_gradients('Sequential',
+    plot_color_gradients_matplotlib('Sequential',
                                     ['Greys', 'Purples', 'Blues', 'Greens', 'Oranges', 'Reds',
                           'YlOrBr', 'YlOrRd', 'OrRd', 'PuRd', 'RdPu', 'BuPu',
                           'GnBu', 'PuBu', 'YlGnBu', 'PuBuGn', 'BuGn', 'YlGn'])
